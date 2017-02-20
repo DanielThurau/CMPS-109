@@ -14,4 +14,5 @@ class Fact {
 		std::string getFactName(); 		
 		std::string getP1();
 		std::string getP2();
+		~Fact();
 };

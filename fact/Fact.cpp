@@ -17,3 +17,7 @@ std::string Fact::getP1(){
 std::string Fact::getP2(){
 	return p2;
 }
+
+Fact::~Fact(){
+	
+}
