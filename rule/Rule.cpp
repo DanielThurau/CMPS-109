@@ -1,16 +1,14 @@
 /* Rule.cpp */
 #include "Rule.h"
 
-Rule::RuleRule(std::string p_ruleName, \
-			std::string p_factName1, std::string p_factName2, \
-			std::string p_ruleOperator){
+Rule::Rule(const std::string& p_ruleName, const std::string& p_ruleOperator, const std::string& p_factName1, const std::string& p_factName2){
 		ruleName = p_ruleName;
 		factName1 = p_factName1;
 		factName2 = p_factName2;
 		ruleOperator = p_ruleOperator;
 }
 
-std::string Rule::getRulename(){
+std::string Rule::getRuleName(){
 	return ruleName;
 }
 

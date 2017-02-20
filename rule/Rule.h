@@ -9,9 +9,7 @@ class Rule{
 		std::string factName2;
 		std::string ruleOperator;
 	public:
-		Rule(std::string p_ruleName, \
-			std::string p_factName1, std::string p_factName2, \
-			std::string p_ruleOperator);
+		Rule(const std::string& p_ruleName, const std::string& p_ruleOperator, const std::string& p_factName1, const std::string& p_factName2);
 		/* Getter methods */
 		std::string getRuleName();
 		std::string getFactName1();
