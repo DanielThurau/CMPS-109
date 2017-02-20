@@ -1,3 +1,4 @@
+/* Fact.cpp */
 #include "Fact.h"
 
 Fact::Fact(const std::string& p_factName, const std::string& p_p1, const std::string& p_p2){
