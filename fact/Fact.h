@@ -9,9 +9,9 @@ class Fact {
 		std::string p1;
 		std::string p2;
 	public:
-		Fact(std::string p_factName, std::string p_p1, std::string p_p2);
+		Fact(const std::string& p_factName, const std::string& p_p1, const std::string& p_p2);
 		/* Getter methods */
 		std::string getFactName(); 		
 		std::string getP1();
 		std::string getP2();
-}
+};
