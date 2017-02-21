@@ -26,9 +26,9 @@ int main(){
 
 	// KnowledgeBase * KB = new KnowledgeBase(data1);
 
-	// std::cout << KB->addContent(test) << '\n';
-	// std::cout << KB->addContent(test2) << '\n';
-	// std::cout << KB->addContent(test4) << '\n';
+	std::cout << KB->addContent(test) << '\n';
+	std::cout << KB->addContent(test2) << '\n';
+	std::cout << KB->addContent(test4) << '\n';
 	std::cout << KB->addContent(test5) << '\n';
 	std::cout << "Drop successful: " << KB->dropContent("Grandfather") << '\n';
 	std::vector<Fact*> data= KB->getContent("Grandfather");
@@ -39,11 +39,11 @@ int main(){
 
 
 
-	delete(test);
-	delete(test2);
-	delete(test4);
-	delete(test5);
-	// if(test3!=NULL){
+	free(test);
+	free(test2);
+	free(test4);
+	free(test5);
+	// // if(test3!=NULL){
 	// 	std::cout << test3->getFactName() << '\n';
 	// 	std::cout << test3->getP1() << '\n';
 	// 	std::cout << test3->getP2() << '\n';

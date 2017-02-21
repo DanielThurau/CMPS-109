@@ -9,7 +9,6 @@ KnowledgeBase::KnowledgeBase(){
 	std::cout << "Im in the default constuctor\n";
 }
 
-
 /*
  * Parameterized Default constructor
  * Used when a KnowledgeBase is substantiated
@@ -22,21 +21,11 @@ KnowledgeBase::KnowledgeBase(std::vector<Fact*> p_items){
 	}
 }
 
-
-
-
 /* 
  * addContent will take a ptr to a Fact obj
- * and try to insert it at the end of a linked list.
- * It is important to transverse the entire list to 
- * check for duplicates.
- *************************************************
- * For Devs:
- * want to implement a faster search, which means a 
- * better data structure
- * OPTIONS: 
- *   1: Dictionary
- *   2: N-ary tree
+ * and try to insert it in a vector with the same fact name.
+ * Complexity: O(m) where m = the number of similar facts 
+ * already in the KB
  */
 bool KnowledgeBase::addContent(Fact * p_item){
 	if(data.count(p_item->getFactName()) == 0){
@@ -51,12 +40,9 @@ bool KnowledgeBase::addContent(Fact * p_item){
 	return false;
 }
 
-
 /* 
  * getContent 
- *
- *
- *
+ * Returns a vector of all facts with the factname: p_name
  */ 
 std::vector<Fact*> KnowledgeBase::getContent(const std::string & p_name){
 	if(data.count(p_name) != 0){
@@ -66,9 +52,20 @@ std::vector<Fact*> KnowledgeBase::getContent(const std::string & p_name){
 		
 }
 
+/*
+ * dropcontent
+ * Checks if p_name is a fact in KB, then calls Fact 
+ * destructor on all facts associated with p_name
+ * and removes key entry from map.
+ */ 
 bool KnowledgeBase::dropContent(const std::string & p_name){
 	if(data.count(p_name) != 0){
+		for(int i = 0; i < data[p_name].size(); ++i){
+			data[p_name][i]->~Fact();
+		}
+
 		data.erase(p_name);
+
 		if(data.count(p_name) == 0){
 			return true;
 		}else{
@@ -81,7 +78,10 @@ bool KnowledgeBase::dropContent(const std::string & p_name){
 }
 
 
-
+/*
+ * ~KnowledgeBase()
+ * Iterates through map and calls fact destructor on all facts
+ */
 KnowledgeBase::~KnowledgeBase(){
 	std::cout << "In destructor\n";
 	for ( auto i = data.begin(); i != data.end(); ++i ){
