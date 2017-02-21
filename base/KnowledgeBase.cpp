@@ -19,7 +19,7 @@ KnowledgeBase::KnowledgeBase(){
 KnowledgeBase::KnowledgeBase(std::vector<Fact*> p_items){
 	std::cout << "Im in the parameterized constructor \n";
 	head = new node;
-	head->next = NULL;
+	head->next = NULL; 
 	head->fact = p_items[0];
 	node * runner = head;
 	size++;
