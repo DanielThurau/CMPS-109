@@ -19,6 +19,4 @@ std::string Fact::getP2(){
 	return p2;
 }
 
-Fact::~Fact(){
-	
-}
+Fact::~Fact(){}

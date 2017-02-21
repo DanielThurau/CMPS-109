@@ -4,15 +4,7 @@
 class KnowledgeBase{
 	/* Struct to hold our facts */
 	private:
-		struct node {
-			Fact * fact;
-			node * next;
-		};
-
-		node * head;
-		int size;
-		/* Internal method */
-		bool check(Fact * fact1, Fact * fact2);
+		std::unordered_map< std::string , std::vector<Fact *> > data;
 	public:
 		/* Default constuctor */
 		KnowledgeBase();
