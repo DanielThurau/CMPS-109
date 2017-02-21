@@ -19,7 +19,8 @@ int main(){
 	std::cout << KB->addContent(test2) << '\n';
 	std::cout << KB->addContent(test4) << '\n';
 	std::cout << KB->addContent(test5) << '\n';
-	std::vector<Fact*> data= KB->getContent("Parent");
+	KB->dropContent("Grandfather");
+	std::vector<Fact*> data= KB->getContent("Mother");
 	for(int i = 0; i < data.size();i++){
 		std::cout << data[i]->getP2() << '\n';
 	}

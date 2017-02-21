@@ -115,9 +115,27 @@ bool KnowledgeBase::dropContent(const std::string & p_name){
 		return false;
 	}else{
 		node * runner = head;
-		while(runner != NULL){
-			if(runner->next->fact->getFactName()==p_name){
-				
+		while(head!=runner){
+			if(runner->fact->getFactName() == p_name){
+				runner = runner->next;
+				head->fact = NULL;
+				head->next = NULL;
+				head = runner;
+				--size;
+			}else{
+				runner = runner->next;
+			}
+		}
+		while(runner->next != NULL){
+			std::cout << "Def broke here\n";
+			if(runner->next->fact->getFactName() == p_name){
+				node * toSplice = runner->next;
+				runner->next = toSplice->next;
+				toSplice->fact = NULL;
+				toSplice->next = NULL;
+				toSplice = NULL;
+			}else{
+				runner = runner->next;
 			}
 		}
 	}
