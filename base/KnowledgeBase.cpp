@@ -4,17 +4,60 @@
 
 KnowledgeBase::KnowledgeBase(){
 	std::cout << "Im in the default constuctor\n";
+	size = 0;
 }
 
-KnowledgeBase::KnowledgeBase(T * p_items){
+KnowledgeBase::KnowledgeBase(Fact * p_items){
 	std::cout << "Im in the parameterized constructor \n";
 }
 
-bool KnowledgeBase::addContent(T* p_items){
+bool KnowledgeBase::addContent(Fact * p_item){
+	/* empty list */
+	if(size == 0){
+		head = new node;
+		head->next = NULL;
+		head->fact = p_item;
+		++size;
+		return true;
+	/* already has entries */
+	}else{
+		node * runner = head;
+		
+		while(runner->next != NULL){
+			runner = runner->next;
+		}
+		
+		node * temp = new node;
+		temp->next = NULL;
+		temp->fact = p_item;
+		
+		runner->next = temp;
+		++size;
+		return true;
+	}
 	return false;
 }
  
-T * KnowledgeBase::getContent(const std::string & p_name){
+Fact * KnowledgeBase::getContent(const std::string & p_name){
+	if(size<1){
+		return NULL;
+	}else{
+		node * runner = head;
+		if(runner->fact->getFactName() == p_name){
+			std::cout << "Got fact name\n";
+			return runner->fact;
+		}
+		while(runner->next != NULL){
+			runner = runner->next;
+			if(runner->fact->getFactName() == p_name){
+				std::cout << "Got fact name\n";
+				return runner->fact;
+			}
+		}
+
+	}
+
+
 	return NULL;
 }
 
@@ -29,34 +72,25 @@ KnowledgeBase::~KnowledgeBase(){
 }
 
 
-// template <typename T>
-// class KnowledgeBase: public Base<T> {
-// 	public:
-// 		KnowledgeBase();
-// 		KnowledgeBase(T * p_items);
 
-// 		T * getContent(const std::std::string & p_name);
-// 		T * addContent(T * p_item);
-// 		T * dropContet(const std::string & p_name);
-// 		~KnowledgeBase();
-
-// };
-
-// template <typename T>
-// class Base{
+/* KnowledgeBase.h */
+// #include "../common.h"
+// #include "../fact/Fact.h"
+// class KnowledgeBase{
 // 	private:
 // 		struct node {
-// 			T * x;
+// 			Fact * fact;
 // 			node * next;
-// 		}
+// 		};
 
 // 		node * root;
+// 		int size;
 // 	public:
-// 		Base();
-// 		Base(T * p_items);
-// 		virtual T * getContent(const std::string & p_name)=0;
-// 		virtual T * addContent(T * p_item)=0;
-// 		virtual T * dropContet(const std::string & p_name)=0;
-// 		~Base();
+// 		KnowledgeBase();
+// 		KnowledgeBase(Fact * p_items);
+// 		Fact * getContent(const std::string & p_name);
+// 		bool addContent(Fact * p_item);
+// 		bool dropContent(const std::string & p_name);
+// 		~KnowledgeBase();
 
 // };
