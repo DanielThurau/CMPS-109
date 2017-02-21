@@ -10,6 +10,7 @@ class KnowledgeBase{
 
 		node * head;
 		int size;
+		bool check(Fact * fact1, Fact * fact2);
 	public:
 		KnowledgeBase();
 		KnowledgeBase(Fact * p_items);
