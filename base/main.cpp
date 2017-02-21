@@ -2,7 +2,6 @@
 
 #include "../common.h"
 // #include "../fact/Fact.h"
-#include "Base.h"
 #include "KnowledgeBase.h"
 
 int main(){
@@ -38,17 +37,27 @@ int main(){
 
 
 
-
 	free(test);
 	free(test2);
 	free(test4);
 	free(test5);
+
+	// free(test);
+	// free(test2);
+	// free(test4);
+	// free(test5);
 	// // if(test3!=NULL){
 	// 	std::cout << test3->getFactName() << '\n';
 	// 	std::cout << test3->getP1() << '\n';
 	// 	std::cout << test3->getP2() << '\n';
 	// }
 	delete(KB);
+
+	
+	// free(test);
+	// free(test2);
+	// free(test4);
+	// free(test5);
 
 	return 0;
 }
