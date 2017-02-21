@@ -16,8 +16,21 @@ KnowledgeBase::KnowledgeBase(){
  * Used when a KnowledgeBase is substantiated
  * with pre-condifgured data
  */
-KnowledgeBase::KnowledgeBase(Fact * p_items){
+KnowledgeBase::KnowledgeBase(std::vector<Fact*> p_items){
 	std::cout << "Im in the parameterized constructor \n";
+	head = new node;
+	head->next = NULL;
+	head->fact = p_items[0];
+	node * runner = head;
+	size++;
+	for(int i = 1; i < p_items.size(); ++i){
+		node * temp = new node;
+		temp->fact = p_items[i];
+		temp->next=NULL;
+		runner->next = temp;
+		runner = runner->next;
+		size++;
+	}
 }
 
 
@@ -106,6 +119,7 @@ std::vector<Fact*> KnowledgeBase::getContent(const std::string & p_name){
 			}
 			runner = runner->next;
 		}
+		runner = NULL;
 		return data;
 	}
 }
@@ -134,6 +148,7 @@ bool KnowledgeBase::dropContent(const std::string & p_name){
 				toSplice->fact = NULL;
 				toSplice->next = NULL;
 				toSplice = NULL;
+				--size;
 			}else{
 				runner = runner->next;
 			}
@@ -145,29 +160,12 @@ bool KnowledgeBase::dropContent(const std::string & p_name){
 
 
 KnowledgeBase::~KnowledgeBase(){
-
+	node * runner = head;
+	while(runner!=NULL){
+		head = runner->next;
+		runner->fact = NULL;
+		runner->next = NULL;
+		runner = head;
+	}
 }
 
-
-
-/* KnowledgeBase.h */
-// #include "../common.h"
-// #include "../fact/Fact.h"
-// class KnowledgeBase{
-// 	private:
-// 		struct node {
-// 			Fact * fact;
-// 			node * next;
-// 		};
-
-// 		node * root;
-// 		int size;
-// 	public:
-// 		KnowledgeBase();
-// 		KnowledgeBase(Fact * p_items);
-// 		Fact * getContent(const std::string & p_name);
-// 		bool addContent(Fact * p_item);
-// 		bool dropContent(const std::string & p_name);
-// 		~KnowledgeBase();
-
-// };
