@@ -14,7 +14,7 @@ class KnowledgeBase{
 	public:
 		KnowledgeBase();
 		KnowledgeBase(Fact * p_items);
-		Fact * getContent(const std::string & p_name);
+		std::vector<Fact*> getContent(const std::string & p_name);
 		bool addContent(Fact * p_item);
 		bool dropContent(const std::string & p_name);
 		~KnowledgeBase();

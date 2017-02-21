@@ -93,26 +93,34 @@ bool KnowledgeBase::addContent(Fact * p_item){
  *
  *
  */ 
-Fact * KnowledgeBase::getContent(const std::string & p_name){
+std::vector<Fact*> KnowledgeBase::getContent(const std::string & p_name){
+	std::vector<Fact*> data;
 	if(size<1){
-		return NULL;
+		return data;
 	}else{
 		node * runner = head;
 		while(runner != NULL){
 			if(runner->fact->getFactName() == p_name){
 				std::cout << "Got fact name\n";
-				return runner->fact;
+				data.push_back(runner->fact);
 			}
 			runner = runner->next;
 		}
-
+		return data;
 	}
-
-
-	return NULL;
 }
 
 bool KnowledgeBase::dropContent(const std::string & p_name){
+	if(size==0){
+		return false;
+	}else{
+		node * runner = head;
+		while(runner != NULL){
+			if(runner->next->fact->getFactName()==p_name){
+				
+			}
+		}
+	}
 	return false;
 }
 
