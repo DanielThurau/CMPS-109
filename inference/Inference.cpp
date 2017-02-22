@@ -40,6 +40,18 @@ std::set<std::vector<std::string>> Inference::query(std::vector<std::string> p_I
 	return results;
 }
 
+
+
+std::set<std::vector<std::string>> query_KB(std::vector<std::string> p_Inference);
+std::set<std::vector<std::string>> query_RB(std::vector<std::string> p_Inference);
+
+
+
+
+
+
+
+
 Inference::~Inference(){
 	free(KB);
 	free(RB);
