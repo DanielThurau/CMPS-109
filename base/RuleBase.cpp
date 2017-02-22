@@ -22,7 +22,6 @@ RuleBase::RuleBase(std::vector<Rule *> p_items){
 bool RuleBase::addContent(Rule * p_item){
 	std::string ruleName = p_item->getRuleName();
 	if(data.count(ruleName) == 0){
-		std::cout << "Adding Rule to RB\n";
 		data[ruleName] = p_item;
 		return true;
 	}
