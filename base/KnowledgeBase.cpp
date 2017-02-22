@@ -79,11 +79,10 @@ bool KnowledgeBase::dropContent(const std::string & p_name){
  * internal method that returns true if a fact exists in a given vector
  */
 bool KnowledgeBase::check(std::vector<Fact*> data, Fact * f2){
+	std::vector<std::string> cmp = f2->getFact();
 	for(int i = 0; i < data.size(); ++i){
-		if(data[i]->getFactName() == f2->getFactName()){
-			if(data[i]->getP1() == f2->getP1() && data[i]->getP2() == f2->getP2()){
-				return true;
-			}
+		if(data[i]->getFact() == cmp){
+			return true;
 		}
 	}
 	return false;
