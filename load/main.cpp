@@ -5,5 +5,6 @@
 
 int main() {
 	Load ld("input.sri");
-	Load.process();
+	ld.process();
+	return 0;
 }

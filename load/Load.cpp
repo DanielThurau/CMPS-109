@@ -15,12 +15,12 @@ bool Load::process() {
 	std::ifstream file(pathName);
 	std::string line;
 	if (file.is_open()){
-		while( getLine(file, line)){
+		while(std::getline(file, line)){
 			std::vector<std::string> result; 
-			istringstream strinput(line);
+			std::istringstream strinput(line);
 			
 			while(strinput){
-				string next_word;
+				std::string next_word;
 				strinput >> next_word;
 				result.push_back(next_word);
 			}

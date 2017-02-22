@@ -1,10 +1,10 @@
 /* Load.h */
-#include "../commmon.h"
+#include "../common.h"
 #include "../streamer/Streamer.h"
 
 class Interface;
 
-class Load {
+class Load:public Streamer {
 
 	public:
 		Load(std::string p_pathName, KnowledgeBase * KB, RuleBase * RB);
@@ -16,4 +16,4 @@ class Load {
 
 		~Load();
 
-}
+};

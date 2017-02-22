@@ -19,4 +19,4 @@ class Streamer{
 		virtual bool process() = 0;
 
 		~Streamer(); 
-}
+};
