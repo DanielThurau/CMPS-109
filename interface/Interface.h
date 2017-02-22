@@ -14,7 +14,7 @@ class Interface {
 		Interface();
 		Interface(KnowledgeBase * p_KB, RuleBase * p_RB);
 		void commandLine();
-		void executeCommand(std::string p_command);
+		bool executeCommand(std::string p_command);
 		std::string parse(std::string p_statment);
 		virtual ~Interface();
 };
