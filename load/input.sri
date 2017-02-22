@@ -1,0 +1,1 @@
+RULE Parent($x,$y):- Dad($x,$y)
