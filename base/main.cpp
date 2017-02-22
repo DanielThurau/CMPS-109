@@ -12,12 +12,15 @@ int main(){
 
 
 	KnowledgeBase * KB = new KnowledgeBase();
+	std::vector<std::string> v1 = {"Father", "Thoma", "bob"};
+	std::vector<std::string> v2 = {"Mohter", "Talitha", "sally"};
+	std::vector<std::string> v3 = {"Grandfather", "Robert", "greg"};
+	std::vector<std::string> v4 = {"Grandfather", "Robert", "greg"};
 
-
-	Fact * test = new Fact("Father", "Thoma", "bob");
-	Fact * test2 = new Fact("Mother", "Talitha", "sally");
-	Fact * test4 = new Fact("Grandfather", "Robert", "greg");
-	Fact * test5 = new Fact("Grandfather", "Robert", "martha");
+	Fact * test = new Fact(v1);
+	Fact * test2 = new Fact(v2);
+	Fact * test4 = new Fact(v3);
+	Fact * test5 = new Fact(v4);
 	// data1.push_back(test);
 	// data1.push_back(test2);
 	// data1.push_back(test4);
@@ -31,9 +34,9 @@ int main(){
 	std::cout << KB->addContent(test5) << '\n';
 	std::cout << "Drop successful: " << KB->dropContent("Grandfather") << '\n';
 	std::vector<Fact*> data= KB->getContent("Grandfather");
-	for(int i = 0; i < data.size();i++){
-		std::cout << data[i]->getP2() << '\n';
-	}
+	// for(int i = 0; i < data.size();i++){
+	// 	std::cout << data[i]->getP2() << '\n';
+	// }
 
 
 

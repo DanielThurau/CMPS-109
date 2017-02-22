@@ -80,10 +80,8 @@ bool KnowledgeBase::dropContent(const std::string & p_name){
  */
 bool KnowledgeBase::check(std::vector<Fact*> data, Fact * f2){
 	for(int i = 0; i < data.size(); ++i){
-		if(data[i]->getFactName() == f2->getFactName()){
-			if(data[i]->getP1() == f2->getP1() && data[i]->getP2() == f2->getP2()){
-				return true;
-			}
+		if(data[i]->getFact() == f2->getFact()){
+			return true;
 		}
 	}
 	return false;
