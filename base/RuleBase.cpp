@@ -1,19 +1,24 @@
 /* RuleBase.cpp */
 #include "RuleBase.h"
 
+/* Default RuleBase Constructor */
+RuleBase::RuleBase(){}
 
-RuleBase::RuleBase(){
-
-}
-
-
+/*
+ * Parameterized Constructor. Takes in a vector of 
+ * rules and will add all to RuleBase. 
+ */
 RuleBase::RuleBase(std::vector<Rule *> p_items){
 	for(int i = 0; i < p_items.size(); ++i){
 		addContent(p_items[i]);
 	}
 }
 
-
+/*
+ * addContent
+ * This will take a Rule Object in and attempt
+  * to add it to the RuleBase.
+ */
 bool RuleBase::addContent(Rule * p_item){
 	std::string ruleName = p_item->getRuleName();
 	if(data.count(ruleName) == 0){
@@ -24,15 +29,27 @@ bool RuleBase::addContent(Rule * p_item){
 	return false;
 }
 
+/*
+ * getContent
+ * This will take in a string p_name and attempt to
+ * return a copy of a Rule Object.  If the Rule
+ * doesn't exist in the RuleBase, a ExistenceException 
+ * will be thrown. 
+ */
 Rule RuleBase::getContent(const std::string & p_name){
 	if(data.count(p_name) != 0){
 		return *data[p_name];
 	}
 	throw ExistenceException(p_name);
-	// return;
 }
 
-
+/*
+ * dropContent
+ * Returns a bool on the success or failure of 
+ * attempting to drop a ruel from the RuleBase.
+ * Will return 0 if failed or rule DNE. 1 on 
+ * success.
+ */
 bool RuleBase::dropContent(const std::string & p_name){
 	if(data.count(p_name) != 0){
 		data[p_name]->~Rule();
@@ -47,7 +64,11 @@ bool RuleBase::dropContent(const std::string & p_name){
 	}
 }
 
-
+/*
+ * RuleBase Destructor
+ * Will Iterate through each Rule in the RuleBase
+ * and will call its destructor.
+ */
 RuleBase::~RuleBase(){
 	for ( auto i = data.begin(); i != data.end(); ++i ){
 			i->second->~Rule();

@@ -4,15 +4,13 @@
 
 class Fact {
 	private:
-		/* factName(p1, p2) */
+		/* factName(p1, p2...) */
 		std::string factName;
-		std::string p1;
-		std::string p2;
+		std::vector<std::string> data;
 	public:
-		Fact(const std::string& p_factName, const std::string& p_p1, const std::string& p_p2);
+		Fact(std::vector<std::string> p_data);
 		/* Getter methods */
-		std::string getFactName(); 		
-		std::string getP1();
-		std::string getP2();
+		std::string getFactName();
+		std::vector<std::string> getFact(); 		
 		~Fact();
 };
