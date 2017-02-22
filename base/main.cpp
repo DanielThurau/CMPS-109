@@ -17,7 +17,7 @@ int main(){
 	Fact * test = new Fact("Father", "Thoma", "bob");
 	Fact * test2 = new Fact("Mother", "Talitha", "sally");
 	Fact * test4 = new Fact("Grandfather", "Robert", "greg");
-	Fact * test5 = new Fact("Grandfather", "Robert", "Gabriel");
+	Fact * test5 = new Fact("Grandfather", "Robert", "martha");
 	// data1.push_back(test);
 	// data1.push_back(test2);
 	// data1.push_back(test4);
@@ -37,10 +37,10 @@ int main(){
 
 
 
-	free(test);
-	free(test2);
-	free(test4);
-	free(test5);
+	// free(test);
+	// free(test2);
+	// free(test4);
+	// free(test5);
 
 	// free(test);
 	// free(test2);
@@ -53,7 +53,7 @@ int main(){
 	// }
 	delete(KB);
 
-	
+
 	// free(test);
 	// free(test2);
 	// free(test4);

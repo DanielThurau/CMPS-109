@@ -5,6 +5,7 @@ class KnowledgeBase{
 	/* Struct to hold our facts */
 	private:
 		std::unordered_map< std::string , std::vector<Fact *> > data;
+		bool check(std::vector<Fact*> data, Fact * f2);
 	public:
 		/* Default constuctor */
 		KnowledgeBase();

@@ -6,7 +6,6 @@
  * creating an empty KnowledgBase.
  */
 KnowledgeBase::KnowledgeBase(){
-	std::cout << "Im in the default constuctor\n";
 }
 
 /*
@@ -15,7 +14,6 @@ KnowledgeBase::KnowledgeBase(){
  * with pre-condifgured data
  */
 KnowledgeBase::KnowledgeBase(std::vector<Fact*> p_items){
-	std::cout << "Im in the param default constuctor\n";
 	for(int i = 0; i < p_items.size(); ++i){
 		addContent(p_items[i]);
 	}
@@ -28,13 +26,12 @@ KnowledgeBase::KnowledgeBase(std::vector<Fact*> p_items){
  * already in the KB
  */
 bool KnowledgeBase::addContent(Fact * p_item){
-	if(data.count(p_item->getFactName()) == 0){
-		std::cout << "There are no keys\n";
-		data[p_item->getFactName()].push_back(p_item);
+	std::string factName = p_item->getFactName();
+	if(data.count(factName) == 0){
+		data[factName].push_back(p_item);
 		return true;
-	}else if(std::find(data[p_item->getFactName()].begin(), data[p_item->getFactName()].end(), p_item) == data[p_item->getFactName()].end()){
-		std::cout << "There are keys\n";
-		data[p_item->getFactName()].push_back(p_item);
+	}else if(check(data[factName], p_item) == false){
+		data[factName].push_back(p_item);
 		return true;
 	}
 	return false;
@@ -77,13 +74,28 @@ bool KnowledgeBase::dropContent(const std::string & p_name){
 	}
 }
 
+/*
+ * check
+ * internal method that returns true if a fact exists in a given vector
+ */
+bool KnowledgeBase::check(std::vector<Fact*> data, Fact * f2){
+	for(int i = 0; i < data.size(); ++i){
+		if(data[i]->getFactName() == f2->getFactName()){
+			if(data[i]->getP1() == f2->getP1() && data[i]->getP2() == f2->getP2()){
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
 
 /*
  * ~KnowledgeBase()
  * Iterates through map and calls fact destructor on all facts
  */
 KnowledgeBase::~KnowledgeBase(){
-	std::cout << "In destructor\n";
 	for ( auto i = data.begin(); i != data.end(); ++i ){
 		for(int j = 0; j < i->second.size(); j++){
 			i->second[j]->~Fact();
