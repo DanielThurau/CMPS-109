@@ -1,6 +1,7 @@
 /* KnowledgeBase.h */
 #include "../common.h"
 #include "../fact/Fact.h"
+
 class KnowledgeBase{
 	/* Struct to hold our facts */
 	private:
