@@ -3,9 +3,11 @@
 #include "../fact/Fact.h"
 
 class KnowledgeBase{
-	/* Struct to hold our facts */
+	
 	private:
+		/* Struct to hold our facts */
 		std::unordered_map< std::string , std::vector<Fact *> > data;
+		/* Private method that checks if a vector of facts contains fact F2 */
 		bool check(std::vector<Fact*> data, Fact * f2);
 	public:
 		/* Default constuctor */
