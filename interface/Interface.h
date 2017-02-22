@@ -1,6 +1,6 @@
+/* Interface.h */
 #include "../common.h"
 
-/* Interface.h */
 
 using namespace std;
 
@@ -10,9 +10,9 @@ class Interface {
 		RuleBase * RB;
 	public: 
 		Interface();
-		Interface(KnowledgeBase * p_KB, RuleBase * RB);
+		Interface(KnowledgeBase * p_KB, RuleBase *p_RB);
 		void commandLine();
-		void executeCommand(std::string p_command);
+		bool executeCommand(std::string p_command);
 		std::string parse(std::string p_statment)
 		virtual ~Interface();
 }
