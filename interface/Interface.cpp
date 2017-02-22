@@ -14,8 +14,9 @@ Interface::Interface(KnowledgeBase * p_KB, RuleBase * p_RB){
 
 }
 
-std::string parse(std::string p_statement){
-	return p_statement;
+std::vector<std::string > parse(std::string p_statement){
+	std::vector<std::string > dud;
+	return dud;
 }
 
 void Interface::commandLine(){
