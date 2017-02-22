@@ -2,15 +2,11 @@
 #include "Fact.h"
 
 int main(){
-	std::string a = "Father";
-	std::string b = "Thoma";
-	std::string c = "Daniel";
+	std::vector<std::string > data = {"Father", "Thoma","Daniel"};
 	Fact * test;// = new Fact("Father", "Thoma", "Daniel");
-	test = new Fact("Father", "Thoma", "Daniel");
+	test = new Fact(data);
 
 	std::cout << test->getFactName() << '\n';
-	std::cout << test->getP1() << '\n';
-	std::cout << test->getP2() << '\n';
 	delete(test);
 	return 0;
 }
