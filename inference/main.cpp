@@ -67,10 +67,12 @@ int main(){
 
 	Inference * test = new Inference(KB, RB);
 	
-	std::vector<std::string > i1 = {"Grandfather", "$A","$B"};
+	std::vector<std::string > i1 = {"Parent", "$X","$Y"};
 
 	std::set<std::vector<std::string>> a1 = test->query(i1);
-	delete(test);
+	std::cout << "MAde it here \n";
+
+	// delete(test);
 
 	return 0;
 }
