@@ -11,14 +11,14 @@ std::set<std::vector<std::string>> Inference::query(std::vector<std::string> p_I
 
 	std::cout << "In the Interface query\n";
 	
-	std::set<std::std::vector<std::string> rb_results = query_RB(p_Inference);
+	std::set<std::vector<std::string>> rb_results = query_RB(p_Inference);
 	std::set<std::vector<std::string>> kb_results = query_KB(p_Inference);
 
 	// print_query(results, p_Inference);
 	
 
 
-	return results;
+	// return ;
 }
 
 
@@ -44,6 +44,9 @@ std::set<std::vector<std::string>> Inference::query_KB(std::vector<std::string> 
 
 std::set<std::vector<std::string>> Inference::query_RB(std::vector<std::string> p_Inference){
 	std::set<std::vector<std::string>> results;
+
+
+
 	return results;
 
 }
@@ -63,7 +66,30 @@ void Inference::print_query(std::set<std::vector<std::string>> p_set, std::vecto
 }
 
 
+std::set<std::vector<std::string>> Inference::SET_OR(std::set<std::vector<std::string>> A, std::set<std::vector<std::string>> B){
+	std::set<std::vector<std::string>> final;
 
+	for(auto it = A.begin(); it != A.end(); ++it){
+		final.insert(*it);
+	}
+	for(auto it = B.begin(); it != B.end(); ++it){
+		final.insert(*it);
+	}
+	return final;
+
+}
+
+
+std::set<std::vector<std::string>> Inference::SET_AND(std::set<std::vector<std::string>> A, std::set<std::vector<std::string>> B){
+	std::set<std::vector<std::string>> final;
+
+	for(auto it = A.begin(); it != A.end(); ++it){
+		if(B.find(*it) != B.end()){
+			final.insert(*it);
+		}
+	}
+	return final;
+}
 
 
 
