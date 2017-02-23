@@ -34,9 +34,9 @@ bool Load::process() {
 			*/
 
 			if(result[0] == "RULE") {
-				std::vector<std::vector<string>> rule;
+				std::vector<std::vector<std::string>> rule;
 				std::vector<std::string> commandName;
-				commandName.push_back("RULE")
+				commandName.push_back("RULE");
 				rule.push_back(commandName);
 
 				/*  Step is used to determine where we are
@@ -50,8 +50,8 @@ bool Load::process() {
 						step++;
 						continue;
 					} else if (step == 1) { // Parses Rule/Fact Name
-						auto rName = str.substr(0, str.find('('))
-						std::cout << rName << endl;
+						auto rName = str.substr(0, str.find('('));
+						std::cout << rName << std::endl;
 					}
 
 				}
