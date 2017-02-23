@@ -83,32 +83,107 @@ bool Load::process() {
 						rule.push_back(parseSeg(str));
 					}
 				}
-
-				for(auto &seg : rule) {
-					for (auto &str : seg)
-						std::cout << str << std::endl;
-				}
+				// Return rule vector?
+				// Execute command
 
 			} else if (result[0] == "FACT") {
+				std::vector<std::vector<std::string>> fact;
+				std::vector<std::string> commandName;
+				commandName.push_back("FACT");
+				fact.push_back(commandName);
 
+				int step = 0;
+				for(auto &str : result) {
+					if(step == 0){
+						step++;
+						continue;
+					} else if (step == 1) { // Parses Rule/Fact Name
+						fact.push_back(parseSeg(str));
+					}
+				}
+
+				// Return fact vector?
+				// Execute Command
 			} else if (result[0] == "INFERENCE") {
+				std::vector<std::vector<std::string>> query;
+				std::vector<std::string> commandName;
+				commandName.push_back("INFERENCE");
+				query.push_back(commandName);
+
+				int step = 0;
+				for(auto &str : result) {
+					if(step == 0){
+						step++;
+						continue;
+					} else if (step == 1) { // Parses Rule/Fact Name
+						query.push_back(parseSeg(str));
+						step++;
+					} else if (step == 2) {
+						std::vector<std::string> resName;
+						resName.push_back(str);
+						query.push_back(resName);
+					}
+				}
+
+				// Return query vector
+				// Execute Command
 
 			} else if (result[0] == "DROP") {
+				std::vector<std::vector<std::string>> drop;
+				std::vector<std::string> commandName;
+				commandName.push_back("DROP");
+				drop.push_back(commandName);
+
+				for(auto &str : result) {
+					if(str == "DROP") continue;
+
+					std::vector<std::string> rfName;
+					rfName.push_back(str);
+					drop.push_back(rfName);
+				}
+
+				// Return drop vector
+				// Execute Command
 
 			} else if (result[0] == "LOAD") {
+				std::vector<std::vector<std::string>> load;
+				std::vector<std::string> commandName;
+				commandName.push_back("LOAD");
+				load.push_back(commandName);
+
+				for(auto &str : result) {
+					if(str == "LOAD") continue;
+
+					std::vector<std::string> fileName;
+					fileName.push_back(str);
+					drop.push_back(fileName);
+				}
 
 			} else if (result[0] == "DUMP") {
+				std::vector<std::vector<std::string>> dump;
+				std::vector<std::string> commandName;
+				commandName.push_back("DUMP");
+				dump.push_back(commandName);
 
+				std::vector<std::string> outputFile;
+				outputFile.push_back(result[1]);
+				dump.push_back(outputFile);
+
+				// Return dump vector
+				// Execute command
 			} else {
 
+				// Unkown command
 			}
 
 
 		}
+
+		return true;
 	} else {
 		std::cout << "Error opening file" << std::endl;
+		return false;
 	}
-
 }
 
 Load::~Load() {
