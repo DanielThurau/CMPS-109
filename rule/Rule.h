@@ -5,11 +5,11 @@ class Rule{
 	private:
 		/* ruleName($X, $Y):-ruleOperator factName1($X, $Y) factName2($x, $Y) */
 		std::string ruleName;
-		std::vector<std::string > data;
+		std::vector<std::vector<std::string>> data;
 	public:
-		Rule(std::vector<std::string > p_data);
+		Rule(std::vector<std::vector<std::string>> p_data);
 		/* Getter methods */
 		std::string getRuleName();
-		std::vector<std::string> getRule();
+		std::vector<std::vector<std::string>> getRule();
 		~Rule();
 };
