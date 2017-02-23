@@ -25,6 +25,7 @@ std::vector<std::string> Load::parseSeg(std::string target) {
 		rParams.erase(0, pos + 1);
 	}
 	if(!rParams.empty()) segment.push_back(rParams);
+	return segment;
 }
 
 bool Load::process() {
@@ -82,7 +83,7 @@ bool Load::process() {
 						rule.push_back(parseSeg(str));
 					}
 				}
-				
+
 				for(auto &seg : rule) {
 					for (auto &str : seg)
 						std::cout << str << std::endl;
