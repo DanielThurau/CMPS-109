@@ -67,7 +67,7 @@ bool Load::process() {
 						rule.push_back(first);
 
 						for(auto &el : first)
-							std::cout << &el << std::endl;
+							std::cout << el << std::endl;
 						step++;
 					} else if (step == 2) { // Parse Operators
 						if(str == "AND" | str == "OR") {
