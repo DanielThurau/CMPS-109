@@ -12,14 +12,14 @@ int main(){
 	//*************************************************************************
 	RuleBase * RB = new RuleBase();
 
-	// Creating the vector to be pushed in to rule
+	// // Creating the vector to be pushed in to rule
 	std::vector<std::vector<std::string>> v1 = {{"Parent", "$X","$Y"}, {"OR"}, {"Father","$X","$Y"}, {"Mother","$X","$Y"}};
 	std::vector<std::vector<std::string>> v2 = {{"Grandfather","$X","$Z"}, {"AND"}, {"Parent", "$X","$Y"},{"Parent","$Y","$Z"}};
 	// std::vector<std::string > v3 = {"Grandmother", "OR", "Parent", "Parent"};
 	// std::vector<std::string > v4 = {"Friend", "OR", "Nice", "Cool"};
 	// std::vector<std::string > v5 = {"Foe", "AND", "Enemy", "Rival"};
 
-	// Creating the rule using the data vectors
+	// // Creating the rule using the data vectors
 	Rule * r1 = new Rule(v1);
 	Rule * r2 = new Rule(v2);
 	// Rule * r3 = new Rule(v3);
@@ -35,9 +35,9 @@ int main(){
 	
 
 
-	//******************************************************************************
-	// KnowledgeBase Creation
-	//******************************************************************************
+	// //******************************************************************************
+	// // KnowledgeBase Creation
+	// //******************************************************************************
 
 	KnowledgeBase * KB = new KnowledgeBase();
 
@@ -61,18 +61,18 @@ int main(){
 
 
 
-	//*******************************************************************************
-	// Creating Inference object
-	//*******************************************************************************
+	// //*******************************************************************************
+	// // Creating Inference object
+	// //*******************************************************************************
 
 	Inference * test = new Inference(KB, RB);
 	
 	std::vector<std::string > i1 = {"Parent", "$X","$Y"};
 
-	std::set<std::vector<std::string>> a1 = test->query(i1);
-	std::cout << "MAde it here \n";
+	test->query(i1);
+	// std::cout << "MAde it here \n";
 
-	// delete(test);
+	delete(test);
 
 	return 0;
 }
