@@ -13,25 +13,25 @@ int main(){
 	RuleBase * RB = new RuleBase();
 
 	// Creating the vector to be pushed in to rule
-	std::vector<std::string > v1 = {"Parent", "OR", "Father", "Mother"};
-	std::vector<std::string > v2 = {"Grandfather", "AND", "Parent", "Parent"};
-	std::vector<std::string > v3 = {"Grandmother", "OR", "Parent", "Parent"};
-	std::vector<std::string > v4 = {"Friend", "OR", "Nice", "Cool"};
-	std::vector<std::string > v5 = {"Foe", "AND", "Enemy", "Rival"};
+	std::vector<std::vector<std::string>> v1 = {{"Parent", "$X","$Y"}, {"OR"}, {"Father","$X","$Y"}, {"Mother","$X","$Y"}};
+	std::vector<std::vector<std::string>> v2 = {{"Grandfather","$X","$Z"}, {"AND"}, {"Parent", "$X","$Y"},{"Parent","$Y","$Z"}};
+	// std::vector<std::string > v3 = {"Grandmother", "OR", "Parent", "Parent"};
+	// std::vector<std::string > v4 = {"Friend", "OR", "Nice", "Cool"};
+	// std::vector<std::string > v5 = {"Foe", "AND", "Enemy", "Rival"};
 
 	// Creating the rule using the data vectors
 	Rule * r1 = new Rule(v1);
 	Rule * r2 = new Rule(v2);
-	Rule * r3 = new Rule(v3);
-	Rule * r4 = new Rule(v4);
-	Rule * r5 = new Rule(v5);
+	// Rule * r3 = new Rule(v3);
+	// Rule * r4 = new Rule(v4);
+	// Rule * r5 = new Rule(v5);
  
 
 	std::cout << "Adding to Rulebase: " << RB->addContent(r1) << '\n';
 	std::cout << "Adding to Rulebase: " << RB->addContent(r2) << '\n';
-	std::cout << "Adding to Rulebase: " << RB->addContent(r3) << '\n';
-	std::cout << "Adding to Rulebase: " << RB->addContent(r4) << '\n';
-	std::cout << "Adding to Rulebase: " << RB->addContent(r5) << '\n';
+	// std::cout << "Adding to Rulebase: " << RB->addContent(r3) << '\n';
+	// std::cout << "Adding to Rulebase: " << RB->addContent(r4) << '\n';
+	// std::cout << "Adding to Rulebase: " << RB->addContent(r5) << '\n';
 	
 
 
@@ -41,11 +41,11 @@ int main(){
 
 	KnowledgeBase * KB = new KnowledgeBase();
 
-	std::vector<std::string > v6 = {"Father", "Thoma", "bob"};
-	std::vector<std::string > v7 = {"Mother", "Talitha", "sally"};
-	std::vector<std::string > v8 = {"Grandfather", "Robert", "Greg"};
-	std::vector<std::string > v9 = {"Grandfather", "Robert", "Martha"};
-	std::vector<std::string > v10 = {"Father", "Thoma", "Emma"};
+	std::vector<std::vector<std::string>> v6 = {{"Father", "Thoma", "bob"}};
+	std::vector<std::vector<std::string>> v7 = {{"Mother", "Talitha", "sally"}};
+	std::vector<std::vector<std::string>> v8 = {{"Grandfather", "Robert", "Greg"}};
+	std::vector<std::vector<std::string>> v9 = {{"Grandfather", "Robert", "Martha"}};
+	std::vector<std::vector<std::string>> v10 = {{"Grandfather", "Thoma", "Emma"}};
 
 	Fact * f1 = new Fact(v6);
 	Fact * f2 = new Fact(v7);
@@ -67,7 +67,7 @@ int main(){
 
 	Inference * test = new Inference(KB, RB);
 	
-	std::vector<std::string > i1 = {"Grandfather", "$X","$Y"};
+	std::vector<std::string > i1 = {"Grandfather", "$A","$B"};
 
 	std::set<std::vector<std::string>> a1 = test->query(i1);
 	delete(test);

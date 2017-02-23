@@ -2,7 +2,7 @@
 #include "Fact.h"
 
 int main(){
-	std::vector<std::string > data = {"Father", "Thoma","Daniel"};
+	std::vector<std::vector<std::string>> data = {{"Father", "Thoma","Daniel"}};
 	Fact * test;// = new Fact("Father", "Thoma", "Daniel");
 	test = new Fact(data);
 

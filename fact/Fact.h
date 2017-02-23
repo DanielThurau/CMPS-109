@@ -6,11 +6,11 @@ class Fact {
 	private:
 		/* factName(p1, p2...) */
 		std::string factName;
-		std::vector<std::string> data;
+		std::vector<std::vector<std::string>> data;
 	public:
-		Fact(std::vector<std::string> p_data);
+		Fact(std::vector<std::vector<std::string>> p_data);
 		/* Getter methods */
 		std::string getFactName();
-		std::vector<std::string> getFact(); 		
+		std::vector<std::vector<std::string>> getFact(); 		
 		~Fact();
 };
