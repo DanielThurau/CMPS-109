@@ -73,7 +73,7 @@ bool Load::process() {
 						if(str == "AND" | str == "OR") {
 							std::vector<std::string> oper;
 							oper.push_back(str);
-							result.push_back(oper);
+							rule.push_back(oper);
 							step++;
 						} else {
 							//Throw Error
