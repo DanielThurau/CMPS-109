@@ -33,10 +33,10 @@ bool Load::process() {
 			}
 			*/
 
-			if(result[0] == 'RULE') {
+			if(result[0] == "RULE") {
 				std::vector<std::vector<string>> rule;
 				std::vector<std::string> commandName;
-				commandName.push_back('RULE')
+				commandName.push_back("RULE")
 				rule.push_back(commandName);
 
 				/*  Step is used to determine where we are
@@ -56,15 +56,15 @@ bool Load::process() {
 
 				}
 
-			} else if (result[0] == 'FACT') {
+			} else if (result[0] == "FACT") {
 
-			} else if (result[0] == 'INFERENCE') {
+			} else if (result[0] == "INFERENCE") {
 
-			} else if (result[0] == 'DROP') {
+			} else if (result[0] == "DROP") {
 
-			} else if (result[0] == 'LOAD') {
+			} else if (result[0] == "LOAD") {
 
-			} else if (result[0] == 'DUMP') {
+			} else if (result[0] == "DUMP") {
 
 			} else {
 
