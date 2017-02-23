@@ -41,8 +41,9 @@ bool Load::process() {
 
 				/*  Step is used to determine where we are
 				 	Step 0: command name
-				 	Step 1: Rule/Fact Name				
-					Step 2: Rule Targets
+				 	Step 1: Rule/Fact Name	
+				 	Step 2: Operator			
+					Step 3: Rule Targets
 				*/
 				int step = 0;
 				for(auto &str : result) {
@@ -50,8 +51,40 @@ bool Load::process() {
 						step++;
 						continue;
 					} else if (step == 1) { // Parses Rule/Fact Name
+						std::vector<std::string> first;
 						auto rName = str.substr(0, str.find('('));
-						std::cout << rName << std::endl;
+						first.push_back(rName);
+						str.erase(0, str.find('(') + 1);
+						auto rParams = str.substr(0, str.find(')'));
+						size_t pos = 0;
+						std::string token;
+						while ((pos = rParams.find(',')) != std::string::npos) {
+							token = rParams.substr(0,pos);
+							first.push_back(token);
+							rParams.erase(0, pos + 1);
+						}
+						if(!rParams.empty()) first.push_back(rParams);
+						rule.push_back(first);
+
+						for(auto &el : first)
+							std::cout << &el << std::endl;
+						step++;
+					} else if (step == 2) { // Parse Operators
+						if(str == "AND" | str == "OR") {
+							std::vector<std::string> oper;
+							oper.push_back(str);
+							result.push_back(oper);
+							step++;
+						} else {
+							//Throw Error
+						}
+					}  else { //step == 3 // Parse Targets
+						/*std::vector<std::string> targets;
+						auto tName = str.substr(0, str.find('('));
+						targets.push_back(tName);
+						str.erase(0, str.find('(') + 1);
+						auto tParams = */
+
 					}
 
 				}
