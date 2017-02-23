@@ -11,6 +11,22 @@ Load::Load(std::string p_pathName):
 
 }
 
+std::vector<std::string> Load::parseSeg(std::string target) {
+	std::vector<std::string> segment;
+	auto rName = target.substr(0, target.find('('));
+	segment.push_back(rName);
+	target.erase(0, target.find('(') + 1);
+	auto rParams = target.substr(0, target.find(')'));
+	size_t pos = 0;
+	std::string token;
+	while ((pos = rParams.find(',')) != std::string::npos) {
+		token = rParams.substr(0,pos);
+		segment.push_back(token);
+		rParams.erase(0, pos + 1);
+	}
+	if(!rParams.empty()) segment.push_back(rParams);
+}
+
 bool Load::process() {
 	std::ifstream file(pathName);
 	if (file.is_open()){
@@ -51,23 +67,7 @@ bool Load::process() {
 						step++;
 						continue;
 					} else if (step == 1) { // Parses Rule/Fact Name
-						std::vector<std::string> first;
-						auto rName = str.substr(0, str.find('('));
-						first.push_back(rName);
-						str.erase(0, str.find('(') + 1);
-						auto rParams = str.substr(0, str.find(')'));
-						size_t pos = 0;
-						std::string token;
-						while ((pos = rParams.find(',')) != std::string::npos) {
-							token = rParams.substr(0,pos);
-							first.push_back(token);
-							rParams.erase(0, pos + 1);
-						}
-						if(!rParams.empty()) first.push_back(rParams);
-						rule.push_back(first);
-
-						for(auto &el : first)
-							std::cout << el << std::endl;
+						rule.push_back(parseSeg(str));
 						step++;
 					} else if (step == 2) { // Parse Operators
 						if(str == "AND" | str == "OR") {
@@ -79,14 +79,13 @@ bool Load::process() {
 							//Throw Error
 						}
 					}  else { //step == 3 // Parse Targets
-						/*std::vector<std::string> targets;
-						auto tName = str.substr(0, str.find('('));
-						targets.push_back(tName);
-						str.erase(0, str.find('(') + 1);
-						auto tParams = */
-
+						rule.push_back(parseSeg(str));
 					}
-
+				}
+				
+				for(auto &seg : rule) {
+					for (auto &str : seg)
+						std::cout << str << std::endl;
 				}
 
 			} else if (result[0] == "FACT") {
