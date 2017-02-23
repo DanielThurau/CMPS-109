@@ -1,1 +1,1 @@
-RULE Parent($x,$y):- Dad($x,$y)
+RULE Parent($x,$y):- OR Dad($x,$y)
