@@ -114,7 +114,7 @@ std::vector<std::vector<std::string>> Inference::query_RB(std::vector<std::strin
 	}
 
 
-
+	std::vector<std::vector<std::string>> prev;
 	for(int i = 2; i < rule_data.size(); ++i){
 		if(rule_data[1][0] == "OR"){
 			// std::vector<std::vector<std::string>> test = query(rule_data[i], 0);
@@ -132,21 +132,21 @@ std::vector<std::vector<std::string>> Inference::query_RB(std::vector<std::strin
 				test[iter][0] = rule_data[i][j];
 				iter++;
 			}
+			
 			if(i==2){
-				std::vector<std::vector<std::string>> results;
-				results = SET_OR(results, test);
+
+				prev = SET_OR(prev, test);
 			}else{
-				results = SET_AND(results, test);
-			}
-			std::cout << "This is results: \n";
-			for(int i = 0; i < results.size(); ++i){
-				for(int j = 0; j < results[i].size(); ++j){
-					std::cout << results[i][j] << " ";
-				}
-				std::cout << '\n';
+
+				prev = SET_AND(prev, test);
+
 			}
 			
+			
 		}
+	}
+	if(rule_data[1][0] == "AND"){
+		results = SET_OR(results, prev);
 	}
 
 
@@ -258,33 +258,59 @@ std::vector<std::vector<std::string>> Inference::SET_OR(std::vector<std::vector<
 
 std::vector<std::vector<std::string>> Inference::SET_AND(std::vector<std::vector<std::string>> A, std::vector<std::vector<std::string>> B){
 	
+	std::cout << "This is A: \n";
+	for(int i = 0; i < A.size(); ++i){
+		for(int j = 0; j < A[i].size(); ++j){
+			std::cout << A[i][j] << " ";
+		}
+		std::cout << '\n';
+	}
+
+	std::cout << "This is B: \n";
+	for(int i = 0; i < B.size(); ++i){
+		for(int j = 0; j < B[i].size(); ++j){
+			std::cout << B[i][j] << " ";
+		}
+		std::cout << '\n';
+	}
+
+
+
 	std::vector<std::vector<std::string>> final;
-	// for(auto it = A.begin(); it != A.end(); it++ ){
-	// 	std::vector<std::string > temp = *it;
-	// 	for(int i = 0; i < B.size(); i++){
-	// 		 if(temp[0] == B[i][0]){
+	for(auto it = A.begin(); it != A.end(); it++ ){
+		std::vector<std::string > temp = *it;
+		for(int i = 0; i < B.size(); i++){
+			 if(temp[0] == B[i][0]){
 
 
-	// 		 	std::vector<std::string> temp_rule;
-	// 		 	std::vector<std::string> v3;
-	// 		 	sort(temp.begin(), temp.end());
-	// 		 	sort(B[i].begin(), B[i].end());
-	// 		 	std::set_intersection(temp.begin(), temp.end(), B[i].begin(), B[i].end(), back_inserter(v3));
-	// 		 	std::cout << "TEST AND: \n";
-	// 			for(int i = 0; i < v3.size(); i++){
-	// 				std::cout << v3[i] << " ";
-	// 			}
-	// 			std::cout << "\n";
+			 	std::vector<std::string> temp_rule;
+			 	std::vector<std::string> v3;
+			 	sort(temp.begin(), temp.end());
+			 	sort(B[i].begin(), B[i].end());
+			 	std::set_intersection(temp.begin(), temp.end(), B[i].begin(), B[i].end(), back_inserter(v3));
 
 
+			 	std::cout << "TEST AND: \n";
+				for(int i = 0; i < v3.size(); i++){
+					std::cout << v3[i] << " ";
+				}
+				std::cout << "\n";
 
-
-	// 		 }
-	// 	}
-	// }
+			 }
+		}
+	}
 
 
 	
+
+
+
+
+
+
+
+
+
 
 
 	return final;
