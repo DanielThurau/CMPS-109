@@ -15,17 +15,149 @@ Interface::Interface(KnowledgeBase * p_KB, RuleBase * p_RB){
 //tested w/o parser
 std::vector<std::vector<std::string>> 
 Interface::parse(std::string p_statement){
-	//manually created 2d vector
-	std::vector<std::vector<std::string>> dud;
-	dud.resize(6, std::vector<std::string>(3, ""));
-	//TESTING 
-	dud[0][0] = "INFERENCE";
-	dud[1] = {"Parent","$Thomas","$Z"};
-	/*dud[2][0] = "OR";
-	dud[3] = {"Father","$X","$Y"};
-	dud[4] = {"Mother","$X","$Y"};
-	dud[5][0] = {"input.sri"};*/
-	return dud;
+	std::vector<std::string> result; 
+	std::istringstream strinput(p_statement);
+	
+	// Seperates line into words seperated by whitespace
+	// Inserts into vector
+	while(strinput){
+		std::string next_word;
+		strinput >> next_word;
+		result.push_back(next_word);
+	}
+
+	if(result[0] == "RULE") {
+		std::vector<std::vector<std::string>> rule;
+		std::vector<std::string> commandName;
+		commandName.push_back("RULE");
+		rule.push_back(commandName);
+
+		/*  Step is used to determine where we are
+		 	Step 0: command name
+		 	Step 1: Rule/Fact Name	
+		 	Step 2: Operator			
+			Step 3: Rule Targets
+		*/
+		int step = 0;
+		for(auto &str : result) {
+			if(step == 0){
+				step++;
+				continue;
+			} else if (step == 1) { // Parses Rule/Fact Name
+				rule.push_back(parseSeg(str));
+				step++;
+			} else if (step == 2) { // Parse Operators
+				if(str == "AND" | str == "OR") {
+					std::vector<std::string> oper;
+					oper.push_back(str);
+					rule.push_back(oper);
+					step++;
+				} else {
+					//Throw Error
+				}
+			}  else { //step == 3 // Parse Targets
+				rule.push_back(parseSeg(str));
+			}
+		}
+	
+		// Return rule vector?
+		return rule;
+		// Execute command
+
+	} else if (result[0] == "FACT") {
+		std::vector<std::vector<std::string>> fact;
+		std::vector<std::string> commandName;
+		commandName.push_back("FACT");
+		fact.push_back(commandName);
+
+		int step = 0;
+		for(auto &str : result) {
+			if(step == 0){
+				step++;
+				continue;
+			} else if (step == 1) { // Parses Rule/Fact Name
+				fact.push_back(parseSeg(str));
+			}
+		}
+	
+		// Return fact vector?
+		return fact;
+		// Execute Command
+	} else if (result[0] == "INFERENCE") {
+		std::vector<std::vector<std::string>> query;
+		std::vector<std::string> commandName;
+		commandName.push_back("INFERENCE");
+		query.push_back(commandName);
+
+		int step = 0;
+		for(auto &str : result) {
+			if(step == 0){
+				step++;
+				continue;
+			} else if (step == 1) { // Parses Rule/Fact Name
+				query.push_back(parseSeg(str));
+				step++;
+			} else if (step == 2) {
+				std::vector<std::string> resName;
+				resName.push_back(str);
+				query.push_back(resName);
+			}
+		}
+
+		// Return query vector
+		return query;
+		// Execute Command
+
+	} else if (result[0] == "DROP") {
+		std::vector<std::vector<std::string>> drop;
+		std::vector<std::string> commandName;
+		commandName.push_back("DROP");
+		drop.push_back(commandName);
+
+		for(auto &str : result) {
+			if(str == "DROP") continue;
+			std::vector<std::string> rfName;
+			rfName.push_back(str);
+			drop.push_back(rfName);
+		}
+
+		// Return drop vector
+		return drop;
+		// Execute Command
+
+	} else if (result[0] == "LOAD") {
+		//ADDED DROP SO THAT THERE IS NO SCOPE ERROR
+		std::vector<std::vector<std::string>> drop;
+		std::vector<std::vector<std::string>> load;
+		std::vector<std::string> commandName;
+		commandName.push_back("LOAD");
+		load.push_back(commandName);
+
+		for(auto &str : result) {
+			if(str == "LOAD") continue;
+			std::vector<std::string> fileName;
+			fileName.push_back(str);
+			drop.push_back(fileName);
+		}
+
+		return load;
+
+	} else if (result[0] == "DUMP") {
+		std::vector<std::vector<std::string>> dump;
+		std::vector<std::string> commandName;
+		commandName.push_back("DUMP");
+		dump.push_back(commandName);
+
+		std::vector<std::string> outputFile;
+		outputFile.push_back(result[1]);
+		dump.push_back(outputFile);
+
+		// Return dump vector
+		return dump;
+		// Execute command?
+	} else {
+		std::cout << "Unkown Command" << std::endl;
+	}
 }
 
 //basic implementation using dummy input
