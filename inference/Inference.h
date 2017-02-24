@@ -7,15 +7,15 @@ class Inference{
 		RuleBase * RB;
 		KnowledgeBase * KB;
 		void print_query(std::vector<std::vector<std::string>> p_set);
-		std::set<std::vector<std::string>> SET_OR(std::set<std::vector<std::string>> A, std::set<std::vector<std::string>> B);
+		std::vector<std::vector<std::string>> SET_OR(std::vector<std::vector<std::string>> A, std::vector<std::vector<std::string>> B);
 		std::set<std::vector<std::string>> SET_AND(std::set<std::vector<std::string>> A, std::set<std::vector<std::string>> B);
 
 		bool filter(std::vector<std::string> p_filter, std::vector<std::string > data );
 	public:
 		Inference(KnowledgeBase * p_KB, RuleBase * p_RB);
-		std::set<std::vector<std::string>> query(std::vector<std::string> p_Inference, int flag = 1);
+		std::vector<std::vector<std::string>> query(std::vector<std::string> p_Inference, int flag = 1);
 		std::vector<std::vector<std::string>> query_KB(std::vector<std::string> p_Inference);
-		std::set<std::vector<std::string>> query_RB(std::vector<std::string> p_Inference);
+		std::vector<std::vector<std::string>> query_RB(std::vector<std::string> p_Inference);
 
 
 		~Inference();

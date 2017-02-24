@@ -13,7 +13,7 @@ int main(){
 	RuleBase * RB = new RuleBase();
 
 	// // Creating the vector to be pushed in to rule
-	std::vector<std::vector<std::string>> v1 = {{"Parent", "$X","$Y"}, {"AND"}, {"Father","$X","$Y"}, {"Mother","$X","$Y"}};
+	std::vector<std::vector<std::string>> v1 = {{"Parent", "$X","$Y"}, {"OR"}, {"Father","$X","$Y"}, {"Mother","$X","$Y"}};
 	std::vector<std::vector<std::string>> v2 = {{"Grandfather","$X","$Z"}, {"AND"}, {"Father", "$X","$Y"},{"Father","$Y","$Z"}};
 	// std::vector<std::string > v3 = {"Grandmother", "OR", "Parent", "Parent"};
 	// std::vector<std::string > v4 = {"Friend", "OR", "Nice", "Cool"};
@@ -69,7 +69,7 @@ int main(){
 
 	Inference * test = new Inference(KB, RB);
 	
-	std::vector<std::string > i1 = {"Father", "$X","josh"};
+	std::vector<std::string > i1 = {"Parent", "$X","$Y"};
 
 	test->query(i1);
 	// std::cout << "MAde it here \n";

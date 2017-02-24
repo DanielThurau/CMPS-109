@@ -10,19 +10,22 @@ Inference::Inference(KnowledgeBase * p_KB, RuleBase * p_RB){
 
 
 /* Base query */
-std::set<std::vector<std::string>> Inference::query(std::vector<std::string> p_Inference, int flag){
-	
+std::vector<std::vector<std::string>> Inference::query(std::vector<std::string> p_Inference, int flag){
+	std::cout << "Im in the querr\n";
 	/* the set to be returned of containing all matching values */
-	std::set<std::vector<std::string>> dud;
+	std::vector<std::vector<std::string>> dud;
 	
 	/* rb_results is the set of values that are returned IF the inference
 	   has the same name as a rule in the rulebase */
-	// std::set<std::vector<std::string>> rb_results = query_RB(p_Inference);
+	std::vector<std::vector<std::string>> rb_results = query_RB(p_Inference);
 	
 	/* kb_results is the set of values that are returned IF the inference has
 	   the same name as a fact/facts in the knowledgebase */
 	std::vector<std::vector<std::string>> kb_results = query_KB(p_Inference);
-	print_query(kb_results);
+	
+	if(flag){
+		print_query(kb_results);
+	}
 
 	// DUD gets the values from both queries into the rb and kb with no duplicates
 	// dud = SET_OR(rb_results, kb_results);
@@ -98,8 +101,39 @@ std::vector<std::vector<std::string>> Inference::query_KB(std::vector<std::strin
 	return TEST_DATA;
 }
 
-std::set<std::vector<std::string>> Inference::query_RB(std::vector<std::string> p_Inference){
-	std::set<std::vector<std::string>> results;
+std::vector<std::vector<std::string>> Inference::query_RB(std::vector<std::string> p_Inference){
+	std::vector<std::vector<std::string>> results;
+
+	int inferenceSize = p_Inference.size();
+	std::vector<std::vector<std::string>>rule_data;
+	try{
+		Rule this_rule = RB->getContent(p_Inference[0]);
+		rule_data = this_rule.getRule();
+	}catch(ExistenceException e){
+		return results;
+	}
+
+
+	for(int i = 1; i < rule_data[0].size();i++){
+		std::vector<std::string > temp;
+		temp.push_back(rule_data[0][i]);
+		results.push_back(temp);
+	}
+
+
+	for(int i = 2; i < rule_data.size(); ++i){
+		if(rule_data[1][0] == "OR"){
+			std::vector<std::vector<std::string>> test = query(rule_data[i], 0);
+			int iter = 0;
+			for(int j = 1; j < test.size(); ++j){
+				test[iter][0] = rule_data[i][j]
+				iter++;
+			}
+		}
+	}
+
+	
+
 
 
 	
@@ -120,15 +154,20 @@ void Inference::print_query(std::vector<std::vector<std::string>> p_set){
 }
 
 
-std::set<std::vector<std::string>> Inference::SET_OR(std::set<std::vector<std::string>> A, std::set<std::vector<std::string>> B){
-	std::set<std::vector<std::string>> final;
+std::vector<std::vector<std::string>> Inference::SET_OR(std::vector<std::vector<std::string>> A, std::vector<std::vector<std::string>> B){
+	std::vector<std::vector<std::string>> final;
 
-	for(auto it = A.begin(); it != A.end(); ++it){
-		final.insert(*it);
+	for(int i = 0; i < A.size; i++){
+		for(int j = 0; j < B.size(); j++){
+			if(A[i][0] == B[j][0]){
+				std::vector<std::string > temp;
+				temp.push_back(B[j][0]);
+			}
+		}
 	}
-	for(auto it = B.begin(); it != B.end(); ++it){
-		final.insert(*it);
-	}
+		
+
+
 	return final;
 
 }
