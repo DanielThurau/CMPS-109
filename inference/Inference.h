@@ -11,7 +11,7 @@ class Inference{
 		std::set<std::vector<std::string>> SET_AND(std::set<std::vector<std::string>> A, std::set<std::vector<std::string>> B);
 		// std::set<std::vector<std::string>> SET_AND_Pipeline(std::set<std::vector<std::string>> A, std::set<std::vector<std::string>> B);
 
-		bool filter(std::vector<std::string> p_filter, std::vector<std::string > data );
+		std::vector<std::string > filter(std::vector<std::string> p_filter, std::vector<std::string > data );
 	public:
 		Inference(KnowledgeBase * p_KB, RuleBase * p_RB);
 		std::set<std::vector<std::string>> query(std::vector<std::string> p_Inference, int flag = 1);
