@@ -55,25 +55,37 @@ std::set<std::vector<std::string>> Inference::query_RB(std::vector<std::string> 
 		return results;		
 	}
 
+	bool pipeline_or_nah = false;
+		std::vector<std::string> predicate_test = rule_data[0];
+		predicate_test.erase(predicate_test.begin(), predicate_test.begin()+1);
+		for(int j = 2; j < rule_data.size(); ++j){
+			std::vector<std::string> ruleTargetTest = rule_data[j];
+			ruleTargetTest.erase(ruleTargetTest.begin(), ruleTargetTest.begin()+1);
+			if(predicate_test != ruleTargetTest){
+				pipeline_or_nah = true;
+				break;
+			}
+		} 
+
+
+
 	/* p_Inference : {[rulename][operator][rule Target 1][ruleTarget 2]...[ruleTarget N]} */
 	for (int i = 2; i < rule_data.size(); ++i){
 		if(rule_data[1][0]=="AND"){
-			if(i==2){
-				std::cout << " Doing the first AND\n";
-				results = SET_OR(results, query(rule_data[i], 0));
-				print_query(results,p_Inference);
+			if(pipeline_or_nah){
+				std::cout << "Youre a wizard harry \n";
 			}else{
-				std::cout << "Before and: ";
-				print_query(results,p_Inference);
-				results = SET_AND(results, query(rule_data[i], 0));
-				std::cout << "After and: ";
-				print_query(results,p_Inference);
-				std::cout << '\n';
-				// results = SET_AND(results, query(p_Inference))
+				if(i==2){
+					results = SET_OR(results, query(rule_data[i], 0));
+				}else{
+					results = SET_AND(results, query(rule_data[i], 0));
+				}
 			}
+
+
+
 		}else{
 			results = SET_OR(results, query(rule_data[i], 0));
-			std::cout << "operator is OR\n";
 		}
 	}
 
@@ -119,76 +131,34 @@ std::set<std::vector<std::string>> Inference::SET_AND(std::set<std::vector<std::
 
 		std::vector<std::string> test = *it;
 
-		// std::cout << "Before erase: ";
-		// for(int i = 0; i < test.size(); i++){
-		// 	std::cout << test[i] << " ";
-		// }
-		// std::cout << "\n";
-
 		test.erase(test.begin(), test.begin()+1);
-
-		// std::cout << "Before erase: ";
-		// for(int i = 0; i < test.size(); i++){
-		// 	std::cout << test[i] << " ";
-		// }
-		// std::cout << "\n";
-
-
-		// std::cout << "Referenced object: ";
-		// for(auto j = it->begin(); j != it->end(); j++){
-			
-		// 	std::cout << j << "\n";
-			
-		// }
-		// std::cout << "\n";
 
 		for(auto k = B.begin(); k != B.end(); ++k){
 			std::vector<std::string> test2 = *k;
 
-
-
-			// std::cout << "Before erase: ";
-			// for(int i = 0; i < test2.size(); i++){
-			// 	std::cout << test2[i] << " ";
-			// }
-			// std::cout << "\n";
-
 			test2.erase(test2.begin(), test2.begin()+1);
-
-			// std::cout << "Before erase: ";
-			// for(int i = 0; i < test2.size(); i++){
-			// 	std::cout << test2[i] << " ";
-			// }
-			// std::cout << "\n";
-
-
-
-
 
 			if(test == test2){
 				std::vector<std::string > v = *it;
-				std::cout << "This is a test: ";
-				for(int i = 0 ; i < v.size();++i){
-					std::cout << v[i] << " ";
-				}
-				std::cout << '\n';
 				final.insert(*it);
 			} 
 		}
 
-		// if(B.find(*it) != B.end()){
-
-
-
-
-		// 	final.insert(*it);
-		// }
 	}
 	return final;
 }
 
 
+std::set<std::vector<std::string>> SET_AND_INDEX(std::set<std::vector<std::string>> A, int index_A, std::set<std::vector<std::string>> B, int index_B){
 
+
+
+
+
+
+
+	
+}
 
 
 Inference::~Inference(){
