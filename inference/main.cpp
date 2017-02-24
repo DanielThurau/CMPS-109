@@ -42,8 +42,8 @@ int main(){
 	KnowledgeBase * KB = new KnowledgeBase();
 
 	std::vector<std::vector<std::string>> v6 = {{"Father", "Thoma", "bob"}};
-	// std::vector<std::vector<std::string>> v7 = {{"Mother", "Talitha", "sally"}};
-	std::vector<std::vector<std::string>> v7 = {{"Mother", "Thoma", "bob"}};
+	std::vector<std::vector<std::string>> v7 = {{"Mother", "Talitha", "sally"}};
+	// std::vector<std::vector<std::string>> v7 = {{"Mother", "Thoma", "bob"}};
 	std::vector<std::vector<std::string>> v8 = {{"Father", "bob", "josh"}};
 	// std::vector<std::vector<std::string>> v8 = {{"Grandfather", "Robert", "Greg"}};
 	// std::vector<std::vector<std::string>> v9 = {{"Grandfather", "Robert", "Martha"}};
@@ -69,7 +69,7 @@ int main(){
 
 	Inference * test = new Inference(KB, RB);
 	
-	std::vector<std::string > i1 = {"Parent", "$X","$Y"};
+	std::vector<std::string > i1 = {"Grandfather", "$X","$Z"};
 
 	test->query(i1);
 	// std::cout << "MAde it here \n";
