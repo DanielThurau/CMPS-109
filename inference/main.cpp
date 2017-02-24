@@ -57,7 +57,7 @@ int main(){
 
 	std::cout << "Adding to KnowledgeBase: " << KB->addContent(f1) << '\n';
 	std::cout << "Adding to KnowledgeBase: " << KB->addContent(f2) << '\n';
-	// std::cout << "Adding to KnowledgeBase: " << KB->addContent(f3) << '\n';
+	std::cout << "Adding to KnowledgeBase: " << KB->addContent(f3) << '\n';
 	// std::cout << "Adding to KnowledgeBase: " << KB->addContent(f4) << '\n';
 	// std::cout << "Adding to KnowledgeBase: " << KB->addContent(f5) << '\n';
 
@@ -69,7 +69,7 @@ int main(){
 
 	Inference * test = new Inference(KB, RB);
 	
-	std::vector<std::string > i1 = {"Father", "Thoma","$Z"};
+	std::vector<std::string > i1 = {"Father", "$X","josh"};
 
 	test->query(i1);
 	// std::cout << "MAde it here \n";
