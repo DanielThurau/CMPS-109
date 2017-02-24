@@ -1,5 +1,7 @@
 /* Rule.h */
 #include "../common.h"
+#ifndef RULE_H
+#define RULE_H
 
 class Rule{
 	private:
@@ -13,3 +15,4 @@ class Rule{
 		std::vector<std::vector<std::string>> getRule();
 		~Rule();
 };
+#endif

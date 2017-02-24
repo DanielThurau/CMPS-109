@@ -146,6 +146,8 @@ bool Load::process() {
 				// Execute Command
 
 			} else if (result[0] == "LOAD") {
+				//ADDED DROP SO THAT THERE IS NO SCOPE ERROR
+				std::vector<std::vector<std::string>> drop;
 				std::vector<std::vector<std::string>> load;
 				std::vector<std::string> commandName;
 				commandName.push_back("LOAD");

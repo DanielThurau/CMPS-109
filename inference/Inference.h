@@ -1,6 +1,8 @@
 #include "../common.h"
 #include "../base/KnowledgeBase.h"  /* This includes Fact.h as well */
 #include "../base/RuleBase.h"  /* This includes Rule.h as well */
+#ifndef INFERENCE_H
+#define INFERENCE_H
 
 class Inference{
 	private:
@@ -21,3 +23,4 @@ class Inference{
 
 		~Inference();
 };
+#endif

@@ -2,6 +2,8 @@
 #include "../common.h"
 #include "../rule/Rule.h"
 #include "exception/NonExistentEntry.h"
+#ifndef RULEBASE_H
+#define RULEBASE_H
 
 class RuleBase{
 	private:
@@ -33,4 +35,4 @@ class RuleBase{
 		bool dropContent(const std::string & p_name);
 		~RuleBase();
 };
-
+#endif

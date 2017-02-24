@@ -1,6 +1,8 @@
 /* KnowledgeBase.h */
 #include "../common.h"
 #include "../fact/Fact.h"
+#ifndef KNOWLEDGEBASE_H
+#define KNOWLEDGEBASE_H
 
 class KnowledgeBase{
 	
@@ -35,3 +37,4 @@ class KnowledgeBase{
 		~KnowledgeBase();
 
 };
+#endif

@@ -2,7 +2,10 @@
 #include "../common.h"
 #include "../base/KnowledgeBase.h"
 #include "../base/RuleBase.h"
-
+#include "../inference/Inference.h"
+#include "../load/Load.h"
+#ifndef INTERFACE_H
+#define INTERFACE_H
 
 using namespace std;
 
@@ -20,3 +23,5 @@ class Interface {
 								p_statment);
 		virtual ~Interface();
 };
+#endif
+

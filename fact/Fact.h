@@ -1,6 +1,7 @@
 /* Fact.h */
 #include "../common.h"
-
+#ifndef FACT_H
+#define FACT_H
 
 class Fact {
 	private:
@@ -14,3 +15,4 @@ class Fact {
 		std::vector<std::vector<std::string>> getFact(); 		
 		~Fact();
 };
+#endif

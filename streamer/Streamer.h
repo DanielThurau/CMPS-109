@@ -2,6 +2,8 @@
 #include "../common.h"
 #include "../base/KnowledgeBase.h"
 #include "../base/RuleBase.h"
+#ifndef STREAMER_H
+#define STREAMER_H
 
 class Streamer{
 	
@@ -20,3 +22,4 @@ class Streamer{
 
 		virtual ~Streamer(); 
 };
+#endif
