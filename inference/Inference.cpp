@@ -12,6 +12,7 @@ std::set<std::vector<std::string>> Inference::query(std::vector<std::string> p_I
 	std::set<std::vector<std::string>> rb_results = query_RB(p_Inference);
 	std::set<std::vector<std::string>> kb_results = query_KB(p_Inference);
 
+
 	
 	dud = SET_OR(rb_results, kb_results);
 	if(flag){
@@ -35,7 +36,9 @@ std::set<std::vector<std::string>> Inference::query_KB(std::vector<std::string> 
 			for(int j = 0; j < inferenceSize; ++j){
 				temp.push_back(temp_fact[j]);
 			}
-			results.insert(temp);
+			if(filter(p_Inference, temp)){
+				results.insert(temp);
+			}
 		}
 	}
 	return results;
@@ -73,7 +76,16 @@ std::set<std::vector<std::string>> Inference::query_RB(std::vector<std::string> 
 	for (int i = 2; i < rule_data.size(); ++i){
 		if(rule_data[1][0]=="AND"){
 			if(pipeline_or_nah){
+
+
+				
 				std::cout << "Youre a wizard harry \n";
+
+
+
+
+
+
 			}else{
 				if(i==2){
 					results = SET_OR(results, query(rule_data[i], 0));
@@ -97,9 +109,9 @@ void Inference::print_query(std::set<std::vector<std::string>> p_set, std::vecto
 	for(auto it = p_set.begin(); it != p_set.end(); ++it){
 		std::vector<std::string > v = *it;
 		for(int p = 1; p < v.size(); p++){
-			if(p == v.size()-1){
+			if(p == v.size()-1 && p_Inference[p][0] == '$'){
 				std::cout << p_Inference[p] << ":" << v[p] << " ";
-			}else{
+			}else if(p_Inference[p][0] == '$'){
 				std::cout << p_Inference[p] << ":" << v[p] << ", ";
 			}
 		}
@@ -149,7 +161,7 @@ std::set<std::vector<std::string>> Inference::SET_AND(std::set<std::vector<std::
 }
 
 
-std::set<std::vector<std::string>> SET_AND_INDEX(std::set<std::vector<std::string>> A, int index_A, std::set<std::vector<std::string>> B, int index_B){
+// std::set<std::vector<std::string>> SET_AND_Pipeline(std::set<std::vector<std::string>> A, std::set<std::vector<std::string>> B){
 
 
 
@@ -157,7 +169,18 @@ std::set<std::vector<std::string>> SET_AND_INDEX(std::set<std::vector<std::strin
 
 
 
-	
+
+// }
+
+bool Inference::filter(std::vector<std::string> p_filter, std::vector<std::string > data ){
+	for(int i = 1; i < p_filter.size(); ++i){
+		if(p_filter[i][0] != '$'){
+			if(data[i] != p_filter[i]){
+				return false;
+			}
+		}
+	}
+	return true;
 }
 
 
