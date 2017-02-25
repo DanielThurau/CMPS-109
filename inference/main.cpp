@@ -69,7 +69,7 @@ int main(){
 
 	Inference * test = new Inference(KB, RB);
 	
-	std::vector<std::string > i1 = {"Grandfather", "$X","$Z"};
+	std::vector<std::string > i1 = {"Mother", "$P","$Z"};
 
 	test->query(i1);
 	// std::cout << "MAde it here \n";
