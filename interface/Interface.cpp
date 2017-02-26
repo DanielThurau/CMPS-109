@@ -12,6 +12,24 @@ Interface::Interface(KnowledgeBase * p_KB, RuleBase * p_RB){
 	RB = p_RB;
 
 }
+
+std::vector<std::string> Interface::parseSeg(std::string target) {
+	std::vector<std::string> segment;
+	auto rName = target.substr(0, target.find('('));
+	segment.push_back(rName);
+	target.erase(0, target.find('(') + 1);
+	auto rParams = target.substr(0, target.find(')'));
+	size_t pos = 0;
+	std::string token;
+	while ((pos = rParams.find(',')) != std::string::npos) {
+		token = rParams.substr(0,pos);
+		segment.push_back(token);
+		rParams.erase(0, pos + 1);
+	}
+	if(!rParams.empty()) segment.push_back(rParams);
+	return segment;
+}
+
 //tested w/o parser
 std::vector<std::vector<std::string>> 
 Interface::parse(std::string p_statement){
@@ -65,6 +83,7 @@ Interface::parse(std::string p_statement){
 		// Execute command
 
 	} else if (result[0] == "FACT") {
+		//cout << "Made it to conditional" << endl;
 		std::vector<std::vector<std::string>> fact;
 		std::vector<std::string> commandName;
 		commandName.push_back("FACT");
@@ -126,18 +145,18 @@ Interface::parse(std::string p_statement){
 		// Execute Command
 
 	} else if (result[0] == "LOAD") {
-		//ADDED DROP SO THAT THERE IS NO SCOPE ERROR
-		std::vector<std::vector<std::string>> drop;
 		std::vector<std::vector<std::string>> load;
 		std::vector<std::string> commandName;
 		commandName.push_back("LOAD");
 		load.push_back(commandName);
-
+		cout << "result[1]" << result[1] << endl;
 		for(auto &str : result) {
 			if(str == "LOAD") continue;
 			std::vector<std::string> fileName;
 			fileName.push_back(str);
-			drop.push_back(fileName);
+			//this is what I should have changed
+			//used to be drop.push_back
+			load.push_back(fileName);
 		}
 
 		return load;
@@ -167,10 +186,11 @@ bool Interface::executeCommand
 	if (p_command[0][0] == "FACT") {
 		std::cout << "FACT command" << endl;
 		std::vector<std::vector<std::string>> temp 
-			= {{p_command[1][0],p_command[2][0],p_command[3][0]}};
+			= {{p_command[1][0],p_command[1][1],p_command[1][2]}};
 		Fact * f1 = new Fact(temp);
 		KB->addContent(f1);
 		std::cout << "ADDED FACT CONTENT" << endl;
+		//std::vector<std::vector<std::string>>().swap(temp);
 		free(f1);
 		return true;
 	}
@@ -178,8 +198,8 @@ bool Interface::executeCommand
 	else if (p_command[0][0] == "RULE") {
 		std::cout << "RULE command" << endl;
 		std::vector<std::vector<std::string>> temp 
-			= {{p_command[1][0],p_command[2][0],
-				p_command[3][0], p_command[4][0]}};
+			= {p_command[1],p_command[2],
+				p_command[3], p_command[4]};
 		Rule * r1 = new Rule(temp);
 		std::cout << "ADDED RULE CONTENT" << endl;
 		RB->addContent(r1);
@@ -192,17 +212,18 @@ bool Interface::executeCommand
 		std::vector<std::string> q1 = {p_command[1]};
 		//prints out extra $x and $y, don't know why tf it does
 		infer->query(q1);
-		delete(infer);
+		free(infer);
 	}
 	else if (p_command[0][0] == "LOAD") {
 		std::cout << "LOAD command" << endl;
-		Load ld(p_command[5][0]); //random index i chose for testing
+		Load ld(p_command[1][0]); //random index i chose for testing
 		ld.process();
 	}
 	else if (p_command[0][0] == "DROP") {
 		std::cout << "DROP command" << endl;
-		RB->dropContent(p_command[0][1]);//rand index i chose for test
-		std::cout << "drop worked" << endl;
+		RB->dropContent(p_command[1][0]);//rand index i chose for test
+		KB->dropContent(p_command[1][0]);
+		//std::cout << "drop worked" << endl;
 	}
 	return false;
 }
@@ -213,18 +234,34 @@ void Interface::commandLine(){
 	std::vector<std::string> v1 = {"Father","Thoma", "bob"};
 	Fact * test = new Fact(v1);
 	*/
+	//std::vector<std::vector<std::string>> myvector;
 	while(1){
 		std::cout << "Looping commandLine()" << endl;
 		string statement;
 		//just dummy input for now
-		std::cin >> statement;
+		std::getline (std::cin, statement);
 		//will probably swap out conditionals for something else
 		if (statement == "x") {
 			break;
 		}
+		
 		std::vector<std::vector<std::string>> myvector 
-				= parse("test");
+			= parse(statement);
+		//prints contents of myvector
+		/*
+		for (const std::vector<std::string> &v : myvector) {
+			std::cout << "1ST for loop" << endl;
+			for (std::string x : v ) { 
+				std::cout << "2ND for loop" << endl;
+				std::cout << x << ' ' << endl;
+			}
+		}
+		cout << "after for loop in commandline" << endl;
+		*/
 		executeCommand(myvector);
+
+		//std::vector<std::vector<std::string>>().swap(myvector);
+		
 		//manually looking for addcontent w.o parser
 		/*
 		else if (command == "addcontent") {

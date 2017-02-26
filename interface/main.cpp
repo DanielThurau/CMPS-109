@@ -28,6 +28,7 @@ int main(){
 	RB->addContent(r1);
 	RB->addContent(r2);
 	
+	
 	//vectors for facts
 	std::vector<std::vector<std::string>> v3 
 			= {{"Father","Thomas","Bob"}};
@@ -40,6 +41,7 @@ int main(){
 	//added facts to KB
 	KB->addContent(f1);
 	KB->addContent(f2);
+	
 	
 	
 	//created interface by passing pointers KB and RB

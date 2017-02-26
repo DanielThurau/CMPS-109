@@ -146,8 +146,6 @@ bool Load::process() {
 				// Execute Command
 
 			} else if (result[0] == "LOAD") {
-				//ADDED DROP SO THAT THERE IS NO SCOPE ERROR
-				std::vector<std::vector<std::string>> drop;
 				std::vector<std::vector<std::string>> load;
 				std::vector<std::string> commandName;
 				commandName.push_back("LOAD");
@@ -158,7 +156,10 @@ bool Load::process() {
 
 					std::vector<std::string> fileName;
 					fileName.push_back(str);
-					drop.push_back(fileName);
+					//should not have added drop
+					//the issue was this used to be:
+					//drop.push_back
+					load.push_back(fileName);
 				}
 
 			} else if (result[0] == "DUMP") {
