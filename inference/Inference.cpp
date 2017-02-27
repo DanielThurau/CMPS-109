@@ -201,7 +201,7 @@ std::vector<std::vector<std::string>> Inference::query_RB(std::vector<std::strin
     // print_query(test);
 
     results = SET_OR(results, test);
-
+    results = filter_rb(p_Inference, results);
 
 
 
@@ -572,7 +572,31 @@ std::vector<std::vector<std::string>> Inference::subsitute(std::vector<std::vect
 	return final;
 }
 
-std::std::vector<std::vector<std::string>> Inference::filer_rb(std::vector<std::string> p_filter,  std::vector<std::vector<std::string>> data){
+std::vector<std::vector<std::string>> Inference::filter_rb(std::vector<std::string> p_filter,  std::vector<std::vector<std::string>> data){
+	std::vector<std::vector<std::string >> final;
 	
 
+	for(int i = 0; i < data.size(); i++){
+		std::vector<std::string> v;
+		v.push_back(data[i][0]);
+		final.push_back(v);
+
+	}
+
+	for(int i = 1; i < data[0].size(); i++){
+		bool canAdd = true;
+		for(int j = 1; j < data.size(); j++){
+			if(p_filter[j][0] != '$' && data[j-1][i]!=p_filter[j]){
+				canAdd = false;
+			}
+		}
+		if(canAdd){
+			for(int j = 0; j < data.size(); j++){
+				final[j].push_back(data[j][i]);
+			}
+		}
+	}
+
+
+	return final;
 }
