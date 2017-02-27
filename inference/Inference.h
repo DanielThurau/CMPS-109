@@ -11,7 +11,8 @@ class Inference{
 		std::vector<std::vector<std::string>> SET_AND(std::vector<std::vector<std::string>> A, std::vector<std::vector<std::string>> B);
 		std::vector<std::vector<std::string>> remove_duplicates(std::vector<std::vector<std::string >> data);
 		bool filter(std::vector<std::string> p_filter, std::vector<std::string > data );
-		std::vector<std::string> pull(std::vector<std::vector<std::string>> A, std::vector<std::vector<std::string>> B, std::string value, std::string sig);
+		std::vector<std::vector<std::string>> subsitute(std::vector<std::vector<std::string>> test, std::vector<std::vector<std::string>> rule_data, int i);
+		std::std::vector<std::vector<std::string>> filer_rb(std::vector<std::string> p_filter,  std::vector<std::vector<std::string>> data);
 	public:
 		Inference(KnowledgeBase * p_KB, RuleBase * p_RB);
 		std::vector<std::vector<std::string>> query(std::vector<std::string> p_Inference, int flag = 1);

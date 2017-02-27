@@ -27,27 +27,27 @@ std::vector<std::vector<std::string>> Inference::query(std::vector<std::string> 
 	std::vector<std::vector<std::string>> kb_results = query_KB(p_Inference);
 	
 
-	std::cout << "Lets see if they inderted right b4 results or of rb_results: \n";
+	// std::cout << "Lets see if they inderted right b4 results or of rb_results: \n";
 
-		for(int c = 0; c < rb_results.size(); c++){
-			for(int b = 0; b < rb_results[c].size(); b++){
-				std::cout << rb_results[c][b] << " ";
-			}
-			std::cout << "\n";
-		}
-		std::cout << "\n";
+	// 	for(int c = 0; c < rb_results.size(); c++){
+	// 		for(int b = 0; b < rb_results[c].size(); b++){
+	// 			std::cout << rb_results[c][b] << " ";
+	// 		}
+	// 		std::cout << "\n";
+	// 	}
+	// 	std::cout << "\n";
 
 
 
-	std::cout << "Lets see if they inderted right b4 results or of kb_results: \n";
+	// std::cout << "Lets see if they inderted right b4 results or of kb_results: \n";
 
-		for(int c = 0; c < kb_results.size(); c++){
-			for(int b = 0; b < kb_results[c].size(); b++){
-				std::cout << kb_results[c][b] << " ";
-			}
-			std::cout << "\n";
-		}
-		std::cout << "\n";
+	// 	for(int c = 0; c < kb_results.size(); c++){
+	// 		for(int b = 0; b < kb_results[c].size(); b++){
+	// 			std::cout << kb_results[c][b] << " ";
+	// 		}
+	// 		std::cout << "\n";
+	// 	}
+	// 	std::cout << "\n";
 
 
 
@@ -167,106 +167,40 @@ std::vector<std::vector<std::string>> Inference::query_RB(std::vector<std::strin
     }
 
 
-    std::vector<std::vector<std::string>> prev;
-    for(int i = 2; i < rule_data.size(); ++i){
-            if(rule_data[1][0] == "OR"){
-                    // std::vector<std::vector<std::string>> test = query(rule_data[i], 0);
-                    std::vector<std::vector<std::string>> test = query(rule_data[i], 0);
+    std::vector<std::vector<std::string>> test;
+    if(rule_data[1][0] == "OR"){
+    	for(int i = 2; i < rule_data.size(); ++i){
+    		std::vector<std::vector<std::string>> test = query(rule_data[i], 0);
                     int iter = 0;
                     for(int j = 1; j < test.size(); ++j){
                             test[iter][0] = rule_data[i][j];
                             iter++;
                     }
                     results = SET_OR(results, test);
-            }else{
-                    std::vector<std::vector<std::string>> test = query(rule_data[i], 0);
-                    int iter = 0;
-                    for(int j = 1; j < test.size(); ++j){
-                           test[iter][0] = rule_data[i][j];
-                            iter++;
-                    }
-
-                    if(i==2){
-                    		std::cout << "Lets see if they inderted right b4 i="<< i <<": \n";
-
-							for(int c = 0; c < prev.size(); c++){
-								for(int b = 0; b < prev[c].size(); b++){
-									std::cout << prev[c][b] << " ";
-								}
-								std::cout << "\n";
-							}
-							std::cout << "\n";
-
-							//0--------------------------------------
-                            prev = SET_OR(prev, test);
-                            //-0-------------------------------------
-
-                            std::cout << "Lets see if they inderted right after i="<< i <<": \n";
-
-							for(int c = 0; c < prev.size(); c++){
-								for(int b = 0; b < prev[c].size(); b++){
-									std::cout << prev[c][b] << " ";
-								}
-								std::cout << "\n";
-							}
-							std::cout << "\n";
-                    }else{
-                    		std::cout << "Lets see if they inderted right b4 i="<< i <<": \n";
-
-							for(int c = 0; c < prev.size(); c++){
-								for(int b = 0; b < prev[c].size(); b++){
-									std::cout << prev[c][b] << " ";
-								}
-								std::cout << "\n";
-							}
-							std::cout << "\n";
-
-							//0--------------------------------------
-                            prev = SET_AND(prev, test);
-                            //-0-------------------------------------
-
-                            std::cout << "Lets see if they inderted right after i="<< i <<": \n";
-
-							for(int c = 0; c < prev.size(); c++){
-								for(int b = 0; b < prev[c].size(); b++){
-									std::cout << prev[c][b] << " ";
-								}
-								std::cout << "\n";
-							}
-							std::cout << "\n";
-
-                    }
-
-
-            }
-    }
-    if(rule_data[1][0] == "AND"){
-    	std::cout << "Lets see if they inderted right b4 results or: \n";
-
-		for(int c = 0; c < results.size(); c++){
-			for(int b = 0; b < results[c].size(); b++){
-				std::cout << results[c][b] << " ";
-			}
-			std::cout << "\n";
+        }
+    }else{
+    	int i = 2;
+    	test = query(rule_data[i], 0);
+		if(i != rule_data.size()-1){
+			// std::cout << "seeing if subsituing is a good plan\n";
+//     		for(int c = 0; c < test.size(); c++){
+			// 	for(int b = 0; b < test[c].size(); b++){
+			// 		std::cout << test[c][b] << " ";
+			// 	}
+			// 	std::cout << "\n";
+			// }
+			// std::cout << "\n";
+			test = subsitute(test, rule_data, i);
 		}
-		std::cout << "\n";
-
-        results = SET_OR(results, prev);
-
-        std::cout << "Lets see if they inderted right after results or: \n";
-
-		for(int c = 0; c < results.size(); c++){
-			for(int b = 0; b < results[c].size(); b++){
-				std::cout << results[c][b] << " ";
-			}
-			std::cout << "\n";
-		}
-		std::cout << "\n";
+            
     }
+    // std::cout << "results\n";
+    // print_query(results);
+    // std::cout << "---------------------------------\n";
+    // std::cout << "test\n";
+    // print_query(test);
 
-
-
-
+    results = SET_OR(results, test);
 
 
 
@@ -429,21 +363,21 @@ std::vector<std::vector<std::string>> Inference::SET_AND(std::vector<std::vector
 				// std::cout << "\n";
 
 
-				for(int l = 1; l < v3.size(); l++){
-					std::vector<std::string > v4 = pull(A, B, v3[l], v3[0]);
+				// for(int l = 1; l < v3.size(); l++){
+				// 	std::vector<std::string > v4 = pull(A, B, v3[l], v3[0]);
 
-					std::cout << "TEST AND for V4: \n";
-					for(int i = 0; i < v3.size(); i++){
-						std::cout << v3[i] << " ";
-					}
-					std::cout << "\n";
+				// 	std::cout << "TEST AND for V4: \n";
+				// 	for(int i = 0; i < v3.size(); i++){
+				// 		std::cout << v3[i] << " ";
+				// 	}
+				// 	std::cout << "\n";
 
-					for(int m = 0 ; m < v4.size(); m++){
-						std::cout << "Got here boiiii\n";
-						final[m].push_back(v4[m]);
-					}
+				// 	for(int m = 0 ; m < v4.size(); m++){
+				// 		std::cout << "Got here boiiii\n";
+				// 		final[m].push_back(v4[m]);
+				// 	}
 
-				}
+				// }
 
 
 
@@ -551,43 +485,94 @@ std::vector<std::vector<std::string>> Inference::remove_duplicates(std::vector<s
 
 }
 
+// given a rule data a position, and a 2d set of string vectors values to be subbed
+std::vector<std::vector<std::string>> Inference::subsitute(std::vector<std::vector<std::string>> data, std::vector<std::vector<std::string>> rule_data, int i){
+	std::vector<std::vector<std::string >> final;
 
-std::vector<std::string> Inference::pull(std::vector<std::vector<std::string>> A, std::vector<std::vector<std::string>> B, std::string value, std::string sig){
-	std::vector<std::string > final;
+	for(int j = 1; j < rule_data[i].size(); j++){
+		std::vector<std::string> temp_v;
+		temp_v.push_back(rule_data[i][j]);
+		final.push_back(temp_v);
+	}
 
-	for(int i = 0; i < A.size(); i++){
-		if(A[i][0] == sig){
-			for(int j = 1; j < A[i].size(); j++){
-				if(A[i][j] == value){
-					for(int k = 0 ; k < A.size(); k++){
-						final.push_back(A[k][j]);
+
+	// we're not the last data
+	// if(i != rule_data.size()-1){
+		std::vector<std::string> p_Inference;
+		for(int j = 0; j < rule_data[i+1].size();j++){
+			if(j!=0){
+				bool canAdd = true;
+				for(int q = 1; q< final.size();q++){
+					if(rule_data[i+1][j]==final[q][0]){
+						canAdd = false;
+					}
+				}
+				if(canAdd){
+					std::vector<std::string> temp_v;
+					temp_v.push_back(rule_data[i+1][j]);
+					final.push_back(temp_v);
+				}
+			}
+			p_Inference.push_back(rule_data[i+1][j]);
+
+		}
+
+
+		// std::cout << "preparing final's anus\n";
+		// 	for(int q = 0 ; q < final.size();q++){
+		// 		for(int w = 0; w < final[0].size();w++){
+		// 			std::cout << final[q][w] << " ";
+		// 		}
+		// 	}
+		// 	std::cout << " \n";
+
+
+		// for every element set there is in data
+		for(int j = 1; j < data[0].size(); j++){
+			// for every equivalent row  per set
+			std::vector<std::string> this_v;
+			for(int k = 0; k < data.size(); k++){
+				
+				this_v.push_back(data[k][j]);
+				// checking against rule_Data[i+1]
+				for(int l = 0; l < rule_data[i+1].size(); l++){
+					// std::cout << "data[" << k << "][" << i << "]: " << data[k][0] << " and rule_data["<<i+1<<"]["<< l << "]: " << rule_data[i+1][l] << '\n';
+					if(data[k][0] == rule_data[i+1][l]){
+						p_Inference[l] = data[k][j];
+
 					}
 				}
 			}
-		}
-	}
 
-	for(int i = 0; i < B.size(); i++){
-		if(B[i][0] == sig){
-			for(int j = 1; j < B[i].size(); j++){
-				if(B[i][j] == value){
-					for(int k = 0 ; k < B.size(); k++){
-						if(B[k][0] != sig){
-							final.push_back(A[k][j]);
-						}
+			std::vector<std::vector<std::string >> return_data = query(p_Inference, 0);
+			
+			if(return_data[0].size()!=1){
+				// std::cout << "The data to be acted upon \n";
+				// for(int f = 0; f < this_v.size(); f++){
+				// 	std::cout << this_v[f] << " ";
+				// }
+				// std::cout << "\n";
+				// std::cout << "REturned values of what subsitute ran per value given:\n";
+				// print_query(return_data);
+				for(int f = 1; f < return_data[0].size(); f++){
+					for(int y = 0; y < this_v.size(); y++){
+						final[y].push_back(this_v[y]);
+					}
+					for(int y = this_v.size(); y < final.size();y++){
+						final[y].push_back(return_data[y-this_v.size()][f]);
 					}
 				}
+				
 			}
+			// for(int m = 0; m < )
 		}
-	}
 
-	std::cout << "This is confuding as fucl \n";
-	for(int i = 0; i < final.size(); i++){
-		std::cout << final[i] << " ";
-	}
-	std::cout << "\n";
-
+		// print_query(final);
+	// }
 	return final;
+}
 
+std::std::vector<std::vector<std::string>> Inference::filer_rb(std::vector<std::string> p_filter,  std::vector<std::vector<std::string>> data){
+	
 
 }
