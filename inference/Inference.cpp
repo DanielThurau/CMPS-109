@@ -21,25 +21,19 @@ std::vector<std::vector<std::string>> Inference::query(std::vector<std::string> 
 
 
 
-	std::vector<std::vector<std::string >> test = {{"$X", "Dan", "Paul", "Ben", "Roj", "ray", "Paul"}, {"$Y", "sally", "rachel", "carson", "bindi", "melissa", "rachel"}, {"$Z", "red", "green", "blue", "orange", "yellow", "green"}};
-	print_query(test);
-	std::cout << "------------------------------------\n";
-	std::vector<std::vector<std::string>> v = remove_duplicates(test);
-	print_query(v);
-
 	/* Results from a query on the rulebase using p_inference */
-	// std::vector<std::vector<std::string>> rb_results = query_RB(p_Inference);
-	// /* Results from a query on the kb using p_inference */
-	// std::vector<std::vector<std::string>> kb_results = query_KB(p_Inference);
+	std::vector<std::vector<std::string>> rb_results = query_RB(p_Inference);
+	/* Results from a query on the kb using p_inference */
+	std::vector<std::vector<std::string>> kb_results = query_KB(p_Inference);
 	
 	// // Combine the results of the two queries (in case they're 0, or theres duplicates)
-	// results = SET_OR(rb_results, kb_results);
+	results = SET_OR(rb_results, kb_results);
 
-	// // if we're on the bottom of the recursive stack
-	// // print the results to console
-	// if(flag){
-	// 	print_query(results);
-	// }
+	// if we're on the bottom of the recursive stack
+	// print the results to console
+	if(flag){
+		print_query(results);
+	}
 
 	// return the results upwards.  Recursive part
 	return results;
