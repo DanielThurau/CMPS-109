@@ -26,6 +26,31 @@ std::vector<std::vector<std::string>> Inference::query(std::vector<std::string> 
 	/* Results from a query on the kb using p_inference */
 	std::vector<std::vector<std::string>> kb_results = query_KB(p_Inference);
 	
+
+	std::cout << "Lets see if they inderted right b4 results or of rb_results: \n";
+
+		for(int c = 0; c < rb_results.size(); c++){
+			for(int b = 0; b < rb_results[c].size(); b++){
+				std::cout << rb_results[c][b] << " ";
+			}
+			std::cout << "\n";
+		}
+		std::cout << "\n";
+
+
+
+	std::cout << "Lets see if they inderted right b4 results or of kb_results: \n";
+
+		for(int c = 0; c < kb_results.size(); c++){
+			for(int b = 0; b < kb_results[c].size(); b++){
+				std::cout << kb_results[c][b] << " ";
+			}
+			std::cout << "\n";
+		}
+		std::cout << "\n";
+
+
+
 	// // Combine the results of the two queries (in case they're 0, or theres duplicates)
 	results = SET_OR(rb_results, kb_results);
 
@@ -126,32 +151,128 @@ std::vector<std::vector<std::string>> Inference::query_KB(std::vector<std::strin
 
 std::vector<std::vector<std::string>> Inference::query_RB(std::vector<std::string> p_Inference){
 	std::vector<std::vector<std::string>> results;
-
 	int inferenceSize = p_Inference.size();
-	std::vector<std::vector<std::string>>rule_data;
-	try{
-		Rule this_rule = RB->getContent(p_Inference[0]);
-		rule_data = this_rule.getRule();
-	}catch(ExistenceException e){
-		return results;
-	}
+    std::vector<std::vector<std::string>>rule_data;
+    try{
+            Rule this_rule = RB->getContent(p_Inference[0]);
+            rule_data = this_rule.getRule();
+    }catch(ExistenceException e){
+            return results;
+    }
 
-	for(int i = 1; i < rule_data[0].size();i++){
-		std::vector<std::string > temp;
-		temp.push_back(rule_data[0][i]);
-		results.push_back(temp);
-	}
-
-
+    for(int i = 1; i < rule_data[0].size();i++){
+            std::vector<std::string > temp;
+            temp.push_back(rule_data[0][i]);
+            results.push_back(temp);
+    }
 
 
+    std::vector<std::vector<std::string>> prev;
+    for(int i = 2; i < rule_data.size(); ++i){
+            if(rule_data[1][0] == "OR"){
+                    // std::vector<std::vector<std::string>> test = query(rule_data[i], 0);
+                    std::vector<std::vector<std::string>> test = query(rule_data[i], 0);
+                    int iter = 0;
+                    for(int j = 1; j < test.size(); ++j){
+                            test[iter][0] = rule_data[i][j];
+                            iter++;
+                    }
+                    results = SET_OR(results, test);
+            }else{
+                    std::vector<std::vector<std::string>> test = query(rule_data[i], 0);
+                    int iter = 0;
+                    for(int j = 1; j < test.size(); ++j){
+                           test[iter][0] = rule_data[i][j];
+                            iter++;
+                    }
 
-	
+                    if(i==2){
+                    		std::cout << "Lets see if they inderted right b4 i="<< i <<": \n";
+
+							for(int c = 0; c < prev.size(); c++){
+								for(int b = 0; b < prev[c].size(); b++){
+									std::cout << prev[c][b] << " ";
+								}
+								std::cout << "\n";
+							}
+							std::cout << "\n";
+
+							//0--------------------------------------
+                            prev = SET_OR(prev, test);
+                            //-0-------------------------------------
+
+                            std::cout << "Lets see if they inderted right after i="<< i <<": \n";
+
+							for(int c = 0; c < prev.size(); c++){
+								for(int b = 0; b < prev[c].size(); b++){
+									std::cout << prev[c][b] << " ";
+								}
+								std::cout << "\n";
+							}
+							std::cout << "\n";
+                    }else{
+                    		std::cout << "Lets see if they inderted right b4 i="<< i <<": \n";
+
+							for(int c = 0; c < prev.size(); c++){
+								for(int b = 0; b < prev[c].size(); b++){
+									std::cout << prev[c][b] << " ";
+								}
+								std::cout << "\n";
+							}
+							std::cout << "\n";
+
+							//0--------------------------------------
+                            prev = SET_AND(prev, test);
+                            //-0-------------------------------------
+
+                            std::cout << "Lets see if they inderted right after i="<< i <<": \n";
+
+							for(int c = 0; c < prev.size(); c++){
+								for(int b = 0; b < prev[c].size(); b++){
+									std::cout << prev[c][b] << " ";
+								}
+								std::cout << "\n";
+							}
+							std::cout << "\n";
+
+                    }
+
+
+            }
+    }
+    if(rule_data[1][0] == "AND"){
+    	std::cout << "Lets see if they inderted right b4 results or: \n";
+
+		for(int c = 0; c < results.size(); c++){
+			for(int b = 0; b < results[c].size(); b++){
+				std::cout << results[c][b] << " ";
+			}
+			std::cout << "\n";
+		}
+		std::cout << "\n";
+
+        results = SET_OR(results, prev);
+
+        std::cout << "Lets see if they inderted right after results or: \n";
+
+		for(int c = 0; c < results.size(); c++){
+			for(int b = 0; b < results[c].size(); b++){
+				std::cout << results[c][b] << " ";
+			}
+			std::cout << "\n";
+		}
+		std::cout << "\n";
+    }
 
 
 
-	
-	return results;
+
+
+
+
+
+
+    return results;
 }
 
 void Inference::print_query(std::vector<std::vector<std::string>> p_set){
@@ -235,44 +356,100 @@ std::vector<std::vector<std::string>> Inference::SET_OR(std::vector<std::vector<
 
 
 std::vector<std::vector<std::string>> Inference::SET_AND(std::vector<std::vector<std::string>> A, std::vector<std::vector<std::string>> B){
-	
-	std::cout << "This is A: \n";
-	for(int i = 0; i < A.size(); ++i){
-		for(int j = 0; j < A[i].size(); ++j){
-			std::cout << A[i][j] << " ";
-		}
-		std::cout << '\n';
-	}
-
-	std::cout << "This is B: \n";
-	for(int i = 0; i < B.size(); ++i){
-		for(int j = 0; j < B[i].size(); ++j){
-			std::cout << B[i][j] << " ";
-		}
-		std::cout << '\n';
-	}
+	// // print A
+	// std::cout << "This is A: \n";
+	// for(int i = 0; i < A.size(); ++i){
+	// 	for(int j = 0; j < A[i].size(); ++j){
+	// 		std::cout << A[i][j] << " ";
+	// 	}
+	// 	std::cout << '\n';
+	// }
 
 
+	// // PRint B
+	// std::cout << "This is B: \n";
+	// for(int i = 0; i < B.size(); ++i){
+	// 	for(int j = 0; j < B[i].size(); ++j){
+	// 		std::cout << B[i][j] << " ";
+	// 	}
+	// 	std::cout << '\n';
+	// }
 
+
+
+	// final 2d array to be returned
 	std::vector<std::vector<std::string>> final;
+	// For every 2nd layer vector
 	for(auto it = A.begin(); it != A.end(); it++ ){
+		// get a temp vector from that location
 		std::vector<std::string > temp = *it;
+		// iterate through every one of b's second layer vector
 		for(int i = 0; i < B.size(); i++){
+			// if the signifiers macth up (i.e a pipeline)
 			 if(temp[0] == B[i][0]){
 
-
-			 	std::vector<std::string> temp_rule;
+			 	// create a vector to hold the intersection values
 			 	std::vector<std::string> v3;
 			 	sort(temp.begin(), temp.end());
 			 	sort(B[i].begin(), B[i].end());
 			 	std::set_intersection(temp.begin(), temp.end(), B[i].begin(), B[i].end(), back_inserter(v3));
 
+			 	// v3 now holds all values where the values matched up.  Now 
 
-			 	std::cout << "TEST AND: \n";
+			 	std::cout << "TEST AND for V3: \n";
 				for(int i = 0; i < v3.size(); i++){
 					std::cout << v3[i] << " ";
 				}
 				std::cout << "\n";
+
+
+				// nowi have to iterate throguh bother and check their signifiers (do a first.  Create a temp vector and grab all relent data
+				// vector is of size A+B-1 (and on a value)
+				// add to that vector the corresponding values of A and B, and then where the matching sig is 
+
+				std::vector<std::string> to_be;
+				for(int k = 0; k < A.size(); k++){
+					std::vector<std::string > to_be2;
+					to_be2.push_back(A[k][0]);
+					final.push_back(to_be2);
+				}
+				for(int k = 0; k < B.size(); k++){
+					if(B[k][0]!=v3[0]){
+						std::vector<std::string > to_be2;
+						to_be2.push_back(B[k][0]);
+						final.push_back(to_be2);
+					}
+				}
+
+				// std::cout << "Lets see if they inderted right: \n";
+
+				// for(int p = 0; p < final.size(); p++){
+				// 	std::cout << final[p][0] << " ";
+				// }
+				// std::cout << "\n";
+
+
+				for(int l = 1; l < v3.size(); l++){
+					std::vector<std::string > v4 = pull(A, B, v3[l], v3[0]);
+
+					std::cout << "TEST AND for V4: \n";
+					for(int i = 0; i < v3.size(); i++){
+						std::cout << v3[i] << " ";
+					}
+					std::cout << "\n";
+
+					for(int m = 0 ; m < v4.size(); m++){
+						std::cout << "Got here boiiii\n";
+						final[m].push_back(v4[m]);
+					}
+
+				}
+
+
+
+
+
+
 
 			 }
 		}
@@ -371,5 +548,46 @@ std::vector<std::vector<std::string>> Inference::remove_duplicates(std::vector<s
 		}
 	}
 	return final;
+
+}
+
+
+std::vector<std::string> Inference::pull(std::vector<std::vector<std::string>> A, std::vector<std::vector<std::string>> B, std::string value, std::string sig){
+	std::vector<std::string > final;
+
+	for(int i = 0; i < A.size(); i++){
+		if(A[i][0] == sig){
+			for(int j = 1; j < A[i].size(); j++){
+				if(A[i][j] == value){
+					for(int k = 0 ; k < A.size(); k++){
+						final.push_back(A[k][j]);
+					}
+				}
+			}
+		}
+	}
+
+	for(int i = 0; i < B.size(); i++){
+		if(B[i][0] == sig){
+			for(int j = 1; j < B[i].size(); j++){
+				if(B[i][j] == value){
+					for(int k = 0 ; k < B.size(); k++){
+						if(B[k][0] != sig){
+							final.push_back(A[k][j]);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	std::cout << "This is confuding as fucl \n";
+	for(int i = 0; i < final.size(); i++){
+		std::cout << final[i] << " ";
+	}
+	std::cout << "\n";
+
+	return final;
+
 
 }
