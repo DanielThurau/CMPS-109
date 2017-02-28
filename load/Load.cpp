@@ -18,14 +18,10 @@ bool Load::process() {
 		std::string line;
 		Interface * sri = startSri();
 		while(std::getline(file, line)){
-<<<<<<< HEAD
-			std::vector<std::vector<std::string>> parsedLine = sri->parse(line);
-			sri->executeCommand(parsedLine);
-=======
+			sri->executeCommand(line);
 			if(!sri->parse(line)){
 				break;
 			}
->>>>>>> Dan
 		}
 		return true;
 	} else {
@@ -34,13 +30,8 @@ bool Load::process() {
 	}
 }
 
-<<<<<<< HEAD
-Interface * startSri() {
-	Interface * sri = new Interface(KB, RB)
-=======
 Interface * Load::startSri() {
 	Interface * sri = new Interface();
->>>>>>> Dan
 	return sri;
 }
 

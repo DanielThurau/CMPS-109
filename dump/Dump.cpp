@@ -1,15 +1,9 @@
 /* dump.cpp */
 
 #include "Dump.h"
-<<<<<<< HEAD
-
-Dump::Dump(std::string p_pathName, KnowledgeBase * p_KB, RuleBase * p_RB):
-	Streamer(p_pathName, p_KB, p_RB) {
-=======
 #include "../interface/Interface.h"
 Dump::Dump(std::string p_pathName, Interface * p_sri):
 	Streamer(p_pathName, p_sri) {
->>>>>>> Dan
 
 }
 
@@ -20,18 +14,10 @@ bool Dump::process() {
 		// Needs some kind of way to retrieve all keys in KB/RB
 		// For loop over each key and format to print
 		// Nevermind I am going to try to iterate al key value pairs
-<<<<<<< HEAD
-		std::vector<std::string> kbKeys = KB->getKeys();
-
-		for(auto &key : kbKeys){
-			std::vector<Fact*> factVector = KB->getContent(key);
-=======
 		std::vector<std::string> kbKeys = sri->KB->getKeys();
 
 		for(auto &key : kbKeys){
 			std::vector<Fact*> factVector = sri->KB->getContent(key);
->>>>>>> Dan
-
 			for(auto &fact : factVector){
 				std::string factString = "FACT ";
 				//Iterates over each vector of the Fact Vector
@@ -53,17 +39,10 @@ bool Dump::process() {
 			}
 		}
 
-<<<<<<< HEAD
 		std::vector<std::string> rbKeys = RB->getKeys();
 
 		for(auto &key : rbKeys){
 			Rule rule = RB->getContent(key);
-=======
-		std::vector<std::string> rbKeys = sri->RB->getKeys();
-
-		for(auto &key : rbKeys){
-			Rule rule = sri->RB->getContent(key);
->>>>>>> Dan
 			std::string ruleString = "RULE ";
 			bool ruleName = true;
 			bool isOp = false;
@@ -93,10 +72,6 @@ bool Dump::process() {
 					ruleString += ") ";
 				}
 			}
-<<<<<<< HEAD
-			std::cout << ruleString << std::endl;
-=======
->>>>>>> Dan
 			outFile << ruleString << std::endl;
 		}
 

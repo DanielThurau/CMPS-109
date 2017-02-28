@@ -1,11 +1,4 @@
 #include "Interface.h"
-<<<<<<< HEAD
-=======
-#include "../load/Load.h"
-#include "../dump/Dump.h"
-
-//RULE GrandFather($X,$Z):- AND Father($X,$Y) Father($Y,$Z)
->>>>>>> Dan
 
 //default constructor just creates new objects
 Interface::Interface(){
@@ -51,14 +44,7 @@ bool Interface::parse(std::string p_statement){
 	}
 
 	if(result[0] == "RULE") {
-<<<<<<< HEAD
-		std::vector<std::vector<std::string>> rule;
-		std::vector<std::string> commandName;
-		commandName.push_back("RULE");
-		rule.push_back(commandName);
-=======
 		std::vector<std::vector<std::string>> rule = {{"RULE"}};
->>>>>>> Dan
 
 		/*  Step is used to determine where we are
 		 	Step 0: command name
@@ -87,18 +73,11 @@ bool Interface::parse(std::string p_statement){
 				rule.push_back(parseSeg(str));
 			}
 		}
-<<<<<<< HEAD
-	
-		// Return rule vector?
-		return true;
-=======
-		// Return rule vector?
 		if(executeCommand(rule)){
 			return true;
 		}else{
 			return false;
 		}
->>>>>>> Dan
 		// Execute command
 
 	} else if (result[0] == "FACT") {
@@ -123,14 +102,7 @@ bool Interface::parse(std::string p_statement){
 		}
 		// Execute Command
 	} else if (result[0] == "INFERENCE") {
-<<<<<<< HEAD
-		std::vector<std::vector<std::string>> query;
-		std::vector<std::string> commandName;
-		commandName.push_back("INFERENCE");
-		query.push_back(commandName);
-=======
 		std::vector<std::vector<std::string>> query ={{"INFERENCE"}};
->>>>>>> Dan
 
 		int step = 0;
 		for(auto &str : result) {
@@ -147,19 +119,6 @@ bool Interface::parse(std::string p_statement){
 			}
 		}
 
-<<<<<<< HEAD
-		// Return query vector
-		return true;
-=======
-		// std::cout << "Query biatches: \n";
-
-		// for(int i = 0; i < query.size(); i++){
-		// 	for(int j = 0 ; j < query[i].size(); j++){
-		// 		std::cout << query[i][j] << " ";
-		// 	}
-		// 	std::cout  << "\n";
-		// }
-
 
 		// Return query vector
 		if(executeCommand(query)){
@@ -167,7 +126,6 @@ bool Interface::parse(std::string p_statement){
 		}else{
 			return false;
 		}
->>>>>>> Dan
 		// Execute Command
 
 	} else if (result[0] == "DROP") {
@@ -188,16 +146,8 @@ bool Interface::parse(std::string p_statement){
 		// Execute Command
 
 	} else if (result[0] == "LOAD") {
-<<<<<<< HEAD
-		std::vector<std::vector<std::string>> load;
-		std::vector<std::string> commandName;
-		commandName.push_back("LOAD");
-		load.push_back(commandName);
-		cout << "result[1]" << result[1] << endl;
-=======
 		std::vector<std::vector<std::string>> load = {{"LOAD"}};
 
->>>>>>> Dan
 		for(auto &str : result) {
 			if(str == "LOAD") continue;
 			std::vector<std::string> fileName;
@@ -205,35 +155,18 @@ bool Interface::parse(std::string p_statement){
 			//this is what I should have changed
 			//used to be drop.push_back
 			load.push_back(fileName);
+			if(executeCommand(load)){
+				return true;
+			}else{
+				return false;
+			}
 		}
-<<<<<<< HEAD
-
-		return true;
-
-	} else if (result[0] == "DUMP") {
-		std::vector<std::vector<std::string>> dump;
-		std::vector<std::string> commandName;
-		commandName.push_back("DUMP");
-		dump.push_back(commandName);
-=======
-		if(executeCommand(load)){
-			return true;
-		}else{
-			return false;
-		}
-
 	} else if (result[0] == "DUMP") {
 		std::vector<std::vector<std::string>> dump = {{"DUMP"}};
->>>>>>> Dan
 
 		std::vector<std::string> outputFile;
 		outputFile.push_back(result[1]);
 		dump.push_back(outputFile);
-
-<<<<<<< HEAD
-		// Return dump vector
-		return true;
-=======
 
 		// Return dump vector
 		if(executeCommand(dump)){
@@ -241,7 +174,6 @@ bool Interface::parse(std::string p_statement){
 		}else{
 			return false;
 		}
->>>>>>> Dan
 		// Execute command?
 	} else {
 		std::cout << "Unkown Command" << std::endl;
