@@ -1,5 +1,11 @@
 #include "Interface.h"
 
+
+
+//RULE Grandfather($X,$Z):- AND Father($X,$Y) Father($Y,$Z)
+//RULE Grandfather($X, $Z):- AND Father($X, $Y) Father($Y, $Z)
+
+
 //default constructor just creates new objects
 Interface::Interface(){
 	KB = new KnowledgeBase();
@@ -39,21 +45,28 @@ std::vector<std::string> Interface::parseSeg(std::string target) {
 //tested w/o parser
 bool Interface::parse(std::string p_statement){
 	std::vector<std::string> result; 
-	std::istringstream strinput(p_statement);
+	std::istringstream str_input(p_statement);
 	
 	// Seperates line into words seperated by whitespace
 	// Inserts into vector
-	while(strinput){
-		std::string next_word;
-		strinput >> next_word;
+	int counter = 0;
+	std::string next_word;
+	while(str_input >> next_word){
+		std::cout <<"|"<<next_word<<"|"<<"\n";
 		result.push_back(next_word);
 	}
 
+	std::string total;
+	for(int i = 1; i < result.size();i++){
+		total = total+result[i];
+	}
+
+
+	total.erase(std::remove_if(total.begin(), total.end(), ::isspace), total.end());
+
+
 	if(result[0] == "RULE") {
-		std::vector<std::vector<std::string>> rule;
-		std::vector<std::string> commandName;
-		commandName.push_back("RULE");
-		rule.push_back(commandName);
+		std::vector<std::vector<std::string>> rule = {{"RULE"}};
 
 		/*  Step is used to determine where we are
 		 	Step 0: command name
@@ -61,28 +74,38 @@ bool Interface::parse(std::string p_statement){
 		 	Step 2: Operator			
 			Step 3: Rule Targets
 		*/
-		int step = 0;
-		for(auto &str : result) {
-			if(step == 0){
-				step++;
-				continue;
-			} else if (step == 1) { // Parses Rule/Fact Name
-				rule.push_back(parseSeg(str));
-				step++;
-			} else if (step == 2) { // Parse Operators
-				if(str == "AND" | str == "OR") {
-					std::vector<std::string> oper;
-					oper.push_back(str);
-					rule.push_back(oper);
-					step++;
-				} else {
-					//Throw Error
-				}
-			}  else { //step == 3 // Parse Targets
-				rule.push_back(parseSeg(str));
-			}
-		}
+		// int step = 0;
+		// for(auto &str : result) {
+		// 	if(step == 0){
+		// 		step++;
+		// 		continue;
+		// 	} else if (step == 1) { // Parses Rule/Fact Name
+		// 		rule.push_back(parseSeg(str));
+		// 		step++;
+		// 	} else if (step == 2) { // Parse Operators
+		// 		if(str == "AND" | str == "OR") {
+		// 			std::vector<std::string> oper;
+		// 			oper.push_back(str);
+		// 			rule.push_back(oper);
+		// 			step++;
+		// 		} else {
+		// 			//Throw Error
+		// 		}
+		// 	}  else { //step == 3 // Parse Targets
+				rule.push_back(parseSeg(total));
+			// }
+		// }
 	
+		std::cout << "Hoping this rulle pulls through: \n";
+		for(int i = 0; i < rule.size(); i++){
+			for(int j = 0; j < rule[i].size(); j++){
+				std::cout << rule[i][j] << " ";
+			}
+			std::cout << "\n";
+		}
+
+
+
 		// Return rule vector?
 		return true;
 		// Execute command
@@ -91,20 +114,7 @@ bool Interface::parse(std::string p_statement){
 		//cout << "Made it to conditional" << endl;
 		std::vector<std::vector<std::string>> fact = {{"FACT"}};
 
-		int step = 0;
-		for(auto &str : result) {
-			if(step == 0){
-				step++;
-				continue;
-			} else if (step == 1) { // Parses Rule/Fact Name
-				fact.push_back(parseSeg(str));
-			}
-		}
-
-
-		std::cout << "IMPORTANTE: " << result[1] << " \n";
-
-		// for(int i = 1; i < )
+		fact.push_back(parseSeg(total));
 
 
 
@@ -117,13 +127,15 @@ bool Interface::parse(std::string p_statement){
 			std::cout << "\n";
 		}
 
-		std::cout << "\n";
-
 
 		//_____end of change ____
 
 		// Return fact vector?
-		return true;
+		// if(executeCommand(fact)){
+			return true;
+		// }else{
+			// return false;
+		// }
 		// Execute Command
 	} else if (result[0] == "INFERENCE") {
 		std::vector<std::vector<std::string>> query;
@@ -274,7 +286,6 @@ void Interface::commandLine(){
 			break;
 		}else{
 			if(parse(statement)){
-				std::cout << "We had a successful command ran !!!!!\n";
 			}
 		}
 

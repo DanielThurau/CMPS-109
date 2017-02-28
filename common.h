@@ -7,3 +7,5 @@
 #include <unordered_map>
 #include <set>
 #include <sstream>
+#include <cctype>
+#include <locale>
