@@ -20,7 +20,7 @@ class Interface {
 		bool executeCommand(std::vector<std::vector<std::string>>
 								p_command);
 		std::vector<std::string> parseSeg(std::string target);
-		std::vector<std::vector<std::string>> parse(std::string 
+		bool parse(std::string 
 								p_statment);
 		virtual ~Interface();
 };
