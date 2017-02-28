@@ -15,6 +15,21 @@ RuleBase::RuleBase(std::vector<Rule *> p_items){
 }
 
 /*
+ * getkeys
+ * This will return a vector containing all
+ * keys in data
+ */
+std::vector<std::string> RuleBase::getKeys() {
+	std::vector<std::string> keys;
+
+	for(const auto &pair : data) {
+		keys.push_back(pair.first);
+	}
+
+	return keys;
+}
+
+/*
  * addContent
  * This will take a Rule Object in and attempt
   * to add it to the RuleBase.
@@ -73,4 +88,3 @@ RuleBase::~RuleBase(){
 			i->second->~Rule();
 	}
 }
-

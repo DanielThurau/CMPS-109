@@ -1,20 +1,18 @@
 /* Streamer.cpp */
 
 #include "Streamer.h"
+// #include "../interface/Interface.h"
 
-Streamer::Streamer(std::string p_pathName, KnowledgeBase * p_KB, RuleBase * p_RB):
-	pathName(p_pathName), KB(p_KB), RB(p_RB) {
+Streamer::Streamer(std::string p_pathName, Interface * p_sri):
+	pathName(p_pathName), sri(p_sri) {
 
 }
 
 Streamer::Streamer(std::string p_pathName):
 	pathName(p_pathName) {
-
-	KB = new KnowledgeBase();
-	RB = new RuleBase();
 }
 
 Streamer::~Streamer() {
-	delete KB;
-	delete RB;
+	// delete KB;
+	// delete RB;
 }

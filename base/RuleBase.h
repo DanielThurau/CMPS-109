@@ -18,6 +18,12 @@ class RuleBase{
 		/* Default paramaterized constructor */
 		RuleBase(std::vector<Rule*> p_items);
 
+		/*
+		 * public method. Returns a vector with
+		 * all keys in data
+		 */
+		std::vector<std::string> getKeys();
+
 		/* 
 		 * Returns a copy of the rule obj specified by p_name 
 		 * Throws a ~ExistenceException~ if the content doesn't

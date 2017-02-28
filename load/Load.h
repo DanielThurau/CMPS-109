@@ -8,9 +8,8 @@ class Interface;
 
 class Load:public Streamer {
 	private:
-		std::vector<std::string> parseSeg(std::string target);
 	public:
-		Load(std::string p_pathName, KnowledgeBase * KB, RuleBase * RB);
+		Load(std::string p_pathName, Interface * p_sri);
 		Load(std::string p_pathName);
 
 		bool process();
