@@ -1,5 +1,3 @@
-FACT Thoma(josh)
-FACT Thoma(emma)
 FACT Father(Dan,Bob))
 FACT Father(Thoma,bob))
 FACT Father(bob,josh))

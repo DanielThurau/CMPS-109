@@ -143,11 +143,7 @@ bool Interface::parse(std::string p_statement){
 		// Execute Command
 
 	} else if (result[0] == "DROP") {
-		std::vector<std::vector<std::string>> drop;
-		std::vector<std::string> commandName;
-		commandName.push_back("DROP");
-		drop.push_back(commandName);
-
+		std::vector<std::vector<std::string>> drop = {{"DROP"}};
 		for(auto &str : result) {
 			if(str == "DROP") continue;
 			std::vector<std::string> rfName;
@@ -155,9 +151,11 @@ bool Interface::parse(std::string p_statement){
 			drop.push_back(rfName);
 		}
 
-		// Return drop vector
-		return true;
-		// Execute Command
+		if(executeCommand(drop)){
+			return true;
+		}else{
+			return false;
+		}
 
 	} else if (result[0] == "LOAD") {
 		std::vector<std::vector<std::string>> load = {{"LOAD"}};
@@ -217,19 +215,36 @@ bool Interface::executeCommand
 		return true;
 	}
 	else if (p_command[0][0] == "INFERENCE") {
+
+		
+
+
 		Inference * infer = new Inference(KB, RB);
 		//second arguement taken as query
 		std::vector<std::string> q1 = p_command[1];
 		//prints out extra $x and $y, don't know why tf it does
-		infer->query(q1);
+		std::vector<std::vector<std::string>> results =  infer->query(q1);
+
 		// delete(infer);
+		if(p_command.size() > 2){
+			for(int i = 1; i < results[0].size();i++){
+				std::vector<std::string> temp;
+				temp.push_back(p_command[p_command.size()-2][0]);
+				for(int j = 0; j < results.size();j++){
+					temp.push_back(results[j][i]);
+				}
+				std::vector<std::vector<std::string >> v;
+				v.push_back(temp);
+				Fact * f1 = new Fact(v);
+				KB->addContent(f1);
+			}
+		}
 	}
 	else if (p_command[0][0] == "LOAD") {
 		Load * ld = new Load(p_command[1][0], this); //random index i chose for testing
 		ld->process();
 	}
 	else if (p_command[0][0] == "DROP") {
-		std::cout << "DROP command" << endl;
 		RB->dropContent(p_command[1][0]);//rand index i chose for test
 		KB->dropContent(p_command[1][0]);
 		//std::cout << "drop worked" << endl;
