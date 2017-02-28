@@ -30,9 +30,14 @@ std::vector<std::string> Interface::parseSeg(std::string target) {
 	return segment;
 }
 
+
+
+
+
+
+
 //tested w/o parser
-std::vector<std::vector<std::string>> 
-Interface::parse(std::string p_statement){
+bool Interface::parse(std::string p_statement){
 	std::vector<std::string> result; 
 	std::istringstream strinput(p_statement);
 	
@@ -79,15 +84,12 @@ Interface::parse(std::string p_statement){
 		}
 	
 		// Return rule vector?
-		return rule;
+		return true;
 		// Execute command
 
 	} else if (result[0] == "FACT") {
 		//cout << "Made it to conditional" << endl;
-		std::vector<std::vector<std::string>> fact;
-		std::vector<std::string> commandName;
-		commandName.push_back("FACT");
-		fact.push_back(commandName);
+		std::vector<std::vector<std::string>> fact = {{"FACT"}};
 
 		int step = 0;
 		for(auto &str : result) {
@@ -98,9 +100,30 @@ Interface::parse(std::string p_statement){
 				fact.push_back(parseSeg(str));
 			}
 		}
-	
+
+
+		std::cout << "IMPORTANTE: " << result[1] << " \n";
+
+		// for(int i = 1; i < )
+
+
+
+		//____change____
+		std::cout << "A fact from the parse func: \n";
+		for(int p = 0; p < fact.size(); p++){
+			for(int l = 0; l < fact[p].size(); l++){
+				std::cout << fact[p][l] << " ";
+			}
+			std::cout << "\n";
+		}
+
+		std::cout << "\n";
+
+
+		//_____end of change ____
+
 		// Return fact vector?
-		return fact;
+		return true;
 		// Execute Command
 	} else if (result[0] == "INFERENCE") {
 		std::vector<std::vector<std::string>> query;
@@ -124,7 +147,7 @@ Interface::parse(std::string p_statement){
 		}
 
 		// Return query vector
-		return query;
+		return true;
 		// Execute Command
 
 	} else if (result[0] == "DROP") {
@@ -141,7 +164,7 @@ Interface::parse(std::string p_statement){
 		}
 
 		// Return drop vector
-		return drop;
+		return true;
 		// Execute Command
 
 	} else if (result[0] == "LOAD") {
@@ -159,7 +182,7 @@ Interface::parse(std::string p_statement){
 			load.push_back(fileName);
 		}
 
-		return load;
+		return true;
 
 	} else if (result[0] == "DUMP") {
 		std::vector<std::vector<std::string>> dump;
@@ -172,21 +195,33 @@ Interface::parse(std::string p_statement){
 		dump.push_back(outputFile);
 
 		// Return dump vector
-		return dump;
+		return true;
 		// Execute command?
 	} else {
 		std::cout << "Unkown Command" << std::endl;
 	}
 }
 
-//basic implementation using dummy input
-bool Interface::executeCommand 
-(std::vector<std::vector<std::string>> p_command){
+
+
+//---------------------------------------------------------------------------------------------
+// Dan no tocuh above 
+//---------------------------------------------------------------------------------------------
+
+
+
+
+/* 
+ *executeCommand 
+ * takes in a 2D vector of strings and executes a set of commands 
+ * based on the interpretation 
+ */ 
+bool Interface::executeCommand(std::vector<std::vector<std::string>> p_command){
 	//creates fact object and adds it to KB
 	if (p_command[0][0] == "FACT") {
 		std::cout << "FACT command" << endl;
-		std::vector<std::vector<std::string>> temp 
-			= {{p_command[1][0],p_command[1][1],p_command[1][2]}};
+		std::vector<std::vector<std::string>> temp;
+		// {{p_command[1][0],p_command[1][1],p_command[1][2]}};
 		Fact * f1 = new Fact(temp);
 		KB->addContent(f1);
 		std::cout << "ADDED FACT CONTENT" << endl;
@@ -229,51 +264,19 @@ bool Interface::executeCommand
 }
 
 void Interface::commandLine(){
-	//testing code used without parser
-	/*
-	std::vector<std::string> v1 = {"Father","Thoma", "bob"};
-	Fact * test = new Fact(v1);
-	*/
-	//std::vector<std::vector<std::string>> myvector;
 	while(1){
-		std::cout << "Looping commandLine()" << endl;
+		std::cout << "SRI Session:";
 		string statement;
 		//just dummy input for now
 		std::getline (std::cin, statement);
 		//will probably swap out conditionals for something else
 		if (statement == "x") {
 			break;
-		}
-		
-		std::vector<std::vector<std::string>> myvector 
-			= parse(statement);
-		//prints contents of myvector
-		/*
-		for (const std::vector<std::string> &v : myvector) {
-			std::cout << "1ST for loop" << endl;
-			for (std::string x : v ) { 
-				std::cout << "2ND for loop" << endl;
-				std::cout << x << ' ' << endl;
+		}else{
+			if(parse(statement)){
+				std::cout << "We had a successful command ran !!!!!\n";
 			}
 		}
-		cout << "after for loop in commandline" << endl;
-		*/
-		
-		for (auto &vec : myvector){
-			for(auto &i : vec){
-				std::cout << i << std::endl;
-			}
-		}
-		//executeCommand(myvector);
-
-		//std::vector<std::vector<std::string>>().swap(myvector);
-		
-		//manually looking for addcontent w.o parser
-		/*
-		else if (command == "addcontent") {
-			std::cout << "ADDING CONTENT" << endl;
-			KB->addContent(test);
-		}*/
 
 	}
 	std::cout << "Outside of commandLine() loop" << endl;
