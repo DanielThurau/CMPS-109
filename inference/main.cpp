@@ -13,7 +13,7 @@ int main(){
 	RuleBase * RB = new RuleBase();
 
 	// // Creating the vector to be pushed in to rule
-	std::vector<std::vector<std::string>> v1 = {{"Parent", "$X","$Y"}, {"AND"}, {"Father","$X","$Y"}, {"Mother","$X","$Y"}};
+	std::vector<std::vector<std::string>> v1 = {{"Parent", "$X","$Y"}, {"OR"}, {"Father","$X","$Y"}, {"Mother","$X","$Y"}};
 	std::vector<std::vector<std::string>> v2 = {{"Grandfather","$X","$Z"}, {"AND"}, {"Father", "$X","$Y"},{"Father","$Y","$Z"}};
 	// std::vector<std::string > v3 = {"Grandmother", "OR", "Parent", "Parent"};
 	// std::vector<std::string > v4 = {"Friend", "OR", "Nice", "Cool"};
@@ -42,24 +42,24 @@ int main(){
 	KnowledgeBase * KB = new KnowledgeBase();
 
 	std::vector<std::vector<std::string>> v6 = {{"Father", "Thoma", "bob"}};
-	// std::vector<std::vector<std::string>> v7 = {{"Mother", "Talitha", "sally"}};
-	std::vector<std::vector<std::string>> v7 = {{"Mother", "Thoma", "bob"}};
+	std::vector<std::vector<std::string>> v7 = {{"Mother", "Talitha", "sally"}};
+	// std::vector<std::vector<std::string>> v7 = {{"Mother", "Thoma", "bob"}};
 	std::vector<std::vector<std::string>> v8 = {{"Father", "bob", "josh"}};
 	// std::vector<std::vector<std::string>> v8 = {{"Grandfather", "Robert", "Greg"}};
-	// std::vector<std::vector<std::string>> v9 = {{"Grandfather", "Robert", "Martha"}};
-	// std::vector<std::vector<std::string>> v10 = {{"Grandfather", "Thoma", "Emma"}};
+	std::vector<std::vector<std::string>> v9 = {{"Father", "bob", "emma"}};
+	std::vector<std::vector<std::string>> v10 = {{"Father", "Thoma", "bob"}};
 
 	Fact * f1 = new Fact(v6);
 	Fact * f2 = new Fact(v7);
 	Fact * f3 = new Fact(v8);
-	// Fact * f4 = new Fact(v9);
-	// Fact * f5 = new Fact(v10);
+	Fact * f4 = new Fact(v9);
+	Fact * f5 = new Fact(v10);
 
 	std::cout << "Adding to KnowledgeBase: " << KB->addContent(f1) << '\n';
 	std::cout << "Adding to KnowledgeBase: " << KB->addContent(f2) << '\n';
-	// std::cout << "Adding to KnowledgeBase: " << KB->addContent(f3) << '\n';
-	// std::cout << "Adding to KnowledgeBase: " << KB->addContent(f4) << '\n';
-	// std::cout << "Adding to KnowledgeBase: " << KB->addContent(f5) << '\n';
+	std::cout << "Adding to KnowledgeBase: " << KB->addContent(f3) << '\n';
+	std::cout << "Adding to KnowledgeBase: " << KB->addContent(f4) << '\n';
+	std::cout << "Adding to KnowledgeBase: " << KB->addContent(f5) << '\n';
 
 
 
@@ -69,7 +69,7 @@ int main(){
 
 	Inference * test = new Inference(KB, RB);
 	
-	std::vector<std::string > i1 = {"Father", "Thoma","$Z"};
+	std::vector<std::string > i1 = {"Grandfather", "$X","$Z"};
 
 	test->query(i1);
 	// std::cout << "MAde it here \n";
