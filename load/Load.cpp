@@ -16,9 +16,7 @@ bool Load::process() {
 	std::ifstream file(pathName);
 	if (file.is_open()){
 		std::string line;
-		Interface * sri = startSri();
 		while(std::getline(file, line)){
-			sri->executeCommand(line);
 			if(!sri->parse(line)){
 				break;
 			}

@@ -18,6 +18,7 @@ bool Dump::process() {
 
 		for(auto &key : kbKeys){
 			std::vector<Fact*> factVector = sri->KB->getContent(key);
+
 			for(auto &fact : factVector){
 				std::string factString = "FACT ";
 				//Iterates over each vector of the Fact Vector
@@ -39,10 +40,10 @@ bool Dump::process() {
 			}
 		}
 
-		std::vector<std::string> rbKeys = RB->getKeys();
+		std::vector<std::string> rbKeys = sri->RB->getKeys();
 
 		for(auto &key : rbKeys){
-			Rule rule = RB->getContent(key);
+			Rule rule = sri->RB->getContent(key);
 			std::string ruleString = "RULE ";
 			bool ruleName = true;
 			bool isOp = false;

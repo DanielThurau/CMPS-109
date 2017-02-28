@@ -1,4 +1,8 @@
 #include "Interface.h"
+#include "../load/Load.h"
+#include "../dump/Dump.h"
+
+//RULE GrandFather($X,$Z):- AND Father($X,$Y) Father($Y,$Z)
 
 //default constructor just creates new objects
 Interface::Interface(){
@@ -73,6 +77,7 @@ bool Interface::parse(std::string p_statement){
 				rule.push_back(parseSeg(str));
 			}
 		}
+		// Return rule vector?
 		if(executeCommand(rule)){
 			return true;
 		}else{
@@ -119,6 +124,15 @@ bool Interface::parse(std::string p_statement){
 			}
 		}
 
+		// std::cout << "Query biatches: \n";
+
+		// for(int i = 0; i < query.size(); i++){
+		// 	for(int j = 0 ; j < query[i].size(); j++){
+		// 		std::cout << query[i][j] << " ";
+		// 	}
+		// 	std::cout  << "\n";
+		// }
+
 
 		// Return query vector
 		if(executeCommand(query)){
@@ -155,18 +169,20 @@ bool Interface::parse(std::string p_statement){
 			//this is what I should have changed
 			//used to be drop.push_back
 			load.push_back(fileName);
-			if(executeCommand(load)){
-				return true;
-			}else{
-				return false;
-			}
 		}
+		if(executeCommand(load)){
+			return true;
+		}else{
+			return false;
+		}
+
 	} else if (result[0] == "DUMP") {
 		std::vector<std::vector<std::string>> dump = {{"DUMP"}};
 
 		std::vector<std::string> outputFile;
 		outputFile.push_back(result[1]);
 		dump.push_back(outputFile);
+
 
 		// Return dump vector
 		if(executeCommand(dump)){
@@ -185,56 +201,24 @@ bool Interface::executeCommand
 (std::vector<std::vector<std::string>> p_command){
 	//creates fact object and adds it to KB
 	if (p_command[0][0] == "FACT") {
-<<<<<<< HEAD
-		std::vector<std::vector<std::string>> temp 
-			= {{p_command[1][0],p_command[1][1],p_command[1][2]}};
-		Fact * f1 = new Fact(temp);
-		KB->addContent(f1);
-		std::cout << "ADDED FACT CONTENT" << endl;
-		//std::vector<std::vector<std::string>>().swap(temp);
-		free(f1);
-=======
 		p_command.erase(p_command.begin());
 		Fact * f1 = new Fact(p_command);
 		KB->addContent(f1);
 		// free(f1);
->>>>>>> Dan
 		return true;
 	}
 	//creates rule object and adds it to RB
 	else if (p_command[0][0] == "RULE") {
-<<<<<<< HEAD
-		std::cout << "RULE command" << endl;
-		std::vector<std::vector<std::string>> temp 
-			= {p_command[1],p_command[2],
-				p_command[3], p_command[4]};
-		Rule * r1 = new Rule(temp);
-		std::cout << "ADDED RULE CONTENT" << endl;
-		RB->addContent(r1);
-		free(r1);
-=======
 		p_command.erase(p_command.begin());
 		Rule * r1 = new Rule(p_command);
 		std::cout << "GETT HERE\n";
 		RB->addContent(r1);
 		// free(r1);
->>>>>>> Dan
 		return true;
 	}
 	else if (p_command[0][0] == "INFERENCE") {
 		Inference * infer = new Inference(KB, RB);
 		//second arguement taken as query
-<<<<<<< HEAD
-		std::vector<std::string> q1 = {p_command[1]};
-		//prints out extra $x and $y, don't know why tf it does
-		infer->query(q1);
-		free(infer);
-	}
-	else if (p_command[0][0] == "LOAD") {
-		std::cout << "LOAD command" << endl;
-		Load ld(p_command[1][0]); //random index i chose for testing
-		ld.process();
-=======
 		std::vector<std::string> q1 = p_command[1];
 		//prints out extra $x and $y, don't know why tf it does
 		infer->query(q1);
@@ -243,21 +227,17 @@ bool Interface::executeCommand
 	else if (p_command[0][0] == "LOAD") {
 		Load * ld = new Load(p_command[1][0], this); //random index i chose for testing
 		ld->process();
->>>>>>> Dan
 	}
 	else if (p_command[0][0] == "DROP") {
 		std::cout << "DROP command" << endl;
 		RB->dropContent(p_command[1][0]);//rand index i chose for test
 		KB->dropContent(p_command[1][0]);
 		//std::cout << "drop worked" << endl;
-<<<<<<< HEAD
-=======
 	}else if (p_command[0][0] == "DUMP"){
 		Dump * dump_obj = new Dump(p_command[1][0], this);
 		dump_obj->process();
 		// delete(dump_obj);
 		return true;
->>>>>>> Dan
 	}
 	return false;
 }
