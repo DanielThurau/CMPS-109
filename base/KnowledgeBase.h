@@ -18,6 +18,12 @@ class KnowledgeBase{
 		KnowledgeBase(std::vector<Fact*> p_items);
 
 		/*
+		 * public method. Returns a vector with
+		 * all keys in data
+		 */
+		std::vector<std::string> getKeys();
+
+		/*
 		 * public method.  Returns a vector with any
 		 * instances of a fact 
 		 */
