@@ -258,7 +258,13 @@ void Interface::commandLine(){
 		}
 		cout << "after for loop in commandline" << endl;
 		*/
-		executeCommand(myvector);
+		
+		for (auto &vec : myvector){
+			for(auto &i : vec){
+				std::cout << i << std::endl;
+			}
+		}
+		//executeCommand(myvector);
 
 		//std::vector<std::vector<std::string>>().swap(myvector);
 		
