@@ -19,6 +19,22 @@ KnowledgeBase::KnowledgeBase(std::vector<Fact*> p_items){
 	}
 }
 
+/*
+ * getkeys
+ * This will return a vector containing all
+ * keys in data
+ */
+std::vector<std::string> KnowledgeBase::getKeys() {
+	std::vector<std::string> keys;
+
+	for(const auto &pair : data) {
+		keys.push_back(pair.first);
+	}
+
+	return keys;
+}
+
+
 /* 
  * addContent will take a ptr to a Fact obj
  * and try to insert it in a vector with the same fact name.
