@@ -1,2 +1,0 @@
-main: Dump.h Dump.cpp main.cpp
-	g++ -std=c++14 main.cpp Dump.cpp ../streamer/Streamer.cpp ../base/KnowledgeBase.cpp ../base/RuleBase.cpp ../fact/Fact.cpp ../rule/Rule.cpp ../base/exception/NonExistentEntry.cpp

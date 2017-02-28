@@ -88,4 +88,3 @@ RuleBase::~RuleBase(){
 			i->second->~Rule();
 	}
 }
-

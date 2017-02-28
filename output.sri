@@ -1,0 +1,5 @@
+FACT Father(Dan,Bob))
+FACT Father(Thoma,bob))
+FACT Father(bob,josh))
+FACT Father(bob,emma))
+RULE GrandFather($X,$Z):- AND Father($X,$Y) Father($Y,$Z) ) 
