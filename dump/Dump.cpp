@@ -84,5 +84,5 @@ bool Dump::process() {
 
 
 Dump::~Dump() {
-
+	free(sri);
 }

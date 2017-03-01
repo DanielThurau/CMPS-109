@@ -1,122 +1,96 @@
 #include "Inference.h"
-
-
-
-/* Constructor */
+/* 
+ * Constructor
+ * Inference needs two pointers to perfrom its queries on.
+ */ 
 Inference::Inference(KnowledgeBase * p_KB, RuleBase * p_RB){
 	KB = p_KB;
 	RB = p_RB;
 }
 
-
+/*
+ * query will take in a vector of strings representing the Inference that wants to be made against
+ * this objects RB and KB. This is a recursive function so there is a flag that represents the top 
+ * of the stack for printing (defaulted to 1). This will return a 2D string vector with the first 
+ * index of each element being the signifier.
+ */
 std::vector<std::vector<std::string>> Inference::query(std::vector<std::string> p_Inference, int flag){
 	/* results of querying the KB and RB with no repeats */
 	std::vector<std::vector<std::string>> results;
 
-
-
+	/* Query the KnowledgeBase with this p_Inference */
 	std::vector<std::vector<std::string>> kb_results = query_KB(p_Inference);
-	/* Results from a query on the rulebase using p_inference */
+	/* Query the RuleBase with this p_Inference */
 	std::vector<std::vector<std::string>> rb_results = query_RB(p_Inference);
-	// std::cout << "survived rb\n";
-	/* Results from a query on the kb using p_inference */
 
-
-
-	
-
-
-	// // Combine the results of the two queries (in case they're 0, or theres duplicates)
-
+	/* 
+	 * Results will now be the combined set of the results from the KB and results from the RB
+	 * with no duplicates.
+	 */
 	results = SET_OR(rb_results, kb_results);
 
-
-
-	// if we're on the bottom of the recursive stack
-	// print the results to console
+	/* If flag is 1 (at the top of the stack), print the set of results */
 	if(flag){
 		print_query(results);
 	}
-
-	// return the results upwards.  Recursive part
+	
+	/* return the results upwards. */ 
 	return results;
 }
 
-
-// query kb returns a 2d vector.  Each index of the first layer contains a vector with it's 0th 
-// elelment being the predicate it belongs to.  The rest of the elements are values that
-// are legal.  These values match up with other values in other vectors based on their index 
-// ex: {{"$X", "Bob", "Dan"}, {"$Y", "Billy", "Rachel"}}. -> {$X, $Y}, {Bob, Billy}, {Dan, Rachel}
+/*
+ * query_kb returns a 2D string vector. Each index of the first layer contains a vector with it's 0th 
+ * elelment being the signifier it belongs to.  The rest of the elements are values that
+ * are legal.  These values match up with other values in other vectors based on their index 
+ */
 std::vector<std::vector<std::string>> Inference::query_KB(std::vector<std::string> p_Inference){
-	// get the size of the inference vector (this is for checking if the fact matches the amount
-	// predicates bc of same fact name but different # of predicates)
+	/* Get the size of the inference vector */
 	int inferenceSize = p_Inference.size();
 
-	// create new packaging array.  This will hold the vectors containing legal values represented
-	// by the queries
+	/* 
+	 * Create new packaging array.  This will hold the vectors containing legal values represented
+	 * by the queries 
+	 */
 	std::vector<std::vector<std::string>> data;
 
 
-	// populating the beginning of that new array with their signifiers
-	// This creates the first vectors so when data is found, I can push it into 
-	// the vectors.
+	/* Populate the data vector with legal signifiers */
 	for(int i = 1; i < inferenceSize; ++i){
-		// WE dont want to put in a signifier if its a paramatarized query
-		// i.e: Father(Thoma, $X)
-		// for now we just dont insert the signifier, later we wont insert the values if they 
-		// arent legalw
 		if(p_Inference[i][0]=='$'){
-			// create the vector
 			std::vector<std::string > temp_vector;
-			// insert the signifier
 			temp_vector.push_back(p_Inference[i]);
-			// add that vector with signinfier into the data vector 
 			data.push_back(temp_vector);
 		}
 	}
 
 
-	// Okay now that we have the data structure all set up, we want to actually get possible
-	// macthes to the query.  Given the name of the p_inference, retrieve a vector of 
-	// fact objects that we can check if they match our criteria
+	/* Now that the data structure is set up, we retrieve possible values for the inference */
 	std::vector<Fact*> fact_data = KB->getContent(p_Inference[0]);
 
-	// for every fact in the vector holding the facts
+	/* For every fact add legal values to the data structure*/
 	for(int i = 0; i < fact_data.size(); ++i){
-
-
-
-		// facts are 2D vectors with only 1 element in first layer and factname + # of predicatess
-		// in second layer.  This if statement enters the first layer and checks that the number of 
-		// predicates + fact name = the number of predicates of p_interface + p_interface name, and if w
-		// were given a paramatarized inference ( Father(Thoma, $X) ) that the non variable predicate
-		// is the correct value, and in the correct place 
+		/* 
+		 * If the fact has the correct number of predicates and when filtered, has the correct data values for
+		 * paramatarized search
+		 */
 		if(fact_data[i]->getFact()[0].size() == inferenceSize && filter(p_Inference, fact_data[i]->getFact()[0])){
-			// If it passed that test, create a vectro to hold the data of the fact (eliminating needing)
-			// a 2d vector and a fact obj 
-			std::vector<std::string > TEMP_FACT = fact_data[i]->getFact()[0];
-
+			// If it passed that test, create a vector to hold the data of the fact
+			std::vector<std::string > this_fact = fact_data[i]->getFact()[0];
 			// start the iterator past the the fact name, starting on predicate 0
-			int iter = 1;
-			// j can be different from iter,
-			int j = 0;
-			// overall we only want to add from the fact, the values that arent paramterized
-			// we already passed the test to make sure the fact was the corret size, and had any given
-			// predicates in the reight place and had the right values
-			// so only adding the number of variable predicates
-			while(j < data.size()){
-				// IF the predicate value of the inference is variable
-				if(p_Inference[iter][0] == '$'){
-					// add the temporary facts value for that predicate
-					data[j].push_back(TEMP_FACT[iter]);
-					// increment the iterator on the inference
-					iter++;
-					// increment the pointer on the data structure
-					j++;
+			int fact_iter = 1;
+			int data_iter = 0;
+			// overall we only want to add from the fact, the values that arent paramterized we already passed the 
+			// test to make sure the fact was the corret size, and had any given predicates in the right place and 
+			// had the right value s so only adding the number of variable predicates
+			while(data_iter < data.size()){
+				if(p_Inference[fact_iter][0] == '$'){
+					// add the fact value for that predicate
+					data[data_iter].push_back(this_fact[fact_iter]);
+					fact_iter++;
+					data_iter++;
 				}else{
-					// if its a non-variable predicate, increment
-					// the p_inference iterator
-					iter++;
+					// if its a non-variable predicate
+					fact_iter++;
 				}
 			}
 
@@ -127,123 +101,113 @@ std::vector<std::vector<std::string>> Inference::query_KB(std::vector<std::strin
 	return data;
 }
 
+/* query_rb will evaluate rules and recursivley call any rules that may also need to be evaluted */
 std::vector<std::vector<std::string>> Inference::query_RB(std::vector<std::string> p_Inference){
-	std::vector<std::vector<std::string>> results;
+	/* Data structure to hold legal values */
+	std::vector<std::vector<std::string>> data;
+
 	int inferenceSize = p_Inference.size();
+
+	/* Data structure to hold the rule so there isn't function overhead */
     std::vector<std::vector<std::string>>rule_data;
+
+    /* It is possible that there is no rule in the RB with this name, return empty set if so. */
     try{
-            Rule this_rule = RB->getContent(p_Inference[0]);
-            rule_data = this_rule.getRule();
+        Rule this_rule = RB->getContent(p_Inference[0]);
+        rule_data = this_rule.getRule();
     }catch(ExistenceException e){
-            return results;
+        return data;
     }
 
-
-
+    /* Populate the data structure with signifiers */
     for(int i = 1; i < rule_data[0].size();i++){
             std::vector<std::string > temp;
             temp.push_back(rule_data[0][i]);
-            results.push_back(temp);
+            data.push_back(temp);
     }
 
 
+    // Data structure to hold possible values from inferencing with a new inference
+    std::vector<std::vector<std::string>> query_data;
 
-    std::vector<std::vector<std::string>> test;
+    // If the rule has the OR operator
     if(rule_data[1][0] == "OR"){
+    	// a query will be performed on every rule target in rule data
     	for(int i = 2; i < rule_data.size(); ++i){
 
+    		// It is possible that the new inference will have non_variable predicate values
+    		// grab original p_inference without values substitued, and create something
+    		// we can modify to make a new inference
+    		std::vector<std::string > default_rule_name = rule_data[0];
+	    	std::vector<std::string > new_inference = rule_data[i];
 
 
-    		std::vector<std::string > v10 = rule_data[0];
-	    	std::vector<std::string > v11 = rule_data[i];
-
-
+	    	// if something in p_infence was a value, see if it needs to be inserted into the
+	    	// new_inference and insert
     		for(int j = 1; j < p_Inference.size();j++){
 				if(p_Inference[j][0] !=  '$'){
-					for(int k = 1; k < v11.size();k++){
-						if(v11[k] == v10[j]){
-							v11[k] = p_Inference[j];
+					for(int k = 1; k < new_inference.size();k++){
+						if(new_inference[k] == default_rule_name[j]){
+							new_inference[k] = p_Inference[j];
 						}
 					}
 				}
 			}
 
-
-    		std::vector<std::vector<std::string>> test = query(v11, 0);
-                    int iter = 0;
-                    for(int j = 1; j < test.size(); ++j){
-                            test[iter][0] = rule_data[i][j];
-                            iter++;
-                    }
-                    results = SET_OR(results, test);
-
+			// retrieve data recursivley on the new inference
+    		std::vector<std::vector<std::string>> query_data = query(new_inference, 0);
+    		// Add this set of data to data
+            data = SET_OR(data, query_data);
         }
-        int i = 0;
-	    int j = 1;
-	    while(j!=p_Inference.size()){
-	    	if(p_Inference[j][0]!='$'){
-	    		j++;
-	    	}else{
-	    		if(p_Inference[j]!=results[i][0]){
-	    			results[i][0] = p_Inference[j];
-	    			j++;
-	    			i++;
-	    		}
-	    	}
-	    }
-        return results;
+    // if rule operator is AND
     }else{
-    	int i = 2;
+    	// Grab the position of the rule target in rule
+    	int position = 2;
+    	// Create the strctures to hold dat
+    	std::vector<std::string > default_rule_name = rule_data[0];
+    	std::vector<std::string > new_inference = rule_data[position];
 
-    	std::vector<std::string > v10 = rule_data[0];
-    	std::vector<std::string > v11 = rule_data[i];
-
-
+    	// Adjust the new inference to hold any substituted values
 		for(int j = 1; j < p_Inference.size();j++){
 			if(p_Inference[j][0] !=  '$'){
-				for(int k = 1; k < v11.size();k++){
-					if(v11[k] == v10[j]){
-						v11[k] = p_Inference[j];
+				for(int k = 1; k < new_inference.size();k++){
+					if(new_inference[k] == default_rule_name[j]){
+						new_inference[k] = p_Inference[j];
 					}
 				}
 			}
 		}
 
-
-    	test = query(v11, 0);
-		if(i != rule_data.size()-1){
-
-
-			test = subsitute(test, rule_data, i);
+		// query the new inference
+    	query_data = query(new_inference, 0);
+    	// If position isnt the last rule target in the rule, substitute the results from the previous 
+    	// query into the next rule target 
+		if(position != rule_data.size()-1){
+			query_data = subsitute(query_data, rule_data, position);
 		}
-            
+		data = SET_OR(data, query_data);
+	    data = filter_rb(p_Inference, data);
     }
 
-    if(rule_data[1][0] == "AND"){
-    	results = SET_OR(results, test);
-	    results = filter_rb(p_Inference, results);
-    }
-
-
+    // Evaluating rules can lead to different signifiers being inserted into the datat, and returned upwards
+    // this loop will change those signifiers back to the orginial p_inference signifiers
     int i = 0;
     int j = 1;
     while(j!=p_Inference.size()){
     	if(p_Inference[j][0]!='$'){
     		j++;
     	}else{
-    		if(p_Inference[j]!=results[i][0]){
-    			results[i][0] = p_Inference[j];
+    		if(p_Inference[j]!=data[i][0]){
+    			data[i][0] = p_Inference[j];
     			j++;
     			i++;
     		}
     	}
     }
-
-
-
-    return results;
+    return data;
 }
 
+/* Print query formats a 2D string vector and prints to stdout */
 void Inference::print_query(std::vector<std::vector<std::string>> p_set){
 	for(int i = 1; i < p_set[0].size(); ++i){
 		for (int j = 0; j < p_set.size(); ++j){
@@ -258,18 +222,14 @@ void Inference::print_query(std::vector<std::vector<std::string>> p_set){
 }
 
 
-
-// SET_OR, given 2 unique 2d string vectors, return a single 2D string vector containing only the values of both 2D vectors where their 
-// signifiers match. 
-// i.e {{$X, Bob, Sally, Frank, Ray}, {$Y, ball, circle, triangle, square}} OR
-//     {{$X, Joe, Paul, Ben, Dan}, {$Y, rectanlge, rhombus, sphere, cube}, {$Z, red, blue, green, orange}}
-// will concatante to: 
-//		{{$X, Bob, Sally, Frank, Ray, Joe, Paul, Ben, Dan}, {$Y, ball, circle, triangle, square, rectangle, rhombus, sphere, cube}}
-// with no $Z value
+/*
+ * SET_OR, given 2 unique 2d string vectors, return a single 2D string vector containing only the values of both 2D vectors where their 
+ * signifiers match. 
+ */
 std::vector<std::vector<std::string>> Inference::SET_OR(std::vector<std::vector<std::string>> A, std::vector<std::vector<std::string>> B){
 	
 	// This is the data strcuture of the returning object
-	std::vector<std::vector<std::string>> final;
+	std::vector<std::vector<std::string>> data;
 
 	// If A is empty (i.e no an empty 2d structre)
 	if(A.empty()){
@@ -311,18 +271,18 @@ std::vector<std::vector<std::string>> Inference::SET_OR(std::vector<std::vector<
 			 	for(int j = 1; j < B[i].size(); j++){
 			 		to_be.push_back(B[i][j]);
 			 	}
-			 	// add it to the final data strcut
-			 	final.push_back(to_be);
+			 	// add it to the data data struct
+			 	data.push_back(to_be);
 
 			}
 		}
 	}
-
+	data = remove_duplicates(data);
 	// return the now combined 2D struct
-	return final;
+	return data;
 
 }
-
+/* filter returns true if the values match the filter given */
 bool Inference::filter(std::vector<std::string> p_filter, std::vector<std::string > data ){
 	for(int i = 1; i < p_filter.size(); ++i){
 		if(p_filter[i][0] != '$'){
@@ -335,19 +295,12 @@ bool Inference::filter(std::vector<std::string> p_filter, std::vector<std::strin
 }
 
 
-Inference::~Inference(){
-	free(KB);
-	free(RB);
-}
 
 
 // Removing duplicates
 // Takes in a 2D string vector, and needs to iterate through the entire thing and check for duplicates
 // if there is a duplicates it means that every predicate item it has, will be somehwere else.  I only need to
-// check one column, but when a match comes up i have to check N amout of predicates.  Maybe I should just make a temp
-// vector that once it senses a pssible duplicate (column 0 matches their column 0), copy all of its data into a 
-// vector and compare.  Therefore the vector being checked on is already in vector form and will cjust have its dat 
-// then copied into the final
+// check one column, but when a match comes up i have to check N amout of predicates. 
 std::vector<std::vector<std::string>> Inference::remove_duplicates(std::vector<std::vector<std::string >> data){
 	// data struct holding all the non duplicate values
 	std::vector<std::vector<std::string>> final;
@@ -365,11 +318,7 @@ std::vector<std::vector<std::string>> Inference::remove_duplicates(std::vector<s
 	for(int i = 1; i < data[0].size(); ++i){
 		// create a 1D string vector
 		std::vector<std::string> comparing;
-		// copy all of its relevant data to it
-		/*
-			{{$X, Dan, Paul, Ben, Roj, ray, Paul}, {$Y, sally, rachel, carson, bindi, melissa, rachel}, {$Z, red, green, blue, orange, yellow, purple}}
-			will become {Dan, Sally, red} when its the correct turn , so next turn would be {Paul, rachel, green}
-		*/
+
 		for(int j = 0; j < data.size();j++){
 			comparing.push_back(data[j][i]);
 		}
@@ -390,9 +339,6 @@ std::vector<std::vector<std::string>> Inference::remove_duplicates(std::vector<s
 				}
 			}
 		}
-		// if there wasnt a copy of the item somewhere later in the list
-		// add that to the final
-		// if there is a copy later in the list, that copy will be added, not you
 		if(flag){
 			for(int j = 0; j < final.size();j++){
 				final[j].push_back(comparing[j]);
@@ -403,39 +349,34 @@ std::vector<std::vector<std::string>> Inference::remove_duplicates(std::vector<s
 
 }
 
-// given a rule data a position, and a 2d set of string vectors values to be subbed
+/* substitute will take in data, rule_data, and a position and substitute any reused predicates into the next rule_target */
 std::vector<std::vector<std::string>> Inference::subsitute(std::vector<std::vector<std::string>> data, std::vector<std::vector<std::string>> rule_data, int i){
-	std::vector<std::vector<std::string >> final;
-
+	std::vector<std::vector<std::string >> results;
 
 	// take the vector of the rule target located at given i
-	// and add the predicates to final
+	// and add the predicates to results
 	for(int j = 1; j < rule_data[i].size(); j++){
 		std::vector<std::string> temp_v;
 		temp_v.push_back(rule_data[i][j]);
-		final.push_back(temp_v);
+		results.push_back(temp_v);
 	}
-
-
 	
 	// create an p_inference vector
 	std::vector<std::string> p_Inference;
 	// iterate over the next item in the rule_data
 	for(int j = 0; j < rule_data[i+1].size();j++){
-		// if im not the ruletarget name try and add 
-		// any non duplicated predicates to final
-		// {Father $X $Y } {Father $Y $Z} -> final = {{$X}, {$Y}, {$Z}}
+		// if not the rule name, try to add the signifiers
 		if(j!=0){
 			bool canAdd = true;
-			for(int q = 1; q < final.size();q++){
-				if(rule_data[i+1][j]==final[q][0]){
+			for(int q = 1; q < results.size();q++){
+				if(rule_data[i+1][j]==results[q][0]){
 					canAdd = false;
 				}
 			}
 			if(canAdd){
 				std::vector<std::string> temp_v;
 				temp_v.push_back(rule_data[i+1][j]);
-				final.push_back(temp_v);
+				results.push_back(temp_v);
 			}
 		}
 
@@ -444,59 +385,56 @@ std::vector<std::vector<std::string>> Inference::subsitute(std::vector<std::vect
 	}
 
 
-	// for every ] set there is in data, create a customized 
+	// for every set there is in data, create a customized 
 	// set of their values, and adjust p_inference for their values 
-	// (if they exist in it)
 	for(int j = 1; j < data[0].size(); j++){
 		// temp vector this_V
 		std::vector<std::vector<std::string>> this_v;
-		for(int b = 0; b < final.size(); b++){
-			std::vector<std::string > v = {final[b][0]};
+		for(int b = 0; b < results.size(); b++){
+			std::vector<std::string > v = {results[b][0]};
 			this_v.push_back(v);
 		}
 		// for every value of a signifier in data a data row
 		for(int k = 0; k < data.size(); k++){
 			// create a set of them in vector this_v
-			for(int pp = 0; pp < this_v.size();pp++){
-				if(data[k][0] == this_v[pp][0]){
-					this_v[pp].push_back(data[k][j]);
+			for(int p = 0; p < this_v.size();p++){
+				if(data[k][0] == this_v[p][0]){
+					this_v[p].push_back(data[k][j]);
 				}
 			}
 
 
 			
 			// checking against rule_Data[i+1]
-			for(int l = 0; l < rule_data[i+1].size(); l++){
+			for(int p = 0; p < rule_data[i+1].size(); p++){
 				// std::cout << "data[" << k << "][" << i << "]: " << data[k][0] << " and rule_data["<<i+1<<"]["<< l << "]: " << rule_data[i+1][l] << '\n';
-				if(data[k][0] == rule_data[i+1][l]){
-					p_Inference[l] = data[k][j];
+				if(data[k][0] == rule_data[i+1][p]){
+					p_Inference[p] = data[k][j];
 
 				}
 			}
 		}
 		
-		// run query on the now awesome custom p_Inference
+		// run query on the now p_Inference
 		std::vector<std::vector<std::string >> return_data = query(p_Inference, 0);
-		// std::cout << "These are the results from querying on father(bob,$Z)\n";
-		// print_query(return_data);
+
 		if(return_data.size() > 0){
 			// mroe than just the sigs
 			if(return_data[0].size() > 1){
-				for(int f = 1; f < return_data[0].size(); f++){
-
+				for(int k = 1; k < return_data[0].size(); k++){
 					for(int y = 0; y < this_v.size()-1; y++){
-						for(int yy = 0; yy < final.size();yy++){
-							
-							if(this_v[y][0] == final[yy][0]){
-								final[yy].push_back(this_v[y][1]);
+						for(int yy = 0; yy < results.size();yy++){
+							if(this_v[y][0] == results[yy][0]){
+								results[yy].push_back(this_v[y][1]);
 								break;
 							}
 						}
 					}
 					for(int y = 0; y < return_data.size(); y++){
-						for(int yy = 0; yy < final.size();yy++){
-							if(return_data[y][0] == final[yy][0]){
-								final[yy].push_back(return_data[y][f]);
+						for(int yy = 0; yy < results.size();yy++){
+							if(return_data[y][0] == results[yy][0]){
+								results[yy].push_back(return_data[y][k]);
+								break;
 							}
 						}
 					}
@@ -506,18 +444,18 @@ std::vector<std::vector<std::string>> Inference::subsitute(std::vector<std::vect
 		}
 	}
 
-	// }
-	return final;
+	return results;
 }
 
+/* filter_Rb takes in p_filter and removes any signifier and their elements not included in p_filter */
 std::vector<std::vector<std::string>> Inference::filter_rb(std::vector<std::string> p_filter,  std::vector<std::vector<std::string>> data){
-	std::vector<std::vector<std::string >> final;
+	std::vector<std::vector<std::string >> results;
 	
 
 	for(int i = 0; i < data.size(); i++){
 		std::vector<std::string> v;
 		v.push_back(data[i][0]);
-		final.push_back(v);
+		results.push_back(v);
 
 	}
 
@@ -529,8 +467,8 @@ std::vector<std::vector<std::string>> Inference::filter_rb(std::vector<std::stri
 	for(int j = 1; j < data[0].size(); j++){
 		// temp vector this_V
 		std::vector<std::vector<std::string>> this_v;
-		for(int b = 0; b < final.size(); b++){
-			std::vector<std::string > v = {final[b][0]};
+		for(int b = 0; b < results.size(); b++){
+			std::vector<std::string > v = {results[b][0]};
 			this_v.push_back(v);
 		}
 		// for every value of a signifier in data a data row
@@ -557,9 +495,9 @@ std::vector<std::vector<std::string>> Inference::filter_rb(std::vector<std::stri
 		}
 		if(canAdd){
 			for(int i = 0; i < this_v.size();i++){
-				for(int k = 0; k < final.size();k++){
-					if(this_v[i][0] == final[k][0]){
-						final[k].push_back(this_v[i][1]);
+				for(int k = 0; k < results.size();k++){
+					if(this_v[i][0] == results[k][0]){
+						results[k].push_back(this_v[i][1]);
 					}
 				}
 			}
@@ -570,5 +508,12 @@ std::vector<std::vector<std::string>> Inference::filter_rb(std::vector<std::stri
 	}
 
 
-	return final;
+	return results;
+}
+
+
+// Destructor that frees the ptrs
+Inference::~Inference(){
+	free(KB);
+	free(RB);
 }

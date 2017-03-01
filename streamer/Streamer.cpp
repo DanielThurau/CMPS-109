@@ -13,6 +13,5 @@ Streamer::Streamer(std::string p_pathName):
 }
 
 Streamer::~Streamer() {
-	// delete KB;
-	// delete RB;
+	free(sri);
 }

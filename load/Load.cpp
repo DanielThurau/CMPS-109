@@ -47,5 +47,5 @@ Interface * Load::startSRI() {
 }
 
 Load::~Load() {
-
+	free(sri);
 }

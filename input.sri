@@ -12,5 +12,5 @@ RULE Foo($X,$Y,$Z):- OR Bar($X,$Y,$Z) Bat($X,$Y,$Z) Ban($X,$Y,$Z)
 RULE GrandFather($X,$Z):- AND Father($X,$Y) Father($Y,$Z)
 RULE Parent($X,$Y):- OR Father($X,$Y) Mother($X,$Y)
 RULE Grandmother($X,$Z):- AND Mother($X,$Y) Parent($Y,$Z)
-INFERENCE GrandFather($O,$P)
+INFERENCE GrandFather($O,$P) GF
 DUMP output.sri
