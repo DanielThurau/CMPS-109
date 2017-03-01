@@ -9,7 +9,6 @@ class Inference{
 		KnowledgeBase * KB;
 		void print_query(std::vector<std::vector<std::string>> p_set);
 		std::vector<std::vector<std::string>> SET_OR(std::vector<std::vector<std::string>> A, std::vector<std::vector<std::string>> B);
-		std::vector<std::vector<std::string>> SET_AND(std::vector<std::vector<std::string>> A, std::vector<std::vector<std::string>> B);
 		std::vector<std::vector<std::string>> remove_duplicates(std::vector<std::vector<std::string >> data);
 		bool filter(std::vector<std::string> p_filter, std::vector<std::string > data );
 		std::vector<std::vector<std::string>> subsitute(std::vector<std::vector<std::string>> test, std::vector<std::vector<std::string>> rule_data, int i);

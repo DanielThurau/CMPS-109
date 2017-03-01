@@ -1,7 +1,10 @@
-FACT Father(Dan,Bob)
 FACT Father(Thoma,bob)
 FACT Father(bob,josh)
 FACT Father(bob,emma)
+FACT Mother(talitha,bob)
+FACT Father(jim,may)
+FACT Mother(emma,ben)
 RULE GrandFather($X,$Z):- AND Father($X,$Y) Father($Y,$Z)
-INFERENCE GrandFather($X,$Z) GF
-DUMP outpur.sri
+RULE Parent($X,$Y):- OR Father($X,$Y) Mother($X,$Y)
+RULE Grandmother($X,$Z):- AND Mother($X,$Y) Parent($Y,$Z)
+INFERENCE GrandFather(Thoma,$Y)
