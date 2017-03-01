@@ -28,9 +28,22 @@ bool Load::process() {
 	}
 }
 
-Interface * Load::startSri() {
-	Interface * sri = new Interface();
-	return sri;
+Interface * Load::startSRI() {
+	Interface * ourSRI = new Interface();
+
+	std::ifstream file(pathName);
+	if (file.is_open()){
+		std::string line;
+		while(std::getline(file, line)){
+			std::cout << line << "\n";
+			if(!ourSRI->parse(line)){
+				break;
+			}
+		}
+	} else {
+		std::cout << "Error opening file" << std::endl;
+	}
+	return ourSRI;
 }
 
 Load::~Load() {

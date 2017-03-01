@@ -124,15 +124,6 @@ bool Interface::parse(std::string p_statement){
 			}
 		}
 
-		// std::cout << "Query biatches: \n";
-
-		// for(int i = 0; i < query.size(); i++){
-		// 	for(int j = 0 ; j < query[i].size(); j++){
-		// 		std::cout << query[i][j] << " ";
-		// 	}
-		// 	std::cout  << "\n";
-		// }
-
 
 		// Return query vector
 		if(executeCommand(query)){
@@ -209,7 +200,6 @@ bool Interface::executeCommand
 	else if (p_command[0][0] == "RULE") {
 		p_command.erase(p_command.begin());
 		Rule * r1 = new Rule(p_command);
-		std::cout << "GETT HERE\n";
 		RB->addContent(r1);
 		// free(r1);
 		return true;
@@ -239,6 +229,7 @@ bool Interface::executeCommand
 				KB->addContent(f1);
 			}
 		}
+		return true;
 	}
 	else if (p_command[0][0] == "LOAD") {
 		Load * ld = new Load(p_command[1][0], this); //random index i chose for testing
@@ -274,7 +265,6 @@ void Interface::commandLine(){
 			break;
 		}
 		if(parse(statement)){
-			std::cout << "IT worked\n";
 		}
 
 	}

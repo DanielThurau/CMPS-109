@@ -20,12 +20,19 @@ std::vector<std::vector<std::string>> Inference::query(std::vector<std::string> 
 	std::vector<std::vector<std::string>> results;
 
 
-
+	std::vector<std::vector<std::string>> kb_results = query_KB(p_Inference);
 	/* Results from a query on the rulebase using p_inference */
 	std::vector<std::vector<std::string>> rb_results = query_RB(p_Inference);
 	/* Results from a query on the kb using p_inference */
-	std::vector<std::vector<std::string>> kb_results = query_KB(p_Inference);
+
 	
+
+	// std::cout << "p_Inference: ";
+	// for(int i = 0; i < p_Inference.size();i++){
+	// 	std::cout << p_Inference[i] << " ";
+	// }
+	// std::cout << "\n";
+
 
 	// std::cout << "Lets see if they inderted right b4 results or of rb_results: \n";
 
@@ -35,7 +42,6 @@ std::vector<std::vector<std::string>> Inference::query(std::vector<std::string> 
 	// 		}
 	// 		std::cout << "\n";
 	// 	}
-	// 	std::cout << "\n";
 
 
 
@@ -47,11 +53,10 @@ std::vector<std::vector<std::string>> Inference::query(std::vector<std::string> 
 	// 		}
 	// 		std::cout << "\n";
 	// 	}
-	// 	std::cout << "\n";
-
 
 
 	// // Combine the results of the two queries (in case they're 0, or theres duplicates)
+
 	results = SET_OR(rb_results, kb_results);
 
 	// if we're on the bottom of the recursive stack
@@ -145,6 +150,21 @@ std::vector<std::vector<std::string>> Inference::query_KB(std::vector<std::strin
 		}
 	}
 
+	std::cout << "p_Inference being returned on from RB: ";
+	for(int asd =0; asd  <p_Inference.size();asd++){
+		std::cout << p_Inference[asd] << " ";
+	}
+	std::cout << "\n";
+	std::cout << "SET of facts being returned from above inference: \n";
+	if(data.size() > 0){
+		for(int i = 0; i < data[0].size();i++){
+			for(int asd=0; asd < data.size();asd++){
+				std::cout << data[asd][i]  << " ";
+			}
+			std::cout << "\n";
+		}
+		std::cout << "-------------------------------------\n";
+	}
 	// return all values of that data
 	return data;
 }
@@ -160,11 +180,14 @@ std::vector<std::vector<std::string>> Inference::query_RB(std::vector<std::strin
             return results;
     }
 
+
+
     for(int i = 1; i < rule_data[0].size();i++){
             std::vector<std::string > temp;
             temp.push_back(rule_data[0][i]);
             results.push_back(temp);
     }
+
 
 
     std::vector<std::vector<std::string>> test;
@@ -179,9 +202,17 @@ std::vector<std::vector<std::string>> Inference::query_RB(std::vector<std::strin
                     results = SET_OR(results, test);
         }
     }else{
+
+
+
+
     	int i = 2;
+
+
+
     	test = query(rule_data[i], 0);
 		if(i != rule_data.size()-1){
+
 			// std::cout << "seeing if subsituing is a good plan\n";
 //     		for(int c = 0; c < test.size(); c++){
 			// 	for(int b = 0; b < test[c].size(); b++){
@@ -288,123 +319,6 @@ std::vector<std::vector<std::string>> Inference::SET_OR(std::vector<std::vector<
 
 }
 
-
-std::vector<std::vector<std::string>> Inference::SET_AND(std::vector<std::vector<std::string>> A, std::vector<std::vector<std::string>> B){
-	// // print A
-	// std::cout << "This is A: \n";
-	// for(int i = 0; i < A.size(); ++i){
-	// 	for(int j = 0; j < A[i].size(); ++j){
-	// 		std::cout << A[i][j] << " ";
-	// 	}
-	// 	std::cout << '\n';
-	// }
-
-
-	// // PRint B
-	// std::cout << "This is B: \n";
-	// for(int i = 0; i < B.size(); ++i){
-	// 	for(int j = 0; j < B[i].size(); ++j){
-	// 		std::cout << B[i][j] << " ";
-	// 	}
-	// 	std::cout << '\n';
-	// }
-
-
-
-	// final 2d array to be returned
-	std::vector<std::vector<std::string>> final;
-	// For every 2nd layer vector
-	for(auto it = A.begin(); it != A.end(); it++ ){
-		// get a temp vector from that location
-		std::vector<std::string > temp = *it;
-		// iterate through every one of b's second layer vector
-		for(int i = 0; i < B.size(); i++){
-			// if the signifiers macth up (i.e a pipeline)
-			 if(temp[0] == B[i][0]){
-
-			 	// create a vector to hold the intersection values
-			 	std::vector<std::string> v3;
-			 	sort(temp.begin(), temp.end());
-			 	sort(B[i].begin(), B[i].end());
-			 	std::set_intersection(temp.begin(), temp.end(), B[i].begin(), B[i].end(), back_inserter(v3));
-
-			 	// v3 now holds all values where the values matched up.  Now 
-
-			 	std::cout << "TEST AND for V3: \n";
-				for(int i = 0; i < v3.size(); i++){
-					std::cout << v3[i] << " ";
-				}
-				std::cout << "\n";
-
-
-				// nowi have to iterate throguh bother and check their signifiers (do a first.  Create a temp vector and grab all relent data
-				// vector is of size A+B-1 (and on a value)
-				// add to that vector the corresponding values of A and B, and then where the matching sig is 
-
-				std::vector<std::string> to_be;
-				for(int k = 0; k < A.size(); k++){
-					std::vector<std::string > to_be2;
-					to_be2.push_back(A[k][0]);
-					final.push_back(to_be2);
-				}
-				for(int k = 0; k < B.size(); k++){
-					if(B[k][0]!=v3[0]){
-						std::vector<std::string > to_be2;
-						to_be2.push_back(B[k][0]);
-						final.push_back(to_be2);
-					}
-				}
-
-				// std::cout << "Lets see if they inderted right: \n";
-
-				// for(int p = 0; p < final.size(); p++){
-				// 	std::cout << final[p][0] << " ";
-				// }
-				// std::cout << "\n";
-
-
-				// for(int l = 1; l < v3.size(); l++){
-				// 	std::vector<std::string > v4 = pull(A, B, v3[l], v3[0]);
-
-				// 	std::cout << "TEST AND for V4: \n";
-				// 	for(int i = 0; i < v3.size(); i++){
-				// 		std::cout << v3[i] << " ";
-				// 	}
-				// 	std::cout << "\n";
-
-				// 	for(int m = 0 ; m < v4.size(); m++){
-				// 		std::cout << "Got here boiiii\n";
-				// 		final[m].push_back(v4[m]);
-				// 	}
-
-				// }
-
-
-
-
-
-
-
-			 }
-		}
-	}
-
-
-	
-
-
-
-
-
-
-
-
-
-
-
-	return final;
-}
-
 bool Inference::filter(std::vector<std::string> p_filter, std::vector<std::string > data ){
 	for(int i = 1; i < p_filter.size(); ++i){
 		if(p_filter[i][0] != '$'){
@@ -488,6 +402,30 @@ std::vector<std::vector<std::string>> Inference::remove_duplicates(std::vector<s
 // given a rule data a position, and a 2d set of string vectors values to be subbed
 std::vector<std::vector<std::string>> Inference::subsitute(std::vector<std::vector<std::string>> data, std::vector<std::vector<std::string>> rule_data, int i){
 	std::vector<std::vector<std::string >> final;
+	std::cout << "--------------------------------------------\n";
+	std::cout << "I REALLY WANT TO PRINT DATA: \n";
+	if(data.size()>0){
+		for(int j = 0; j < data[0].size();j++){
+			for(int i =0 ;i < data.size();i++){
+				std::cout << data[i][j] << " ";
+			}
+			std::cout << "\n";
+		}
+	}
+	if(rule_data.size()>0){
+		std::cout << "END of data \n -----------------------------------------------------\n";
+		std::cout << "I REALLY WANT TO PRINT rule_DATA: \n";
+			for(int j = 0; j < rule_data.size();j++){
+				for(int i =0 ;i < rule_data[j].size();i++){
+					std::cout << data[j][i] << " ";
+				}
+				// std::cout << "\n";
+			}
+			std::cout << "\n";
+		std::cout << "END of data \n -----------------------------------------------------\n";
+	}
+
+
 
 	for(int j = 1; j < rule_data[i].size(); j++){
 		std::vector<std::string> temp_v;
@@ -545,26 +483,26 @@ std::vector<std::vector<std::string>> Inference::subsitute(std::vector<std::vect
 			}
 
 			std::vector<std::vector<std::string >> return_data = query(p_Inference, 0);
-			
-			if(return_data[0].size()!=1){
-				// std::cout << "The data to be acted upon \n";
-				// for(int f = 0; f < this_v.size(); f++){
-				// 	std::cout << this_v[f] << " ";
-				// }
-				// std::cout << "\n";
-				// std::cout << "REturned values of what subsitute ran per value given:\n";
-				// print_query(return_data);
-				for(int f = 1; f < return_data[0].size(); f++){
-					for(int y = 0; y < this_v.size(); y++){
-						final[y].push_back(this_v[y]);
+			if(return_data.size()>0){
+				if(return_data[0].size() > 1){
+					// std::cout << "The data to be acted upon \n";
+					// for(int f = 0; f < this_v.size(); f++){
+					// 	std::cout << this_v[f] << " ";
+					// }
+					// std::cout << "\n";
+					// std::cout << "REturned values of what subsitute ran per value given:\n";
+					// print_query(return_data);
+					for(int f = 1; f < return_data[0].size(); f++){
+						for(int y = 0; y < this_v.size(); y++){
+							final[y].push_back(this_v[y]);
+						}
+						for(int y = this_v.size(); y < final.size();y++){
+							final[y].push_back(return_data[y-this_v.size()][f]);
+						}
 					}
-					for(int y = this_v.size(); y < final.size();y++){
-						final[y].push_back(return_data[y-this_v.size()][f]);
-					}
+					
 				}
-				
 			}
-			// for(int m = 0; m < )
 		}
 
 		// print_query(final);

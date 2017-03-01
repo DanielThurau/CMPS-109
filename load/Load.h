@@ -14,7 +14,7 @@ class Load:public Streamer {
 
 		bool process();
 
-		Interface * startSri();
+		Interface * startSRI();
 
 		~Load();
 
