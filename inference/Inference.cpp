@@ -20,18 +20,30 @@ std::vector<std::vector<std::string>> Inference::query(std::vector<std::string> 
 	std::vector<std::vector<std::string>> results;
 
 
-	std::vector<std::vector<std::string>> kb_results = query_KB(p_Inference);
-	/* Results from a query on the rulebase using p_inference */
-	std::vector<std::vector<std::string>> rb_results = query_RB(p_Inference);
-	/* Results from a query on the kb using p_inference */
-
-	
-
 	// std::cout << "p_Inference: ";
 	// for(int i = 0; i < p_Inference.size();i++){
 	// 	std::cout << p_Inference[i] << " ";
 	// }
 	// std::cout << "\n";
+
+
+	std::vector<std::vector<std::string>> kb_results = query_KB(p_Inference);
+	// std::cout << "Lets see if they inderted right b4 results or of kb_results: \n";
+
+	// 	for(int c = 0; c < kb_results.size(); c++){
+	// 		for(int b = 0; b < kb_results[c].size(); b++){
+	// 			std::cout << kb_results[c][b] << " ";
+	// 		}
+	// 		std::cout << "\n";
+	// 	}
+	// std::cout << "survived kb\n";
+	/* Results from a query on the rulebase using p_inference */
+	std::vector<std::vector<std::string>> rb_results = query_RB(p_Inference);
+	// std::cout << "survived rb\n";
+	/* Results from a query on the kb using p_inference */
+
+	
+
 
 
 	// std::cout << "Lets see if they inderted right b4 results or of rb_results: \n";
@@ -45,19 +57,24 @@ std::vector<std::vector<std::string>> Inference::query(std::vector<std::string> 
 
 
 
-	// std::cout << "Lets see if they inderted right b4 results or of kb_results: \n";
-
-	// 	for(int c = 0; c < kb_results.size(); c++){
-	// 		for(int b = 0; b < kb_results[c].size(); b++){
-	// 			std::cout << kb_results[c][b] << " ";
-	// 		}
-	// 		std::cout << "\n";
-	// 	}
+	
 
 
 	// // Combine the results of the two queries (in case they're 0, or theres duplicates)
 
 	results = SET_OR(rb_results, kb_results);
+
+
+	// std::cout << "results: \n";
+
+	// 	for(int c = 0; c < results.size(); c++){
+	// 		for(int b = 0; b < results[c].size(); b++){
+	// 			std::cout << results[c][b] << " ";
+	// 		}
+	// 		std::cout << "\n";
+	// 	}
+
+
 
 	// if we're on the bottom of the recursive stack
 	// print the results to console
@@ -150,21 +167,6 @@ std::vector<std::vector<std::string>> Inference::query_KB(std::vector<std::strin
 		}
 	}
 
-	std::cout << "p_Inference being returned on from RB: ";
-	for(int asd =0; asd  <p_Inference.size();asd++){
-		std::cout << p_Inference[asd] << " ";
-	}
-	std::cout << "\n";
-	std::cout << "SET of facts being returned from above inference: \n";
-	if(data.size() > 0){
-		for(int i = 0; i < data[0].size();i++){
-			for(int asd=0; asd < data.size();asd++){
-				std::cout << data[asd][i]  << " ";
-			}
-			std::cout << "\n";
-		}
-		std::cout << "-------------------------------------\n";
-	}
 	// return all values of that data
 	return data;
 }
@@ -177,6 +179,7 @@ std::vector<std::vector<std::string>> Inference::query_RB(std::vector<std::strin
             Rule this_rule = RB->getContent(p_Inference[0]);
             rule_data = this_rule.getRule();
     }catch(ExistenceException e){
+    		// std::cout << "caught exception\n";
             return results;
     }
 
@@ -208,32 +211,105 @@ std::vector<std::vector<std::string>> Inference::query_RB(std::vector<std::strin
 
     	int i = 2;
 
+    	std::vector<std::string > v10 = rule_data[0];
+    	std::vector<std::string > v11 = rule_data[i];
 
 
-    	test = query(rule_data[i], 0);
+  //   	std::cout << "This is the base command (no subsituted p_inference): ";
+  //   	for(int j =0 ;j < v10.size();j++){
+		// 	std::cout << v10[j] << " ";
+		// }
+		// std::cout << "\n";
+
+		// std::cout << "This is the our command (no subsituted p_inference) : ";
+  //   	for(int j =0 ;j < v11.size();j++){
+		// 	std::cout << v11[j] << " ";
+		// }
+		// std::cout << "\n";
+
+		// std::cout << "This is the p_inference): ";
+  //   	for(int j =0 ;j < p_Inference.size();j++){
+		// 	std::cout << p_Inference[j] << " ";
+		// }
+		// std::cout << "\n";
+
+
+
+
+
+
+
+
+		for(int j = 1; j < p_Inference.size();j++){
+			if(p_Inference[j][0] !=  '$'){
+				for(int k = 1; k < v11.size();k++){
+					if(v11[k] == v10[j]){
+						v11[k] = p_Inference[j];
+					}
+				}
+			}
+		}
+
+
+		// std::cout << "This is the base command (no subsituted p_inference): ";
+  //   	for(int j =0 ;j < v10.size();j++){
+		// 	std::cout << v10[j] << " ";
+		// }
+		// std::cout << "\n";
+
+		// std::cout << "This is the our command (no subsituted p_inference) : ";
+  //   	for(int j =0 ;j < v11.size();j++){
+		// 	std::cout << v11[j] << " ";
+		// }
+		// std::cout << "\n";
+
+		// std::cout << "This is the p_inference): ";
+  //   	for(int j =0 ;j < p_Inference.size();j++){
+		// 	std::cout << p_Inference[j] << " ";
+		// }
+		// std::cout << "\n";
+
+
+
+
+// std::cout << "Im UFcifnsln fherwe \n";
+
+    	test = query(v11, 0);
 		if(i != rule_data.size()-1){
 
-			// std::cout << "seeing if subsituing is a good plan\n";
-//     		for(int c = 0; c < test.size(); c++){
-			// 	for(int b = 0; b < test[c].size(); b++){
-			// 		std::cout << test[c][b] << " ";
+			// for(int k =1;k < p_Inference.size();k++){
+			// 	if(p_Inference[k][0] != '$'){
+			// 		std::vector<std::string > to_insert;
+			// 		to_insert.push_back(rule_data[i][k]);
+			// 		for(int ll = 1; ll < test[0].size();ll++){
+			// 			to_insert.push_back(p_Inference[k]);
+			// 		}
+
+			// 		test.insert(test.begin(), to_insert);
+
 			// 	}
-			// 	std::cout << "\n";
 			// }
-			// std::cout << "\n";
+
 			test = subsitute(test, rule_data, i);
 		}
             
     }
-    // std::cout << "results\n";
+    print_query(test);
+	std::cout << "test\n----------------------------\n";
+    results = SET_OR(results, test);
+    std::cout << "results\n----------------------------\n";
+    print_query(results);
+
+
+    results = filter_rb(p_Inference, results);
+    std::cout << "results\n----------------------------\n";
+    // // std::cout << "results\n";
     // print_query(results);
     // std::cout << "---------------------------------\n";
     // std::cout << "test\n";
     // print_query(test);
 
-    results = SET_OR(results, test);
-    results = filter_rb(p_Inference, results);
-
+    
 
 
 
@@ -402,31 +478,18 @@ std::vector<std::vector<std::string>> Inference::remove_duplicates(std::vector<s
 // given a rule data a position, and a 2d set of string vectors values to be subbed
 std::vector<std::vector<std::string>> Inference::subsitute(std::vector<std::vector<std::string>> data, std::vector<std::vector<std::string>> rule_data, int i){
 	std::vector<std::vector<std::string >> final;
-	std::cout << "--------------------------------------------\n";
-	std::cout << "I REALLY WANT TO PRINT DATA: \n";
-	if(data.size()>0){
-		for(int j = 0; j < data[0].size();j++){
-			for(int i =0 ;i < data.size();i++){
-				std::cout << data[i][j] << " ";
-			}
-			std::cout << "\n";
-		}
-	}
-	if(rule_data.size()>0){
-		std::cout << "END of data \n -----------------------------------------------------\n";
-		std::cout << "I REALLY WANT TO PRINT rule_DATA: \n";
-			for(int j = 0; j < rule_data.size();j++){
-				for(int i =0 ;i < rule_data[j].size();i++){
-					std::cout << data[j][i] << " ";
-				}
-				// std::cout << "\n";
-			}
-			std::cout << "\n";
-		std::cout << "END of data \n -----------------------------------------------------\n";
-	}
+
+	// std::cout << "dont tell met he data is fucked\n";
+	// for(int x = 0; x < data.size();x++){
+	// 	for(int xx = 0; xx < data[x].size();xx++){
+	// 		std::cout << data[x][xx] << " ";
+	// 	}
+	// 	std::cout << "\n";
+	// }
 
 
-
+	// take the vector of the rule target located at given i
+	// and add the predicates to final
 	for(int j = 1; j < rule_data[i].size(); j++){
 		std::vector<std::string> temp_v;
 		temp_v.push_back(rule_data[i][j]);
@@ -434,78 +497,125 @@ std::vector<std::vector<std::string>> Inference::subsitute(std::vector<std::vect
 	}
 
 
-	// we're not the last data
-	// if(i != rule_data.size()-1){
-		std::vector<std::string> p_Inference;
-		for(int j = 0; j < rule_data[i+1].size();j++){
-			if(j!=0){
-				bool canAdd = true;
-				for(int q = 1; q< final.size();q++){
-					if(rule_data[i+1][j]==final[q][0]){
-						canAdd = false;
-					}
-				}
-				if(canAdd){
-					std::vector<std::string> temp_v;
-					temp_v.push_back(rule_data[i+1][j]);
-					final.push_back(temp_v);
+	
+	// create an p_inference vector
+	std::vector<std::string> p_Inference;
+	// iterate over the next item in the rule_data
+	for(int j = 0; j < rule_data[i+1].size();j++){
+		// if im not the ruletarget name try and add 
+		// any non duplicated predicates to final
+		// {Father $X $Y } {Father $Y $Z} -> final = {{$X}, {$Y}, {$Z}}
+		if(j!=0){
+			bool canAdd = true;
+			for(int q = 1; q < final.size();q++){
+				if(rule_data[i+1][j]==final[q][0]){
+					canAdd = false;
 				}
 			}
-			p_Inference.push_back(rule_data[i+1][j]);
-
+			if(canAdd){
+				std::vector<std::string> temp_v;
+				temp_v.push_back(rule_data[i+1][j]);
+				final.push_back(temp_v);
+			}
 		}
 
+		p_Inference.push_back(rule_data[i+1][j]);
 
-		// std::cout << "preparing final's anus\n";
-		// 	for(int q = 0 ; q < final.size();q++){
-		// 		for(int w = 0; w < final[0].size();w++){
-		// 			std::cout << final[q][w] << " ";
-		// 		}
-		// 	}
-		// 	std::cout << " \n";
+	}
 
+	// std::cout << "line those bitche s up \n";
 
-		// for every element set there is in data
-		for(int j = 1; j < data[0].size(); j++){
-			// for every equivalent row  per set
-			std::vector<std::string> this_v;
-			for(int k = 0; k < data.size(); k++){
-				
-				this_v.push_back(data[k][j]);
-				// checking against rule_Data[i+1]
-				for(int l = 0; l < rule_data[i+1].size(); l++){
-					// std::cout << "data[" << k << "][" << i << "]: " << data[k][0] << " and rule_data["<<i+1<<"]["<< l << "]: " << rule_data[i+1][l] << '\n';
-					if(data[k][0] == rule_data[i+1][l]){
-						p_Inference[l] = data[k][j];
+	// 	for(int x = 0; x < final.size();x++){
+	// 		for(int xx = 0; xx < final[x].size();xx++){
+	// 			std::cout << final[x][xx] << " ";
+	// 		}
+	// 		std::cout << "\n";
+	// 	}
 
-					}
+	// for every ] set there is in data, create a customized 
+	// set of their values, and adjust p_inference for their values 
+	// (if they exist in it)
+	for(int j = 1; j < data[0].size(); j++){
+		// temp vector this_V
+		std::vector<std::vector<std::string>> this_v;
+		for(int b = 0; b < final.size(); b++){
+			std::vector<std::string > v = {final[b][0]};
+			this_v.push_back(v);
+		}
+		// for every value of a signifier in data a data row
+		for(int k = 0; k < data.size(); k++){
+			// create a set of them in vector this_v
+			for(int pp = 0; pp < this_v.size();pp++){
+				if(data[k][0] == this_v[pp][0]){
+					this_v[pp].push_back(data[k][j]);
 				}
 			}
+			// std::cout << "line those bitche s up \n";
 
-			std::vector<std::vector<std::string >> return_data = query(p_Inference, 0);
-			if(return_data.size()>0){
-				if(return_data[0].size() > 1){
-					// std::cout << "The data to be acted upon \n";
-					// for(int f = 0; f < this_v.size(); f++){
-					// 	std::cout << this_v[f] << " ";
-					// }
-					// std::cout << "\n";
-					// std::cout << "REturned values of what subsitute ran per value given:\n";
+			// for(int x = 0; x < this_v.size();x++){
+			// 	for(int xx = 0; xx < this_v[x].size();xx++){
+			// 		std::cout << this_v[x][xx] << " ";
+			// 	}
+			// 	std::cout << "\n";
+			// }
+
+
+			
+			// checking against rule_Data[i+1]
+			for(int l = 0; l < rule_data[i+1].size(); l++){
+				// std::cout << "data[" << k << "][" << i << "]: " << data[k][0] << " and rule_data["<<i+1<<"]["<< l << "]: " << rule_data[i+1][l] << '\n';
+				if(data[k][0] == rule_data[i+1][l]){
+					p_Inference[l] = data[k][j];
+
+				}
+			}
+		}
+		
+		// run query on the now awesome custom p_Inference
+		std::vector<std::vector<std::string >> return_data = query(p_Inference, 0);
+		// std::cout << "These are the results from querying on father(bob,$Z)\n";
+		// print_query(return_data);
+		if(return_data.size() > 0){
+			// mroe than just the sigs
+			if(return_data[0].size() > 1){
+				for(int f = 1; f < return_data[0].size(); f++){
+
+					for(int y = 0; y < this_v.size()-1; y++){
+						for(int yy = 0; yy < final.size();yy++){
+							
+							if(this_v[y][0] == final[yy][0]){
+								final[yy].push_back(this_v[y][1]);
+								break;
+							}
+						}
+					}
 					// print_query(return_data);
-					for(int f = 1; f < return_data[0].size(); f++){
-						for(int y = 0; y < this_v.size(); y++){
-							final[y].push_back(this_v[y]);
-						}
-						for(int y = this_v.size(); y < final.size();y++){
-							final[y].push_back(return_data[y-this_v.size()][f]);
+					// std::cout << "this.v: ";
+					// for(int y = 0; y < this_v.size(); y++){
+					// 	std::cout << this_v[y]<< " ";
+					// }
+					// std::cout << " \n";
+
+
+					// for(int y = this_v.size(); y < final.size();y++){
+					// 	std::cout << "y: " << y << " this_v.size(): " << this_v.size() << " \n";
+					// 	final[y].push_back(return_data[y-this_v.size()][f]);
+					// }
+					// std::cout << "This is where its break\n";
+					for(int y = 0; y < return_data.size(); y++){
+						for(int yy = 0; yy < final.size();yy++){
+							if(return_data[y][0] == final[yy][0]){
+								final[yy].push_back(return_data[y][f]);
+							}
 						}
 					}
-					
 				}
+				// std::cout << "im okay\n";
+				
 			}
 		}
+	}
 
-		// print_query(final);
 	// }
 	return final;
 }
@@ -521,18 +631,14 @@ std::vector<std::vector<std::string>> Inference::filter_rb(std::vector<std::stri
 
 	}
 
+
+
+
+
+
+
 	for(int i = 1; i < data[0].size(); i++){
-		bool canAdd = true;
-		for(int j = 1; j < data.size(); j++){
-			if(p_filter[j][0] != '$' && data[j-1][i]!=p_filter[j]){
-				canAdd = false;
-			}
-		}
-		if(canAdd){
-			for(int j = 0; j < data.size(); j++){
-				final[j].push_back(data[j][i]);
-			}
-		}
+
 	}
 
 
