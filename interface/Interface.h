@@ -3,8 +3,6 @@
 #include "../base/KnowledgeBase.h"
 #include "../base/RuleBase.h"
 #include "../inference/Inference.h"
-// #include "../load/Load.h"
-// #include "../streamer/Streamer.h"
 #ifndef INTERFACE_H
 #define INTERFACE_H
 
@@ -12,23 +10,26 @@
 
 class Load;
 class Dump;
-// class Streamer;
 
 using namespace std;
 
 class Interface {
+	private: 
+		// parser helper method
+		std::vector<std::string> parseSeg(std::string target);
 	public: 
+		// Pointers to kb and rb
 		KnowledgeBase * KB;
 		RuleBase * RB;
+		// interface constructor 
 		Interface();
-		Interface(KnowledgeBase * p_KB, RuleBase * p_RB);
+		// looping command line for user
 		void commandLine();
-		bool executeCommand(std::vector<std::vector<std::string>>
-								p_command);
-		std::vector<std::string> parseSeg(std::string target);
-		bool parse(std::string 
-								p_statment);
-		virtual ~Interface();
+		// takes in a formatted statment and excutes it
+		bool executeCommand(std::vector<std::vector<std::string>> p_command);
+		// parser for user input
+		bool parse(std::string p_statement);
+		
 };
 #endif
 

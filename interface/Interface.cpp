@@ -9,12 +9,6 @@ Interface::Interface(){
 	RB = new RuleBase();
 }
 
-//transfers pointers
-Interface::Interface(KnowledgeBase * p_KB, RuleBase * p_RB){
-	KB = p_KB;
-	RB = p_RB;
-
-}
 /* parse seg takes a block and seperates it into a string vector */
 std::vector<std::string> Interface::parseSeg(std::string target) {
 	std::vector<std::string> segment;
