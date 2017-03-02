@@ -158,6 +158,7 @@ std::vector<std::vector<std::string>> Inference::query_RB(std::vector<std::strin
     		std::vector<std::vector<std::string>> query_data = query(new_inference, 0);
     		// Add this set of data to data
             data = SET_OR(data, query_data);
+            return data;
         }
     // if rule operator is AND
     }else{
@@ -191,19 +192,35 @@ std::vector<std::vector<std::string>> Inference::query_RB(std::vector<std::strin
 
     // Evaluating rules can lead to different signifiers being inserted into the datat, and returned upwards
     // this loop will change those signifiers back to the orginial p_inference signifiers
-    int i = 0;
-    int j = 1;
-    while(j!=p_Inference.size()){
-    	if(p_Inference[j][0]!='$'){
-    		j++;
-    	}else{
-    		if(p_Inference[j]!=data[i][0]){
-    			data[i][0] = p_Inference[j];
-    			j++;
-    			i++;
+
+    bool needToUpdate = false;
+    for(int i = 1; i < p_Inference[i].size(); i++){
+    	bool this_sig = false;
+    	for(int j = 0; j < data.size();j++){
+    		if(p_Inference[i] == data[j][0]){
+    			this_sig = true;
     		}
     	}
+    	if(!this_sig){
+    		needToUpdate = true;
+    	}
     }
+
+    if(needToUpdate){
+	    int i = 0;
+	    int j = 1;
+	    while(j!=p_Inference.size()){
+	    	if(p_Inference[j][0]!='$'){
+	    		j++;
+	    	}else{
+	    		if(p_Inference[j]!=data[i][0]){
+	    			data[i][0] = p_Inference[j];
+	    			j++;
+	    			i++;
+	    		}
+	    	}
+	    }
+	}
     return data;
 }
 
