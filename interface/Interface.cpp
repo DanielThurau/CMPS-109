@@ -221,17 +221,25 @@ bool Interface::executeCommand
 	else if (p_command[0][0] == "LOAD") {
 		// create a load object with this interface and process
 		Load * ld = new Load(p_command[1][0], this); 
-		ld->process();
+		if(ld->process()){
+			return true;
+		}else{
+			return false;
+		}
 	}
 	else if (p_command[0][0] == "DROP") {
 		// drop from rb and kb 
 		RB->dropContent(p_command[1][0]);
 		KB->dropContent(p_command[1][0]);
+		return true;
 	}else if (p_command[0][0] == "DUMP"){
 		// create dump obj and call process
 		Dump * dump_obj = new Dump(p_command[1][0], this);
-		dump_obj->process();
-		return true;
+		if(dump_obj->process()){
+			return true;
+		}else{
+			return false;
+		}
 	}
 	return false;
 }
