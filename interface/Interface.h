@@ -29,6 +29,7 @@ class Interface {
 		bool executeCommand(std::vector<std::vector<std::string>> p_command);
 		// parser for user input
 		bool parse(std::string p_statement);
+		~Interface();
 		
 };
 #endif
