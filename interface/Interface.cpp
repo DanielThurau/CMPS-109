@@ -203,7 +203,8 @@ bool Interface::executeCommand
 
 		// if the user specifies a name to store the results under, store them 
 		// in KB
-		if(p_command.size() > 2){
+
+		if(p_command.size() > 3){
 			for(int i = 1; i < results[0].size();i++){
 				std::vector<std::string> temp;
 				temp.push_back(p_command[p_command.size()-2][0]);

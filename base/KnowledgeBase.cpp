@@ -85,7 +85,6 @@ bool KnowledgeBase::dropContent(const std::string & p_name){
 			return false;
 		}
 	}else{
-		std::cout << "Nothing to Drop\n";
 		return false;
 	}
 }

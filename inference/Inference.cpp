@@ -22,7 +22,6 @@ std::vector<std::vector<std::string>> Inference::query(std::vector<std::string> 
 	std::vector<std::vector<std::string>> kb_results = query_KB(p_Inference);
 	/* Query the RuleBase with this p_Inference */
 	std::vector<std::vector<std::string>> rb_results = query_RB(p_Inference);
-
 	/* 
 	 * Results will now be the combined set of the results from the KB and results from the RB
 	 * with no duplicates.
@@ -155,9 +154,37 @@ std::vector<std::vector<std::string>> Inference::query_RB(std::vector<std::strin
 			}
 
 			// retrieve data recursivley on the new inference
+			
     		std::vector<std::vector<std::string>> query_data = query(new_inference, 0);
     		// Add this set of data to data
             data = SET_OR(data, query_data);
+            bool needToUpdate = false;
+		    for(int i = 1; i < p_Inference[i].size(); i++){
+		    	bool this_sig = false;
+		    	for(int j = 0; j < data.size();j++){
+		    		if(p_Inference[i] == data[j][0]){
+		    			this_sig = true;
+		    		}
+		    	}
+		    	if(!this_sig){
+		    		needToUpdate = true;
+		    	}
+		    }
+		    if(needToUpdate){
+			    int i = 0;
+			    int j = 1;
+			    while(j!=p_Inference.size()){
+			    	if(p_Inference[j][0]!='$'){
+			    		j++;
+			    	}else{
+			    		if(p_Inference[j]!=data[i][0]){
+			    			data[i][0] = p_Inference[j];
+			    		}
+		    			j++;
+		    			i++;
+			    	}
+			    }
+			}
             return data;
         }
     // if rule operator is AND
@@ -180,7 +207,9 @@ std::vector<std::vector<std::string>> Inference::query_RB(std::vector<std::strin
 		}
 
 		// query the new inference
+		
     	query_data = query(new_inference, 0);
+    	
     	// If position isnt the last rule target in the rule, substitute the results from the previous 
     	// query into the next rule target 
 		if(position != rule_data.size()-1){
@@ -192,6 +221,15 @@ std::vector<std::vector<std::string>> Inference::query_RB(std::vector<std::strin
 
     // Evaluating rules can lead to different signifiers being inserted into the datat, and returned upwards
     // this loop will change those signifiers back to the orginial p_inference signifiers
+
+    std::cout << "pinferece: ";
+    for(int i = 0; i < p_Inference.size();i++){
+    	std::cout << p_Inference[i] << " ";
+    }
+    std::cout << "\n";
+
+    print_query(data);
+
 
     bool needToUpdate = false;
     for(int i = 1; i < p_Inference[i].size(); i++){
@@ -244,7 +282,6 @@ void Inference::print_query(std::vector<std::vector<std::string>> p_set){
  * signifiers match. 
  */
 std::vector<std::vector<std::string>> Inference::SET_OR(std::vector<std::vector<std::string>> A, std::vector<std::vector<std::string>> B){
-	
 	// This is the data strcuture of the returning object
 	std::vector<std::vector<std::string>> data;
 
@@ -372,6 +409,7 @@ std::vector<std::vector<std::string>> Inference::subsitute(std::vector<std::vect
 
 	// take the vector of the rule target located at given i
 	// and add the predicates to results
+
 	for(int j = 1; j < rule_data[i].size(); j++){
 		std::vector<std::string> temp_v;
 		temp_v.push_back(rule_data[i][j]);
@@ -381,6 +419,7 @@ std::vector<std::vector<std::string>> Inference::subsitute(std::vector<std::vect
 	// create an p_inference vector
 	std::vector<std::string> p_Inference;
 	// iterate over the next item in the rule_data
+
 	for(int j = 0; j < rule_data[i+1].size();j++){
 		// if not the rule name, try to add the signifiers
 		if(j!=0){
@@ -424,17 +463,15 @@ std::vector<std::vector<std::string>> Inference::subsitute(std::vector<std::vect
 			
 			// checking against rule_Data[i+1]
 			for(int p = 0; p < rule_data[i+1].size(); p++){
-				// std::cout << "data[" << k << "][" << i << "]: " << data[k][0] << " and rule_data["<<i+1<<"]["<< l << "]: " << rule_data[i+1][l] << '\n';
 				if(data[k][0] == rule_data[i+1][p]){
 					p_Inference[p] = data[k][j];
 
 				}
 			}
 		}
-		
+
 		// run query on the now p_Inference
 		std::vector<std::vector<std::string >> return_data = query(p_Inference, 0);
-
 		if(return_data.size() > 0){
 			// mroe than just the sigs
 			if(return_data[0].size() > 1){
