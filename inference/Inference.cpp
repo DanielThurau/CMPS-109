@@ -1,4 +1,7 @@
 #include "Inference.h"
+#include "ORThread.h"
+#include "ANDThread.h"
+#include "../thread/headers/ThreadManager.h"
 /* 
  * Constructor
  * Inference needs two pointers to perfrom its queries on.
@@ -129,10 +132,17 @@ std::vector<std::vector<std::string>> Inference::query_RB(std::vector<std::strin
     // Data structure to hold possible values from inferencing with a new inference
     std::vector<std::vector<std::string>> query_data;
 
+
+
+
+
     // If the rule has the OR operator
     if(rule_data[1][0] == "OR"){
+    	ThreadManager<ORThread> * threadManager = new ThreadManager<ORThread>();
+
+
     	// a query will be performed on every rule target in rule data
-    	for(int i = 2; i < rule_data.size(); ++i){
+    	for(int i = 2; i < rule_data.size()-1; ++i){
 
     		// It is possible that the new inference will have non_variable predicate values
     		// grab original p_inference without values substitued, and create something
@@ -152,41 +162,51 @@ std::vector<std::vector<std::string>> Inference::query_RB(std::vector<std::strin
 					}
 				}
 			}
+			threadManager->addThread(new ORThread(this, new_inference));
+		}
 
-			// retrieve data recursivley on the new inference
-			
-    		std::vector<std::vector<std::string>> query_data = query(new_inference, 0);
-    		// Add this set of data to data
-            data = SET_OR(data, query_data);
-            bool needToUpdate = false;
-		    for(int i = 1; i < p_Inference[i].size(); i++){
-		    	bool this_sig = false;
-		    	for(int j = 0; j < data.size();j++){
-		    		if(p_Inference[i] == data[j][0]){
-		    			this_sig = true;
+		threadManager->start();
+
+		threadManager->barrier();
+		// std::cout << "got hee\n";
+		data = threadManager->combineResults(data);
+		delete(threadManager);
+
+		
+		// Add this set of data to data
+        // data = SET_OR(data, query_data);
+        bool needToUpdate = false;
+	    for(int i = 1; i < p_Inference[i].size(); i++){
+	    	bool this_sig = false;
+	    	for(int j = 0; j < data.size();j++){
+	    		if(p_Inference[i] == data[j][0]){
+	    			this_sig = true;
+	    		}
+	    	}
+	    	if(!this_sig){
+	    		needToUpdate = true;
+	    	}
+	    }
+	    if(needToUpdate){
+		    int i = 0;
+		    int j = 1;
+		    while(j!=p_Inference.size()){
+		    	if(p_Inference[j][0]!='$'){
+		    		j++;
+		    	}else{
+		    		if(p_Inference[j]!=data[i][0]){
+		    			data[i][0] = p_Inference[j];
 		    		}
-		    	}
-		    	if(!this_sig){
-		    		needToUpdate = true;
+	    			j++;
+	    			i++;
 		    	}
 		    }
-		    if(needToUpdate){
-			    int i = 0;
-			    int j = 1;
-			    while(j!=p_Inference.size()){
-			    	if(p_Inference[j][0]!='$'){
-			    		j++;
-			    	}else{
-			    		if(p_Inference[j]!=data[i][0]){
-			    			data[i][0] = p_Inference[j];
-			    		}
-		    			j++;
-		    			i++;
-			    	}
-			    }
-			}
-            return data;
-        }
+		}
+        return data;
+        
+
+
+
     // if rule operator is AND
     }else{
     	// Grab the position of the rule target in rule
@@ -221,14 +241,6 @@ std::vector<std::vector<std::string>> Inference::query_RB(std::vector<std::strin
 
     // Evaluating rules can lead to different signifiers being inserted into the datat, and returned upwards
     // this loop will change those signifiers back to the orginial p_inference signifiers
-
-    std::cout << "pinferece: ";
-    for(int i = 0; i < p_Inference.size();i++){
-    	std::cout << p_Inference[i] << " ";
-    }
-    std::cout << "\n";
-
-    print_query(data);
 
 
     bool needToUpdate = false;
@@ -443,6 +455,7 @@ std::vector<std::vector<std::string>> Inference::subsitute(std::vector<std::vect
 
 	// for every set there is in data, create a customized 
 	// set of their values, and adjust p_inference for their values 
+	ThreadManager<ANDThread> * threadManager_AND = new ThreadManager<ANDThread>();
 	for(int j = 1; j < data[0].size(); j++){
 		// temp vector this_V
 		std::vector<std::vector<std::string>> this_v;
@@ -469,34 +482,15 @@ std::vector<std::vector<std::string>> Inference::subsitute(std::vector<std::vect
 				}
 			}
 		}
-
-		// run query on the now p_Inference
-		std::vector<std::vector<std::string >> return_data = query(p_Inference, 0);
-		if(return_data.size() > 0){
-			// mroe than just the sigs
-			if(return_data[0].size() > 1){
-				for(int k = 1; k < return_data[0].size(); k++){
-					for(int y = 0; y < this_v.size()-1; y++){
-						for(int yy = 0; yy < results.size();yy++){
-							if(this_v[y][0] == results[yy][0]){
-								results[yy].push_back(this_v[y][1]);
-								break;
-							}
-						}
-					}
-					for(int y = 0; y < return_data.size(); y++){
-						for(int yy = 0; yy < results.size();yy++){
-							if(return_data[y][0] == results[yy][0]){
-								results[yy].push_back(return_data[y][k]);
-								break;
-							}
-						}
-					}
-				}
-				
-			}
-		}
+		threadManager_AND->addThread(new ANDThread(this, p_Inference, results, this_v));
 	}
+	// run query on the now p_Inference
+	threadManager_AND->start();
+	std::cout << "Started\n";
+	threadManager_AND->barrier();
+	std::cout << "waiting\n";
+	results = threadManager_AND->combineResults(results);
+	delete(threadManager_AND);
 
 	return results;
 }

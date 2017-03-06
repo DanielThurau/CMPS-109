@@ -6,6 +6,6 @@ FACT Mother(talitha,bob)
 FACT Father(jim,may)
 FACT Mother(emma,ben)
 RULE Parent($X,$Y):- OR Father($X,$Y) Mother($X,$Y)
-RULE GrandFather($X,$Y):- AND Father($X,$Z) Parent($Z,$Y)
-INFERENCE GrandFather($X,$Y) GF
+RULE GrandFather($X,$Z):- AND Father($X,$Y) Parent($Y,$Z)
+INFERENCE GrandFather($O,$P)
 DUMP output.sri

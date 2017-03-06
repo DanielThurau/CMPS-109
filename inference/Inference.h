@@ -2,7 +2,12 @@
 #include "../common.h"
 #include "../base/KnowledgeBase.h"  /* This includes Fact.h as well */
 #include "../base/RuleBase.h"  /* This includes Rule.h as well */
-
+// #include "ORThread.h"
+// #include "../thread/headers/Thread.h"
+template <class T>
+class ThreadManager;
+class ORThread;
+class ANDThread;
 class Inference{
 
 
