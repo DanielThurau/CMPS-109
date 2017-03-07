@@ -14,8 +14,16 @@ void ThreadManager<T>::addThread(T *p_thread){
 
 template <typename T>
 void ThreadManager<T>::start(){
+	// loop on all vector threads and staret them
+	int core_id = 0; // core index to set the thread to
 	for(int i = 0; i < threads.size();++i){
 		threads[i]->start();
+		threads[i]->setToCore(core_id); // set it run on the current core_id
+		core_id++; // incement cored id for the next thread
+		// if core id is equal to the numebr of availle cores reset to 0
+		if(core_id == threads[i]->getCoreCount()){
+			core_id = 0;
+		}
 	}
 }
 

@@ -93,6 +93,46 @@ bool Thread::isAlive ()
     if ( !started ) return false;
     else return true;
 }
+
+// clear affinity and set it to the cpu with core_id
+bool Thread::setToCore(int core_id){
+    //check to see if the provided core_id is less than the max number of aviable 
+    // cpus/cores
+    if(core_id < cpu_count){
+        CPU_ZERO(&cpuset);  // clear the cpuset mask
+        return addCore(core_id); //invoke addCore to add the core wiht index core_id to the set
+    }// if not return false
+    else{
+        return false;
+    }
+}
+
+// add the cpu with core_id to the group of cpus the thread should be scheduled on
+bool Thread::addCore(int core_id){
+    //check to see if the provided core_id is less than the max # of avaible cpus/cores
+    if(core_id < cpu_count){
+        CPU_SET(core_id, &cpuset); // add core_id to the cpuset mask
+        // invoke pthread_setaffinity_np to update the affinity of the thread to the new cpuset mask
+        if(pthread_setaffinity_np(pthread, sizeof(cpu_set_t), &cpuset)==0){
+            return true;
+        }else{
+            return false; // return false if pthread_setaffinity_np failed
+        }
+    }else{
+        return false; // if not return false
+    }
+}
+
+// return the number of cores avaible in the system
+int Thread::getCoreCount(){
+    return cpu_count;
+}
+
+
+
+
+
+
 // Destructor
 Thread::~Thread()
 {
