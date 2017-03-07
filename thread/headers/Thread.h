@@ -25,6 +25,7 @@ class Thread    // Thread Class
 		void *(*threadRoutine   ) (void *); // A pointer to the start routine of the thread execution
 		void setRunning (bool _running);    // Sets the running flag data member of the thread
         static void  cleanup(void * target_thread); // A static method that performs house keeping after the thread terminates
+		cpu_set_t cpuset; //cpu affinity mask
 	public:
 		Thread(void *(*_threadRoutine) (void *) =NULL); // Constructor 
 		bool isRunning ();      // Check if thread is running
@@ -35,6 +36,9 @@ class Thread    // Thread Class
 		void waitForRunToFinish (); // Blocks until the running thread finishes execution
 		char * getThreadIdentifier ();  // Return the thread identifier string
         bool isAlive ();    // Checks if the thread start is initiated
+		bool setToCore(int core_id); // clear affinty and set it to the cpu with core_id
+		bool addCore(int core_id); // add the cpu w/ core_id to the group oof cpus the thread should be scheduled on
+		int getCoreCount(); // return the number of cores avaible in the system
 		virtual ~Thread();  // Virtual Thread Destructor
 };
 
