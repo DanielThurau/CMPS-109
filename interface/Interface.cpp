@@ -51,13 +51,23 @@ bool Interface::parse(std::string p_statement){
 		std::vector<std::vector<std::string>> rule = {{"RULE"}};
 		// create an executable rule
 		int step = 0;
+
+		std::string stream;
 		for(auto &str : result) {
 			if(step == 0){
 				step++;
 				continue;
 			} else if (step == 1) { // Parses Rule/Fact Name
-				rule.push_back(parseSeg(str));
-				step++;
+				if(str.find(')') == std::string::npos){
+					stream += str;
+					continue;
+				} else {
+					stream += str;
+					stream.erase(std::remove(stream.begin(), stream.end(), ' '), stream.end());
+					rule.push_back(parseSeg(stream));
+					stream = "";
+					step++;
+				}
 			} else if (step == 2) { // Parse Operators
 				if(str == "AND" | str == "OR") {
 					std::vector<std::string> oper;
@@ -68,7 +78,15 @@ bool Interface::parse(std::string p_statement){
 					return false;
 				}
 			}  else { //step == 3 // Parse Targets
-				rule.push_back(parseSeg(str));
+				if(str.find(')') == std::string::npos){
+					stream += str;
+					continue;
+				} else {
+					stream += str;
+					stream.erase(std::remove(stream.begin(), stream.end(), ' '), stream.end());
+					rule.push_back(parseSeg(stream));
+					stream = "";
+				}
 			}
 		}
 		// rule is now a formatted rule command, execute it and return bool upwards
@@ -82,12 +100,21 @@ bool Interface::parse(std::string p_statement){
 		std::vector<std::vector<std::string>> fact = {{"FACT"}};
 		// create an executable fact
 		int step = 0;
+		std::string stream;
 		for(auto &str : result) {
 			if(step == 0){
 				step++;
 				continue;
 			} else if (step == 1) { // Parses Rule/Fact Name
-				fact.push_back(parseSeg(str));
+				if(str.find(')') == std::string::npos){
+					stream += str;
+					continue;
+				} else {
+					stream += str;
+					stream.erase(std::remove(stream.begin(), stream.end(), ' '), stream.end());
+					fact.push_back(parseSeg(stream));
+					stream = "";
+				}
 			}
 		}
 		// fact is now an executable fact
