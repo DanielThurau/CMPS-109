@@ -1,8 +1,10 @@
 /* Load.h */
-#include "../common.h"
-#include "../streamer/Streamer.h"
+
 #ifndef LOAD_H
 #define LOAD_H
+
+#include "common.h"
+#include "Streamer.h"
 
 class Interface;
 

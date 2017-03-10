@@ -1,10 +1,11 @@
 /* Interface.h */
-#include "../common.h"
-#include "../base/KnowledgeBase.h"
-#include "../base/RuleBase.h"
-#include "../inference/Inference.h"
 #ifndef INTERFACE_H
 #define INTERFACE_H
+
+#include "common.h"
+#include "KnowledgeBase.h"
+#include "RuleBase.h"
+#include "Inference.h"
 
 
 

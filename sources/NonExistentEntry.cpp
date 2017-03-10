@@ -1,4 +1,4 @@
-#include "NonExistentEntry.h"
+#include "../headers/NonExistentEntry.h"
 
 ExistenceException::ExistenceException(const std::string & p_entry){
 	exception_str = "Non Existence Exception: ";

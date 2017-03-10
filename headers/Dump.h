@@ -1,9 +1,9 @@
 /* dump.h */
-
-#include "../common.h"
-#include "../streamer/Streamer.h"
 #ifndef DUMP_H
 #define DUMP_H
+
+#include "common.h"
+#include "Streamer.h"
 
 class Interface;
 

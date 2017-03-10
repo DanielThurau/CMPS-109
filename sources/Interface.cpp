@@ -1,6 +1,6 @@
-#include "Interface.h"
-#include "../load/Load.h"
-#include "../dump/Dump.h"
+#include "../headers/Interface.h"
+#include "../headers/Load.h"
+#include "../headers/Dump.h"
 
 
 //default constructor just creates new objects

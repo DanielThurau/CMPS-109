@@ -1,5 +1,5 @@
 /* Rule.cpp */
-#include "Rule.h"
+#include "../headers/Rule.h"
 
 Rule::Rule(std::vector<std::vector<std::string>> p_data){
 	data = p_data;

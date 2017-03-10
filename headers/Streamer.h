@@ -1,10 +1,13 @@
 
 /* Fact.h */
-#include "../common.h"
-#include "../base/KnowledgeBase.h"
-#include "../base/RuleBase.h"
+
 #ifndef STREAMER_H
 #define STREAMER_H
+
+
+#include "common.h"
+#include "KnowledgeBase.h"
+#include "RuleBase.h"
 
 class Interface;
 

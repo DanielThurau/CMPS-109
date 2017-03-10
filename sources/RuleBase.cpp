@@ -1,5 +1,5 @@
 /* RuleBase.cpp */
-#include "RuleBase.h"
+#include "../headers/RuleBase.h"
 
 /* Default RuleBase Constructor */
 RuleBase::RuleBase(){}

@@ -1,7 +1,7 @@
-#include "Inference.h"
-#include "ORThread.h"
-#include "ANDThread.h"
-#include "../thread/headers/ThreadManager.h"
+#include "../headers/Inference.h"
+#include "../headers/ORThread.h"
+#include "../headers/ANDThread.h"
+#include "../headers/ThreadManager.h"
 /* 
  * Constructor
  * Inference needs two pointers to perfrom its queries on.
@@ -138,6 +138,7 @@ std::vector<std::vector<std::string>> Inference::query_RB(std::vector<std::strin
 
     // If the rule has the OR operator
     if(rule_data[1][0] == "OR"){
+    	// instantiate a ThreadManager Template object with type ORThread
     	ThreadManager<ORThread> * threadManager = new ThreadManager<ORThread>();
 
 
@@ -162,14 +163,17 @@ std::vector<std::vector<std::string>> Inference::query_RB(std::vector<std::strin
 					}
 				}
 			}
+			// For every rule target, add a thread with its inference
 			threadManager->addThread(new ORThread(this, new_inference));
 		}
-
+		// start the execution of the threads
 		threadManager->start();
 
+		// wait for all threads to finish
 		threadManager->barrier();
-		// std::cout << "got hee\n";
+		// combine all the data of the threads into one coherent thread
 		data = threadManager->combineResults(data);
+		// delete the threadmanager and all its associated threads
 		delete(threadManager);
 
 		
@@ -453,9 +457,12 @@ std::vector<std::vector<std::string>> Inference::subsitute(std::vector<std::vect
 	}
 
 
-	// for every set there is in data, create a customized 
-	// set of their values, and adjust p_inference for their values 
+
+	// Create a new templated threadmanager object with type ANDThread  
 	ThreadManager<ANDThread> * threadManager_AND = new ThreadManager<ANDThread>();
+
+	// for every set there is in data, create a customized 
+	// set of their values, and adjust p_inference for their values
 	for(int j = 1; j < data[0].size(); j++){
 		// temp vector this_V
 		std::vector<std::vector<std::string>> this_v;
@@ -482,14 +489,16 @@ std::vector<std::vector<std::string>> Inference::subsitute(std::vector<std::vect
 				}
 			}
 		}
+		// create a thread for every new query that needs to be done with substitued values
 		threadManager_AND->addThread(new ANDThread(this, p_Inference, results, this_v));
 	}
-	// run query on the now p_Inference
+	// start the execution of all the threads
 	threadManager_AND->start();
-	std::cout << "Started\n";
+	// wait for all threads to complete
 	threadManager_AND->barrier();
-	std::cout << "waiting\n";
+	// combine all the threads resutls into a coherent legal set
 	results = threadManager_AND->combineResults(results);
+	// delete the thread manager and all its associated threads
 	delete(threadManager_AND);
 
 	return results;

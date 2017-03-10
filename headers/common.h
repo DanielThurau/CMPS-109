@@ -16,8 +16,8 @@
 #include <sstream>
 #include <cstdlib>
 #include <sstream>
-
-using namespace std;
+#include <unordered_map>
+// using namespace std;
 
 
 // struct ignorecase { 

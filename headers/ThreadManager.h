@@ -1,6 +1,10 @@
-#include "../../common.h"
-class ORThread;
+#ifndef THREADMANAGER_H
+#define THREADMANAGER_H
 
+
+#include "common.h"
+class ORThread;
+class ANDThread;
 template <typename T>
 class ThreadManager{
 	private:
@@ -96,3 +100,4 @@ class ThreadManager{
 		}
 };
 
+#endif

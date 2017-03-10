@@ -1,6 +1,6 @@
-#include "common.h"
-#include "interface/Interface.h"
-#include "load/Load.h"
+#include "../headers/common.h"
+#include "../headers/Interface.h"
+#include "../headers/Load.h"
 
 int main(int argc, char *argv[]){
 	Interface * ourSRI;

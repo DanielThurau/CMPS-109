@@ -1,5 +1,5 @@
 /* Fact.cpp */
-#include "Fact.h"
+#include "../headers/Fact.h"
 
 /* 
  * Constructor that sets the data, as well as the fact name

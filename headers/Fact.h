@@ -1,7 +1,8 @@
 /* Fact.h */
-#include "../common.h"
 #ifndef FACT_H
 #define FACT_H
+
+#include "common.h"
 
 class Fact {
 	private:

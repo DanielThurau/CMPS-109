@@ -1,9 +1,12 @@
 /* RuleBase.h */
-#include "../common.h"
-#include "../rule/Rule.h"
-#include "exception/NonExistentEntry.h"
+
 #ifndef RULEBASE_H
 #define RULEBASE_H
+
+
+#include "common.h"
+#include "Rule.h"
+#include "NonExistentEntry.h"
 
 class RuleBase{
 	private:

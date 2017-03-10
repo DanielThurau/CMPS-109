@@ -1,8 +1,10 @@
 /* KnowledgeBase.h */
-#include "../common.h"
-#include "../fact/Fact.h"
+
 #ifndef KNOWLEDGEBASE_H
 #define KNOWLEDGEBASE_H
+
+#include "common.h"
+#include "Fact.h"
 
 class KnowledgeBase{
 	

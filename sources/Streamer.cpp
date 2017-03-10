@@ -1,6 +1,6 @@
 /* Streamer.cpp */
 
-#include "Streamer.h"
+#include "../headers/Streamer.h"
 
 /*  
  * Constructor using string and Interface *

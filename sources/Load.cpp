@@ -1,6 +1,6 @@
 /* Load.cpp */
-#include "Load.h"
-#include "../interface/Interface.h"
+#include "../headers/Load.h"
+#include "../headers/Interface.h"
 
 /*
  * Constructor with string and Interface pointer

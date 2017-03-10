@@ -1,5 +1,5 @@
 /* KnowledgeBase.cpp */
-#include "KnowledgeBase.h"
+#include "../headers/KnowledgeBase.h"
 
 /*
  * Default constructor of KnowledgeBase.  Used when 

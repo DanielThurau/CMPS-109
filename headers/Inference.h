@@ -1,9 +1,8 @@
-
-#include "../common.h"
-#include "../base/KnowledgeBase.h"  /* This includes Fact.h as well */
-#include "../base/RuleBase.h"  /* This includes Rule.h as well */
-// #include "ORThread.h"
-// #include "../thread/headers/Thread.h"
+#ifndef INFERENCE_H
+#define INFERENCE_H
+#include "common.h"
+#include "KnowledgeBase.h"  /* This includes Fact.h as well */
+#include "RuleBase.h"  /* This includes Rule.h as well */
 template <class T>
 class ThreadManager;
 class ORThread;
@@ -46,3 +45,4 @@ class Inference{
 		/* Interface Destructor */
 		~Inference();
 };
+#endif

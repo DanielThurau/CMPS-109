@@ -1,7 +1,9 @@
 /* Rule.h */
-#include "../common.h"
 #ifndef RULE_H
 #define RULE_H
+
+#include "common.h"
+
 
 class Rule{
 	private:

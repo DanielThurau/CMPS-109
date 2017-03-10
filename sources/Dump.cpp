@@ -1,7 +1,7 @@
 /* dump.cpp */
 
-#include "Dump.h"
-#include "../interface/Interface.h"
+#include "../headers/Dump.h"
+#include "../headers/Interface.h"
 
 /*
  * Constructor using string and Interface pointer

@@ -1,5 +1,10 @@
-#include "../thread/headers/Thread.h"
-#include "../common.h"
+#ifndef ORTHREAD_H
+#define ORTHREAD_H
+
+
+
+#include "Thread.h"
+#include "common.h"
 // #include "Inference.h"
 class Inference;
 // 
@@ -14,3 +19,5 @@ class ORThread : public Thread {
 		virtual void * threadMainBody(void * arg);
 		~ORThread();
 };
+
+#endif
