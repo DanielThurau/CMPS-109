@@ -1,2 +1,0 @@
-main: Load.h Load.cpp main.cpp
-	g++ -std=c++14 main.cpp Load.cpp ../streamer/Streamer.cpp ../base/KnowledgeBase.cpp ../base/RuleBase.cpp ../fact/Fact.cpp ../rule/Rule.cpp ../base/exception/NonExistentEntry.cpp
