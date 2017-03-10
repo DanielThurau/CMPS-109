@@ -1,6 +1,8 @@
+/* ANDThread.cpp */
 #include "../headers/ANDThread.h"
 #include "../headers/Inference.h"
 
+// Constructor
 ANDThread::ANDThread(Inference * p_infereceObject, std::vector<std::string> p_thisInference,std::vector<std::vector<std::string>> p_results, std::vector<std::vector<std::string>> p_this_v){
 	inferenceObject = p_infereceObject;
 	thisInference = p_thisInference;
@@ -10,9 +12,12 @@ ANDThread::ANDThread(Inference * p_infereceObject, std::vector<std::string> p_th
 }
 
 
-
+// method called on start of thread
+// query an inference and then format results
 void * ANDThread::threadMainBody(void * arg){
+	// query the inference
 	std::vector<std::vector<std::string >> data = inferenceObject->query(thisInference, 0);
+	// format the results
 	if(data.size() > 0){
 		if(data[0].size() > 1){
 			for(int k = 1; k < data[0].size(); k++){
@@ -43,5 +48,4 @@ std::vector<std::vector<std::string>> ANDThread::getData(){
 	return results;
 }
 ANDThread::~ANDThread(){
-	// free(inferenceObject);
 }

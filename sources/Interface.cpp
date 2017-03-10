@@ -280,10 +280,6 @@ void Interface::commandLine(){
 		if (statement == "x") {
 			break;
 		}
-		if(!parse(statement)){
-			std::cout << "Your command didn't work\n";
-		}
-
 	}
 }
 

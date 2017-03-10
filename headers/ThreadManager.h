@@ -1,35 +1,49 @@
+/* 
+	ThreadManager.h
+	Original Implementaton: Professor Karim Sobh
+	Modified by: Daniel Thurau
+
+ */
+
+
 #ifndef THREADMANAGER_H
 #define THREADMANAGER_H
 
 
 #include "common.h"
+// Forward declaration of two classes
 class ORThread;
 class ANDThread;
+
+// Templated class
+// Defintion of the methods is done in the header to deal with implicit declaration
 template <typename T>
 class ThreadManager{
 	private:
+		// the vector of threads of type T
 		std::vector<T *> threads;
 	public:
 		ThreadManager(){};
+		// Add a thread to a the vector
 		void addThread(T * p_thread){
 			threads.push_back(p_thread);
 		}
 
-
+		// Start each thread
 		void start(){
 				for(int i = 0; i < threads.size();++i){
 				threads[i]->start();
 			}
 		}
 
-
+		// wait for each thread to finish
 		void barrier(){
 			for(int i = 0; i < threads.size(); ++i){
 				threads[i]->waitForRunToFinish();
 			}
 		}
 
-
+		// Combine sets returned from a thread
 		std::vector<std::vector<std::string>> SET_OR(std::vector<std::vector<std::string>> A, std::vector<std::vector<std::string>> B){
 			// This is the data strcuture of the returning object
 			std::vector<std::vector<std::string>> data;
@@ -85,6 +99,7 @@ class ThreadManager{
 		}
 
 
+		// get each data set from a thread and combine them 
  		std::vector<std::vector<std::string>> combineResults(std::vector<std::vector<std::string>> results){
  			for(int i = 0; i < threads.size(); i++){
 				results = SET_OR(results, threads[i]->getData());
@@ -92,7 +107,7 @@ class ThreadManager{
 			return results;
  		}
 
-
+ 		// destroy all threads and free pointers
 		virtual ~ThreadManager(){
 			for(int i = 0; i < threads.size();i++){
 				delete(threads[i]);
