@@ -17,7 +17,8 @@ using namespace std;
 
 class Interface {
 	private: 
-		TCPServerSocket * mySocket;
+		std::vector<std::string> parseSeg(std::string target);
+		TCPServerSocket * serverSocket;
 	public: 
 		// Pointers to kb and rb
 		KnowledgeBase * KB;
@@ -28,6 +29,9 @@ class Interface {
 		void listen();
 		// takes in a formatted statment and excutes it
 		bool executeCommand(std::vector<std::vector<std::string>> p_command);
+
+
+		bool parse(std::string p_statement);
 		~Interface();
 		
 };

@@ -21,7 +21,7 @@ class TCPSocket // TCP Socket Class
             // A constructor that allows creating a socket object after socket is created.
             TCPSocket (int _sock ,char * _address=NULL,int _port=0,int readBufferSize=65536,int writeBufferSize=65536);
             // A constructor that performs all the client connection initialization to a server socket
-            TCPSocket (char * _address, int port,int readBufferSize=65536,int writeBufferSize=65536);
+            TCPSocket (const char * _address, int port,int readBufferSize=65536,int writeBufferSize=65536);
             char * getRemoteAddress();  // Selector returning remote IP address
             char * getMyAddress();      // Selector returning local IP address
             int readFromSocket (char * buffer, int maxBytes );  // Blocking read data from socket with an upperbound size

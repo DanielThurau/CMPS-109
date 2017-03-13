@@ -16,6 +16,6 @@ int main(int argc, char *argv[]){
 		return 1;
 	}
 	
-	ourSRI -> listen();
+	ourSRI->listen();
 	return 0;
 }

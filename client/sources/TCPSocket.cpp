@@ -31,7 +31,7 @@ TCPSocket::TCPSocket (int _sock,char * _address, int _port ,int readBufferSize,i
     wshutdown= false; // Set wshutdown to false.
 }
 // This constructor is invoked to initialize and connect the socket to a server socket using remote address and port number
-TCPSocket::TCPSocket (char * _address, int port ,int readBufferSize,int writeBufferSize)
+TCPSocket::TCPSocket (const char * _address, int port ,int readBufferSize,int writeBufferSize)
 {
     // Initialize some data members
     memset (remote_address, 0, 128);
