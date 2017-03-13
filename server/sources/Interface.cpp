@@ -300,21 +300,15 @@ void Interface::listen(){
 
 	char * buffer;
 	buffer = (char*)calloc(50, sizeof(char));
-std::cout << "Im broke nhere1\n";
 
-	std::cout << "Server addr: " << clientSocket->getRemoteAddress() << '\n';  // Selector returning remote IP address
-    std::cout << "Cleint addr: " << clientSocket->getMyAddress() << '\n';      // Selector returning local IP address
-	clientSocket->readFromSocket(buffer,50);
-	// if(clientSocket->readFromSocket(buffer, 50) == -1){
-	// 	std::cout << "Reading from clientSocket Failed\n";
-	// 	return;
-	// }
+	if(clientSocket->readFromSocket(buffer, 50) == -1){
+		std::cout << "Reading from clientSocket Failed\n";
+		return;
+	}
 	// std::cout << "Im broke nhere\n";
-	// std::cout << "Received from Client Socket: ";
-	// for(int i = 0; i < 100; i++){
-	// 	std::cout << buffer[i] << " ";
-	// }
-	// std::cout << "\n";
+	std::cout << "Received from Client Socket: ";
+
+	std::cout << buffer << std::endl;
 
 	delete(clientSocket);
 

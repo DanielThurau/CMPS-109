@@ -36,15 +36,17 @@ void Interface::commandLine(){
 	while(1){
 		std::cout << "SRI Session:";
 		std::string statement;
-		std::cin >> statement;
+		std::getline(std::cin, statement);
 		if (statement == "x") {
 			break;
 		}
 		if(statement.length() > 0){
-			long string_size = statement.length();
+			std::cout << statement << "\n";
+
 			const char * p_statement = statement.c_str();
+			std::cout << "p_statement: ";
+			std::cout << p_statement << "\n";
 			mySocket->writeToSocket(p_statement, 50);
-			std::cout << "passed here" << endl;
 		}
 	}
 	
