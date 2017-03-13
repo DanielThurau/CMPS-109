@@ -6,6 +6,7 @@
 #include "KnowledgeBase.h"
 #include "RuleBase.h"
 #include "Inference.h"
+#include "TCPServerSocket.h"
 
 
 
@@ -16,8 +17,7 @@ using namespace std;
 
 class Interface {
 	private: 
-		// parser helper method
-		std::vector<std::string> parseSeg(std::string target);
+		TCPServerSocket * mySocket;
 	public: 
 		// Pointers to kb and rb
 		KnowledgeBase * KB;
@@ -25,11 +25,9 @@ class Interface {
 		// interface constructor 
 		Interface();
 		// looping command line for user
-		void commandLine();
+		void listen();
 		// takes in a formatted statment and excutes it
 		bool executeCommand(std::vector<std::vector<std::string>> p_command);
-		// parser for user input
-		bool parse(std::string p_statement);
 		~Interface();
 		
 };

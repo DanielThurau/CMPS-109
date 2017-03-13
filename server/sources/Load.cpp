@@ -26,51 +26,51 @@ Load::Load(std::string p_pathName):
  */
 bool Load::process() {
 	// Grabs the path type of the file
-	std::string pathCheck = pathName.substr(pathName.rfind("."));
+	// std::string pathCheck = pathName.substr(pathName.rfind("."));
 	
-	// Errors if incorrect path type
-	if(pathCheck != ".sri") {
-		std::cout << "Invalid file. Please use a .sri file.\n";
-		return false;
-	}
+	// // Errors if incorrect path type
+	// if(pathCheck != ".sri") {
+	// 	std::cout << "Invalid file. Please use a .sri file.\n";
+	// 	return false;
+	// }
 
-	std::ifstream file(pathName);
-	if (file.is_open()){
-		std::string line;
-		while(std::getline(file, line)){
-			// Passes each line to SRI parser
-			if(!sri->parse(line)){
-				break;
-			}
-		}
-		return true;
-	} else {
-		std::cout << "Error opening file" << std::endl;
-		return false;
-	}
+	// std::ifstream file(pathName);
+	// if (file.is_open()){
+	// 	std::string line;
+	// 	while(std::getline(file, line)){
+	// 		// Passes each line to SRI parser
+	// 		if(!sri->parse(line)){
+	// 			break;
+	// 		}
+	// 	}
+	// 	return true;
+	// } else {
+	// 	std::cout << "Error opening file" << std::endl;
+	// 	return false;
+	// }
 }
 
 /*
  * Creates an SRI and preloads it with 
  * KB/RB. Returns the Interface 
  */ 
-Interface * Load::startSRI() {
-	Interface * ourSRI = new Interface();
+// Interface * Load::startSRI() {
+// 	Interface * ourSRI = new Interface();
 
-	std::ifstream file(pathName);
-	if (file.is_open()){
-		std::string line;
-		while(std::getline(file, line)){
-			std::cout << line << "\n";
-			if(!ourSRI->parse(line)){
-				break;
-			}
-		}
-	} else {
-		std::cout << "Error opening file" << std::endl;
-	}
-	return ourSRI;
-}
+// 	std::ifstream file(pathName);
+// 	if (file.is_open()){
+// 		std::string line;
+// 		while(std::getline(file, line)){
+// 			std::cout << line << "\n";
+// 			if(!ourSRI->parse(line)){
+// 				break;
+// 			}
+// 		}
+// 	} else {
+// 		std::cout << "Error opening file" << std::endl;
+// 	}
+// 	return ourSRI;
+// }
 
 /*
  * Deconstructor

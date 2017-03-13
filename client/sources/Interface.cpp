@@ -5,6 +5,17 @@
 
 //default constructor just creates new objects
 Interface::Interface(){
+	;
+
+	std::cout << "Please enter the address of the server:";
+	char * p_address;
+	std::cin >> p_address;
+
+
+	std::cout << "Please enter the port of the server:";
+	int p_port;
+	std::cin >> p_port;
+	mySocket = new TCPSocket(p_address, (int)p_port);
 }
 
 /* parse seg takes a block and seperates it into a string vector */
@@ -177,6 +188,11 @@ std::vector<std::vector<std::string>> Interface::parse(std::string p_statement){
 
 
 void Interface::commandLine(){
+
+	
+
+	
+	
 	while(1){
 		std::cout << "SRI Session:";
 		string statement;
@@ -184,8 +200,11 @@ void Interface::commandLine(){
 		if (statement == "x") {
 			break;
 		}
-		if(!parse(statement)){
+		std::vector<std::vector<std::string>> toSend = parse(statement);
+		if(statement.size() == 1){
                 std::cout << "Your command didn't work\n";
+        }else{
+
         }
 
 	}
