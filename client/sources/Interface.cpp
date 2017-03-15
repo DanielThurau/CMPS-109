@@ -39,19 +39,16 @@ void Interface::commandLine(){
 		std::getline(std::cin, statement);
 
 		if(statement.length() > 0){
-			std::cout << statement << "\n";
-
 			const char * p_statement = statement.c_str();
-			std::cout << "p_statement: ";
-			std::cout << p_statement << "\n";
 			mySocket->writeToSocket(p_statement, 50);
 			if (statement == "x") {
 				delete(mySocket);
 				break;
 			}
-			/// buffer = read from socket
+
 			char * buffer;
 			buffer = (char*)calloc(150, sizeof(char));
+			
 			if(mySocket->readFromSocket(buffer, 50) == -1){
 				std::cout << "Reading from clientSocket Failed\n";
 				mySocket->setPeerDisconnected(true);

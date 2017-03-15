@@ -259,13 +259,16 @@ bool Interface::executeCommand
 			}
 		}
 
+
+		std::cout << "Results have not seg faulted\n";
+
 		std::string temp_buffer = format(results);
 		buffer_length = temp_buffer.length();
-		// buffer = (char *)calloc(buffer_length, sizeof(char));
 		buffer = new char[temp_buffer.size() + 1];
 		std::copy(temp_buffer.begin(), temp_buffer.end(), buffer);
 		buffer[temp_buffer.size()] = '\0'; // don't forget the terminating 0
 
+		std::cout << "Results have not seg faulted 2\n";
 
 		std::cout << "This is buffer in executeCommand: " << buffer << std::endl;
 
@@ -338,12 +341,6 @@ void Interface::listen(){
 		return;
 	}
 	TCPSocket * clientSocket = serverSocket->getConnection();
-	// if(clientSocket->isPeerDisconnected()){
-	// 	std::cout << "Connection to Client Failed\n";
-	// 	return;
-	// }
-
-
 
 	char * buffer_read;
 	buffer_read = (char*)calloc(150, sizeof(char));
@@ -358,16 +355,15 @@ void Interface::listen(){
 		}else{
 			parse(buffer_read);
 			if(buffer_length != 0){
-				std::cout << "Writing to client in actaul: "<< buffer << "\n";
 				clientSocket->writeToSocket((const char *)buffer, buffer_length);
+				free((char*)buffer);
+				buffer_length = 0;
 			}else{
 				const char * fake_buffer = (const char *)calloc(150, sizeof(char));
-				fake_buffer = "chris rocks socks";
-				int fake_buffer_length = 17;
-				std::cout << "Writing to client in fake" << fake_buffer << "\n";
+				fake_buffer = " ";
+				int fake_buffer_length = 1;
 				clientSocket->writeToSocket(fake_buffer, fake_buffer_length);
-				fake_buffer_length = 0;
-				free((char*)buffer);
+				
 			}
 		}
 	}
