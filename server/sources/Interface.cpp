@@ -46,7 +46,7 @@ std::vector<std::string> Interface::parseSeg(std::string target) {
  * Once it has the type of statement it will format it further and
  * call executeCommand().
  */
-bool Interface::parse(std::string p_statement){
+char * Interface::parse(std::string p_statement){
 
 	std::vector<std::string> result; 
 	std::istringstream strinput(p_statement);
@@ -88,7 +88,7 @@ bool Interface::parse(std::string p_statement){
 					rule.push_back(oper);
 					step++;
 				} else {
-					return false;
+					return NULL;
 				}
 			}  else { //step == 3 // Parse Targets
 				if(str.find(')') == std::string::npos){
@@ -105,11 +105,7 @@ bool Interface::parse(std::string p_statement){
 
 
 		// rule is now a formatted rule command, execute it and return bool upwards
-		if(!executeCommand(rule)){
-			return false;
-		}else{
-			return true;
-		}
+		return format(executeCommand(rule));
 	// FACT COMMAND
 	} else if (result[0] == "FACT") {
 		std::vector<std::vector<std::string>> fact = {{"FACT"}};
@@ -133,11 +129,7 @@ bool Interface::parse(std::string p_statement){
 			}
 		}
 		// fact is now an executable fact
-		if(!executeCommand(fact)){
-			return false;
-		}else{
-			return true;
-		}
+		return format(executeCommand(fact));
 	// INFERENCE COMMAND
 	} else if (result[0] == "INFERENCE") {
 		std::vector<std::vector<std::string>> query ={{"INFERENCE"}};
@@ -156,12 +148,7 @@ bool Interface::parse(std::string p_statement){
 				query.push_back(resName);
 			}
 		}
-		// query is now executable
-		if(!executeCommand(query)){
-			return false;
-		}else{
-			return true;
-		}
+		return format(executeCommand(query));
 	// DROP COMMAND
 	} else if (result[0] == "DROP") {
 		std::vector<std::vector<std::string>> drop = {{"DROP"}};
@@ -172,12 +159,7 @@ bool Interface::parse(std::string p_statement){
 			rfName.push_back(str);
 			drop.push_back(rfName);
 		}
-		// execute a drop
-		if(!executeCommand(drop)){
-			return false;
-		}else{
-			return true;
-		}
+		return format(executeCommand(drop));
 	// LOAD COMMAND
 	} else if (result[0] == "LOAD") {
 		std::vector<std::vector<std::string>> load = {{"LOAD"}};
@@ -189,12 +171,7 @@ bool Interface::parse(std::string p_statement){
 			fileName.push_back(str);
 			load.push_back(fileName);
 		}
-		// execute a load
-		if(!executeCommand(load)){
-			return false;
-		}else{
-			return true;
-		}
+		return format(executeCommand(load));
 	// DUMP COMMAND
 	} else if (result[0] == "DUMP") {
 		std::vector<std::vector<std::string>> dump = {{"DUMP"}};
@@ -204,21 +181,17 @@ bool Interface::parse(std::string p_statement){
 		outputFile.push_back(result[1]);
 		dump.push_back(outputFile);
 
-		if(!executeCommand(dump)){
-			return false;
-		}else{
-			return true;
-		}
+		return format(executeCommand(dump));
 	} else {
 		std::cout << "Unkown Command" << std::endl;
-		return false;
+		return NULL;
 	}
 }
 
 
 //basic implementation using dummy input
-bool Interface::executeCommand 
-(std::vector<std::vector<std::string>> p_command){
+std::vector<std::vector<std::string>> Interface::executeCommand(std::vector<std::vector<std::string>> p_command){
+	std::vector<std::vector<std::string>> results;
 	//creates fact object and adds it to KB
 	if (p_command[0][0] == "FACT") {
 		// remove indicator 
@@ -226,7 +199,7 @@ bool Interface::executeCommand
 		// create new fact and add it
 		Fact * f1 = new Fact(p_command);
 		KB->addContent(f1);
-		return true;
+		return results;
 	}
 	//creates rule object and adds it to RB
 	else if (p_command[0][0] == "RULE") {
@@ -246,7 +219,7 @@ bool Interface::executeCommand
 
 		Rule * r1 = new Rule(p_command);
 		RB->addContent(r1);
-		return true;
+		return results;
 	}
 	else if (p_command[0][0] == "INFERENCE") {
 		// create a new inference object
@@ -254,7 +227,7 @@ bool Interface::executeCommand
 		//second arguement taken as query
 		std::vector<std::string> q1 = p_command[1];
 		//prints out extra $x and $y, don't know why tf it does
-		std::vector<std::vector<std::string>> results =  infer->query(q1);
+		results =  infer->query(q1);
 
 		// if the user specifies a name to store the results under, store them 
 		// in KB
@@ -274,54 +247,38 @@ bool Interface::executeCommand
 		}
 
 
-		std::cout << "Results have not seg faulted\n";
+		// std::cout << "Results have not seg faulted\n";
 
-		std::string temp_buffer = format(results);
-		buffer_length = temp_buffer.length();
-		buffer = new char[temp_buffer.size() + 1];
-		std::copy(temp_buffer.begin(), temp_buffer.end(), buffer);
-		buffer[temp_buffer.size()] = '\0'; // don't forget the terminating 0
-
-		std::cout << "Results have not seg faulted 2\n";
-
-		std::cout << "This is buffer in executeCommand: " << buffer << std::endl;
-
-
-
-		// don't forget to free the string after finished using it
-		// buffer = (char*)temp_buffer.c_str();
-		
+		// std::string temp_buffer = format(results);
+		// buffer_length = temp_buffer.length();
+		// buffer = new char[temp_buffer.size() + 1];
+		// std::copy(temp_buffer.begin(), temp_buffer.end(), buffer);
+		// buffer[temp_buffer.size()] = '\0'; // don't forget the terminating 0
 
 		
-		return true;
+		return results;
 	}
 	else if (p_command[0][0] == "LOAD") {
 		// create a load object with this interface and process
 		Load * ld = new Load(p_command[1][0], this); 
-		if(ld->process()){
-			return true;
-		}else{
-			return false;
-		}
+		ld->process();
+		return results;
 	}
 	else if (p_command[0][0] == "DROP") {
 		// drop from rb and kb 
 		RB->dropContent(p_command[1][0]);
 		KB->dropContent(p_command[1][0]);
-		return true;
+		return results;
 	}else if (p_command[0][0] == "DUMP"){
 		// create dump obj and call process
 		Dump * dump_obj = new Dump(p_command[1][0], this);
-		if(dump_obj->process()){
-			return true;
-		}else{
-			return false;
-		}
+		dump_obj->process();
+		return results;
 	}
-	return false;
+	return results;
 }
 
-std::string Interface::format(std::vector<std::vector<std::string>> result)
+char * Interface::format(std::vector<std::vector<std::string>> result)
 {
 	std::string temp;
 	temp += formatSize((int)result.size());
@@ -334,7 +291,10 @@ std::string Interface::format(std::vector<std::vector<std::string>> result)
 			temp += "|";
 		}
 	}
-	return temp;
+	char * buffer = new char[temp.size() + 1];
+	std::copy(temp.begin(), temp.end(), buffer);
+	buffer[temp.size()] = '\0'; // don't forget the terminating 0
+	return buffer;
 }
 
 std::string Interface::formatSize(int size)
@@ -350,40 +310,42 @@ std::string Interface::formatSize(int size)
 }
 
 void Interface::listen(){
-	if(!serverSocket->initializeSocket()){
-		std::cout << "Initailiztion Failed\n";
-		return;
-	}
-	TCPSocket * clientSocket = serverSocket->getConnection();
 
-	char * buffer_read;
-	buffer_read = (char*)calloc(150, sizeof(char));
-	while(!clientSocket->isPeerDisconnected()){
-		if(clientSocket->readFromSocket(buffer_read, 50) == -1){
-			std::cout << "Reading from clientSocket Failed\n";
-			clientSocket->setPeerDisconnected(true);
-			return;
-		}
-		if(strcmp((const char *)buffer_read,"x") == 0){
-			clientSocket->setPeerDisconnected(true);
-		}else{
-			std::cout << "This is what we're recieving in listen() : " << buffer_read << std::endl;
- 			parse(buffer_read);
-			if(buffer_length != 0){
-				clientSocket->writeToSocket((const char *)buffer, buffer_length);
-				free((char*)buffer);
-				buffer_length = 0;
-			}else{
-				const char * fake_buffer = (const char *)calloc(150, sizeof(char));
-				fake_buffer = " ";
-				int fake_buffer_length = 1;
-				clientSocket->writeToSocket(fake_buffer, fake_buffer_length);
+	// return format(parse(buffer_read));
+	// if(!serverSocket->initializeSocket()){
+	// 	std::cout << "Initailiztion Failed\n";
+	// 	return;
+	// }
+	// TCPSocket * clientSocket = serverSocket->getConnection();
+
+	// char * buffer_read;
+	// buffer_read = (char*)calloc(150, sizeof(char));
+	// while(!clientSocket->isPeerDisconnected()){
+	// 	if(clientSocket->readFromSocket(buffer_read, 50) == -1){
+	// 		std::cout << "Reading from clientSocket Failed\n";
+	// 		clientSocket->setPeerDisconnected(true);
+	// 		return;
+	// 	}
+	// 	if(strcmp((const char *)buffer_read,"x") == 0){
+	// 		clientSocket->setPeerDisconnected(true);
+	// 	}else{
+	// 		std::cout << "This is what we're recieving in listen() : " << buffer_read << std::endl;
+ // 			parse(buffer_read);
+	// 		if(buffer_length != 0){
+	// 			clientSocket->writeToSocket((const char *)buffer, buffer_length);
+	// 			free((char*)buffer);
+	// 			buffer_length = 0;
+	// 		}else{
+	// 			const char * fake_buffer = (const char *)calloc(150, sizeof(char));
+	// 			fake_buffer = " ";
+	// 			int fake_buffer_length = 1;
+	// 			clientSocket->writeToSocket(fake_buffer, fake_buffer_length);
 				
-			}
-		}
-	}
+	// 		}
+	// 	}
+	// }
 
-	delete(clientSocket);
+	// delete(clientSocket);
 
 
 
@@ -397,6 +359,6 @@ Interface::~Interface(){
 	delete(KB);
 	delete(RB);
 	delete(serverSocket);
-	delete(buffer);
+	// delete(buffer);
 }
 

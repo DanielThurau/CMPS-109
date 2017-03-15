@@ -18,10 +18,9 @@ using namespace std;
 class Interface {
 	private: 
 		std::vector<std::string> parseSeg(std::string target);
-		std::string format(std::vector<std::vector<std::string>> result);
+		char * format(std::vector<std::vector<std::string>> result);
 		std::string formatSize(int size);
 		TCPServerSocket * serverSocket;
-		char * buffer;
 
 		int buffer_length;
 	public: 
@@ -33,10 +32,10 @@ class Interface {
 		// looping command line for user
 		void listen();
 		// takes in a formatted statment and excutes it
-		bool executeCommand(std::vector<std::vector<std::string>> p_command);
+		std::vector<std::vector<std::string>> executeCommand(std::vector<std::vector<std::string>> p_command);
 
 
-		std::string parse(std::string p_statement);
+		char * parse(std::string p_statement);
 		~Interface();
 		
 };
