@@ -259,10 +259,6 @@ bool Interface::executeCommand
 		}
 
 		
-
-
-
-
 		
 		return true;
 	}
@@ -290,6 +286,11 @@ bool Interface::executeCommand
 		}
 	}
 	return false;
+}
+
+std::string Interface::format(std::vector<std::vector<std::string>> result)
+{
+
 }
 
 void Interface::listen(){

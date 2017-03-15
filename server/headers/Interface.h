@@ -18,6 +18,7 @@ using namespace std;
 class Interface {
 	private: 
 		std::vector<std::string> parseSeg(std::string target);
+		std::string format(std::vector<std::vector<std::string>> result);
 		TCPServerSocket * serverSocket;
 		char * buffer;
 		int buffer_length;
