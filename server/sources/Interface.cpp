@@ -300,15 +300,17 @@ void Interface::listen(){
 
 	char * buffer;
 	buffer = (char*)calloc(50, sizeof(char));
+	while(!clientSocket->isPeerDisconnected()){
+		if(clientSocket->readFromSocket(buffer, 50) == -1){
+			std::cout << "Reading from clientSocket Failed\n";
+			return;
+		}
+		// std::cout << "Im broke nhere\n";
+		std::cout << "Received from Client Socket: ";
 
-	if(clientSocket->readFromSocket(buffer, 50) == -1){
-		std::cout << "Reading from clientSocket Failed\n";
-		return;
+		std::cout << buffer << std::endl;
+		parse(buffer);
 	}
-	// std::cout << "Im broke nhere\n";
-	std::cout << "Received from Client Socket: ";
-
-	std::cout << buffer << std::endl;
 
 	delete(clientSocket);
 

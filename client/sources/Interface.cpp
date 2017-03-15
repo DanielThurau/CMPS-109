@@ -47,6 +47,7 @@ void Interface::commandLine(){
 			std::cout << "p_statement: ";
 			std::cout << p_statement << "\n";
 			mySocket->writeToSocket(p_statement, 50);
+			
 		}
 	}
 	
