@@ -102,6 +102,8 @@ bool Interface::parse(std::string p_statement){
 				}
 			}
 		}
+
+
 		// rule is now a formatted rule command, execute it and return bool upwards
 		if(!executeCommand(rule)){
 			return false;
@@ -229,7 +231,19 @@ bool Interface::executeCommand
 	//creates rule object and adds it to RB
 	else if (p_command[0][0] == "RULE") {
 		// remove indicator
+		std::cout << "Im a ruleeee\n";
 		p_command.erase(p_command.begin());
+
+
+
+		for(int i = 0; i < p_command.size(); i++){
+			for(int j = 0; j < p_command[i].size();j++){
+				std::cout << p_command[i][j] << " ";
+			}
+			std::cout << "\n";
+		}
+
+
 		Rule * r1 = new Rule(p_command);
 		RB->addContent(r1);
 		return true;
@@ -353,7 +367,8 @@ void Interface::listen(){
 		if(strcmp((const char *)buffer_read,"x") == 0){
 			clientSocket->setPeerDisconnected(true);
 		}else{
-			parse(buffer_read);
+			std::cout << "This is what we're recieving in listen() : " << buffer_read << std::endl;
+ 			parse(buffer_read);
 			if(buffer_length != 0){
 				clientSocket->writeToSocket((const char *)buffer, buffer_length);
 				free((char*)buffer);

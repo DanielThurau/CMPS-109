@@ -1,6 +1,6 @@
 all:
-	make client
-	make server
+	make -B client
+	make -B server
 
 client: 
 	g++ -std=c++11 -pthread client/sources/*.cpp -o clientSRI
