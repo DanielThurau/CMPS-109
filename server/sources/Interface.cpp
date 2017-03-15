@@ -257,6 +257,13 @@ bool Interface::executeCommand
 				KB->addContent(f1);
 			}
 		}
+
+		
+
+
+
+
+		
 		return true;
 	}
 	else if (p_command[0][0] == "LOAD") {
@@ -299,7 +306,7 @@ void Interface::listen(){
 
 
 	char * buffer;
-	buffer = (char*)calloc(50, sizeof(char));
+	buffer = (char*)calloc(150, sizeof(char));
 	while(!clientSocket->isPeerDisconnected()){
 		if(clientSocket->readFromSocket(buffer, 50) == -1){
 			std::cout << "Reading from clientSocket Failed\n";

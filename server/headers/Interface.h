@@ -19,6 +19,8 @@ class Interface {
 	private: 
 		std::vector<std::string> parseSeg(std::string target);
 		TCPServerSocket * serverSocket;
+		char * buffer;
+		int buffer_length;
 	public: 
 		// Pointers to kb and rb
 		KnowledgeBase * KB;

@@ -87,11 +87,8 @@ char * TCPSocket::getMyAddress() {return my_address;} // Selector returning the 
 
 int TCPSocket::readFromSocket (char * buffer, int maxBytes ) { // Blocking read data operation from socket
     if ( buffer != NULL ) {
-        
             memset(buffer,0,maxBytes); // initialize buffer
-            std::cout << "IM AT LEAST NOT NULL\n";
             int read = recv (sock,buffer,maxBytes,0); // invoke recv system call
-            std::cout << "However not making it out of here\n";
             return read; // return the number of bytes read
     }else return -1; // return -1 on error
 }

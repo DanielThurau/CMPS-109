@@ -34,7 +34,7 @@ void Interface::commandLine(){
 	
 	
 	while(1){
-		std::cout << "SRI Session:";
+		
 		std::string statement;
 		std::getline(std::cin, statement);
 		if (statement == "x") {
@@ -49,6 +49,7 @@ void Interface::commandLine(){
 			mySocket->writeToSocket(p_statement, 50);
 			
 		}
+		std::cout << "SRI Session:";
 	}
 	
 }
