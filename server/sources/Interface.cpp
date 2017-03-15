@@ -310,13 +310,14 @@ void Interface::listen(){
 	while(!clientSocket->isPeerDisconnected()){
 		if(clientSocket->readFromSocket(buffer, 50) == -1){
 			std::cout << "Reading from clientSocket Failed\n";
+			clientSocket->setPeerDisconnected(true);
 			return;
 		}
-		// std::cout << "Im broke nhere\n";
-		std::cout << "Received from Client Socket: ";
-
-		std::cout << buffer << std::endl;
-		parse(buffer);
+		if(strcmp((const char *)buffer,"x") == 0){
+			clientSocket->setPeerDisconnected(true);
+		}else{
+			parse(buffer);
+		}
 	}
 
 	delete(clientSocket);

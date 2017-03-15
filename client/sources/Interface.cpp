@@ -37,9 +37,7 @@ void Interface::commandLine(){
 		
 		std::string statement;
 		std::getline(std::cin, statement);
-		if (statement == "x") {
-			break;
-		}
+		
 		if(statement.length() > 0){
 			std::cout << statement << "\n";
 
@@ -47,7 +45,10 @@ void Interface::commandLine(){
 			std::cout << "p_statement: ";
 			std::cout << p_statement << "\n";
 			mySocket->writeToSocket(p_statement, 50);
-			
+			if (statement == "x") {
+			delete(mySocket);
+			break;
+		}
 		}
 		std::cout << "SRI Session:";
 	}
@@ -55,6 +56,6 @@ void Interface::commandLine(){
 }
 
 Interface::~Interface(){
-	delete(mySocket);
+	
 }
 
