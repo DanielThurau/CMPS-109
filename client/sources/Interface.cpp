@@ -37,7 +37,7 @@ void Interface::commandLine(){
 		
 		std::string statement;
 		std::getline(std::cin, statement);
-		
+
 		if(statement.length() > 0){
 			std::cout << statement << "\n";
 
@@ -46,9 +46,19 @@ void Interface::commandLine(){
 			std::cout << p_statement << "\n";
 			mySocket->writeToSocket(p_statement, 50);
 			if (statement == "x") {
-			delete(mySocket);
-			break;
-		}
+				delete(mySocket);
+				break;
+			}
+			/// buffer = read from socket
+			char * buffer;
+			buffer = (char*)calloc(150, sizeof(char));
+			if(mySocket->readFromSocket(buffer, 50) == -1){
+				std::cout << "Reading from clientSocket Failed\n";
+				mySocket->setPeerDisconnected(true);
+				return;
+			}
+
+			std::cout << "This was read from the server: " << buffer << std::endl;
 		}
 		std::cout << "SRI Session:";
 	}

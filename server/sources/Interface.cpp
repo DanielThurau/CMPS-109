@@ -316,7 +316,13 @@ void Interface::listen(){
 		if(strcmp((const char *)buffer,"x") == 0){
 			clientSocket->setPeerDisconnected(true);
 		}else{
-			parse(buffer);
+			std::cout << "Writing to client\n";
+			const char * buffer = (const char *)calloc(50, sizeof(char));
+			buffer = "Hola espangore";
+			int buffer_length = 50;
+
+			clientSocket->writeToSocket(buffer, buffer_length);
+			
 		}
 	}
 
