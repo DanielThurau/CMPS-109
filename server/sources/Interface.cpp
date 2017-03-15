@@ -258,7 +258,9 @@ bool Interface::executeCommand
 			}
 		}
 
+		std::string temp_buffer = format(results);
 		
+
 		
 		return true;
 	}
@@ -290,7 +292,30 @@ bool Interface::executeCommand
 
 std::string Interface::format(std::vector<std::vector<std::string>> result)
 {
+	std::string temp;
+	temp += formatSize((int)result.size());
+	temp += formatSize(((int)result[0].size())-1);
+	for(auto &i : result)
+	{
+		for(auto &j : i)
+		{
+			temp += j;
+			temp += "|";
+		}
+	}
+	return temp;
+}
 
+std::string Interface::formatSize(int size)
+{
+	std::string temp;
+	int zeros = 3 - floor(log10(size));
+	for(int i = 0; i < zeros; i++)
+	{
+		temp += "0";
+	}
+	temp += std::to_string(size);
+	return temp;
 }
 
 void Interface::listen(){
