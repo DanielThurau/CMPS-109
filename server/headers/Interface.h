@@ -21,7 +21,8 @@ class Interface {
 		std::string format(std::vector<std::vector<std::string>> result);
 		std::string formatSize(int size);
 		TCPServerSocket * serverSocket;
-		const char * buffer;
+		char * buffer;
+
 		int buffer_length;
 	public: 
 		// Pointers to kb and rb

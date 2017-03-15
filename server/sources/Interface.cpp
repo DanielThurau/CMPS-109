@@ -8,6 +8,7 @@
 Interface::Interface(){
 	KB = new KnowledgeBase();
 	RB = new RuleBase();
+	buffer_length = 0;
 
 	std::cout << "Please enter my address:";
 	std::string p_address;
@@ -259,6 +260,19 @@ bool Interface::executeCommand
 		}
 
 		std::string temp_buffer = format(results);
+		buffer_length = temp_buffer.length();
+		// buffer = (char *)calloc(buffer_length, sizeof(char));
+		buffer = new char[temp_buffer.size() + 1];
+		std::copy(temp_buffer.begin(), temp_buffer.end(), buffer);
+		buffer[temp_buffer.size()] = '\0'; // don't forget the terminating 0
+
+
+		std::cout << "This is buffer in executeCommand: " << buffer << std::endl;
+
+
+
+		// don't forget to free the string after finished using it
+		// buffer = (char*)temp_buffer.c_str();
 		
 
 		
@@ -331,24 +345,30 @@ void Interface::listen(){
 
 
 
-	char * buffer;
-	buffer = (char*)calloc(150, sizeof(char));
+	char * buffer_read;
+	buffer_read = (char*)calloc(150, sizeof(char));
 	while(!clientSocket->isPeerDisconnected()){
-		if(clientSocket->readFromSocket(buffer, 50) == -1){
+		if(clientSocket->readFromSocket(buffer_read, 50) == -1){
 			std::cout << "Reading from clientSocket Failed\n";
 			clientSocket->setPeerDisconnected(true);
 			return;
 		}
-		if(strcmp((const char *)buffer,"x") == 0){
+		if(strcmp((const char *)buffer_read,"x") == 0){
 			clientSocket->setPeerDisconnected(true);
 		}else{
-			std::cout << "Writing to client\n";
-			const char * buffer = (const char *)calloc(50, sizeof(char));
-			buffer = "Hola espangore";
-			int buffer_length = 50;
-
-			clientSocket->writeToSocket(buffer, buffer_length);
-			
+			parse(buffer_read);
+			if(buffer_length != 0){
+				std::cout << "Writing to client in actaul: "<< buffer << "\n";
+				clientSocket->writeToSocket((const char *)buffer, buffer_length);
+			}else{
+				const char * fake_buffer = (const char *)calloc(150, sizeof(char));
+				fake_buffer = "chris rocks socks";
+				int fake_buffer_length = 17;
+				std::cout << "Writing to client in fake" << fake_buffer << "\n";
+				clientSocket->writeToSocket(fake_buffer, fake_buffer_length);
+				fake_buffer_length = 0;
+				free((char*)buffer);
+			}
 		}
 	}
 
@@ -366,5 +386,6 @@ Interface::~Interface(){
 	delete(KB);
 	delete(RB);
 	delete(serverSocket);
+	delete(buffer);
 }
 
