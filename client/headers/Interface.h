@@ -19,7 +19,7 @@ class Interface {
 		
 	public:
 		//temp buffer used to read from socket
-		//char * temp_buffer;
+		char * temp_buffer;
 		//gets the integers found at the beginning of char*
 		int argSize(char * p_arg, int split);
 		//converts char * to string
