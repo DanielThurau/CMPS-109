@@ -8,18 +8,18 @@
 Interface::Interface(){
 	KB = new KnowledgeBase();
 	RB = new RuleBase();
-	buffer_length = 0;
+	// buffer_length = 0;
 
-	std::cout << "Please enter my address:";
-	std::string p_address;
-	std::cin >> p_address;
-	const char * p_address_char = p_address.c_str();
+	// std::cout << "Please enter my address:";
+	// std::string p_address;
+	// std::cin >> p_address;
+	// const char * p_address_char = p_address.c_str();
 
 
-	std::cout << "Please enter my port:";
-	int p_port;
-	std::cin >> p_port;
-	serverSocket = new TCPServerSocket(p_address_char, (int)p_port, 10);
+	// std::cout << "Please enter my port:";
+	// int p_port;
+	// std::cin >> p_port;
+	// serverSocket = new TCPServerSocket(p_address_char, (int)p_port, 10);
 }
 
 
@@ -47,7 +47,7 @@ std::vector<std::string> Interface::parseSeg(std::string target) {
  * call executeCommand().
  */
 char * Interface::parse(std::string p_statement){
-
+	std::cout << "p_statement in parse: "<<p_statement << std::endl;
 	std::vector<std::string> result; 
 	std::istringstream strinput(p_statement);
 	
@@ -129,6 +129,7 @@ char * Interface::parse(std::string p_statement){
 			}
 		}
 		// fact is now an executable fact
+		std::cout << "Formatinng the fact\n";
 		return format(executeCommand(fact));
 	// INFERENCE COMMAND
 	} else if (result[0] == "INFERENCE") {
@@ -148,7 +149,10 @@ char * Interface::parse(std::string p_statement){
 				query.push_back(resName);
 			}
 		}
-		return format(executeCommand(query));
+		char * temp = (char*)calloc(150,sizeof(char));
+		temp = format(executeCommand(query));
+		std::cout << "Why the fuck is formatting not working: "<< temp << std::endl;
+		return temp;
 	// DROP COMMAND
 	} else if (result[0] == "DROP") {
 		std::vector<std::vector<std::string>> drop = {{"DROP"}};
@@ -199,6 +203,7 @@ std::vector<std::vector<std::string>> Interface::executeCommand(std::vector<std:
 		// create new fact and add it
 		Fact * f1 = new Fact(p_command);
 		KB->addContent(f1);
+		std::cout << "Added the fact to the kb\n";
 		return results;
 	}
 	//creates rule object and adds it to RB
@@ -255,7 +260,12 @@ std::vector<std::vector<std::string>> Interface::executeCommand(std::vector<std:
 		// std::copy(temp_buffer.begin(), temp_buffer.end(), buffer);
 		// buffer[temp_buffer.size()] = '\0'; // don't forget the terminating 0
 
-		
+		for(int i = 0; i < results.size();i++){
+			for(int j =0; j < results[i].size();j++){
+				std::cout << results[i][j] << " ";
+			}
+			std::cout << "\n";
+		}
 		return results;
 	}
 	else if (p_command[0][0] == "LOAD") {
@@ -278,23 +288,37 @@ std::vector<std::vector<std::string>> Interface::executeCommand(std::vector<std:
 	return results;
 }
 
-char * Interface::format(std::vector<std::vector<std::string>> result)
-{
-	std::string temp;
-	temp += formatSize((int)result.size());
-	temp += formatSize(((int)result[0].size())-1);
-	for(auto &i : result)
-	{
-		for(auto &j : i)
-		{
-			temp += j;
-			temp += "|";
+char * Interface::format(std::vector<std::vector<std::string>> result){
+	cout << "This is result:\n";
+	for(int i =0;i < result.size();i++){
+		for(int j =0; j < result[i].size();j++){
+			std::cout << result[i][j] << " ";
 		}
+		std::cout << "\n";
 	}
-	char * buffer = new char[temp.size() + 1];
-	std::copy(temp.begin(), temp.end(), buffer);
-	buffer[temp.size()] = '\0'; // don't forget the terminating 0
-	return buffer;
+	if(result.size() > 0){
+		std::string temp;
+		temp += formatSize((int)result.size());
+		temp += formatSize(((int)result[0].size())-1);
+		for(auto &i : result)
+		{
+			for(auto &j : i)
+			{
+				temp += j;
+				temp += "|";
+			}
+		}
+		char * buffer = new char[temp.size() + 1];
+		std::copy(temp.begin(), temp.end(), buffer);
+		buffer[temp.size()] = '\0'; // don't forget the terminating 0
+		std::cout << "Returing a formatted char *" << buffer << std::endl;
+		return buffer;
+	}else{
+		char * buffer = (char*)calloc(4,sizeof(char));
+		buffer[0] = 'n'; buffer[1] = 'u'; buffer[2] = 'l'; buffer[3] = 'l';
+		// buffer = "null";
+		return buffer;
+	}
 }
 
 std::string Interface::formatSize(int size)

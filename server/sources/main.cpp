@@ -28,8 +28,10 @@ int main(int argc, char *argv[]){
 
 		tcpServerSocket->initializeSocket();
 		for(;;){
+			std::cout << "Trying to establish a connection\n";
 			TCPSocket * tcpSocket = tcpServerSocket->getConnection();
 			if(tcpSocket == NULL){
+				std::cout << "That tcpSocket was null\n";
 				break;
 			}
 			garbageCollector->cleanup();

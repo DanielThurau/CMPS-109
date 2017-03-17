@@ -7,9 +7,10 @@
 
 //Constructor: Call parent Thread Constructor
 Connection::Connection(TCPSocket * p_tcpSocket, Interface * p_threadInterface): Thread(){
+	std::cout << "Creating a new connection";
 	tcpSocket = p_tcpSocket; // Set the TCP socket
 	next_connection = NULL; // Set the next pointer to NULL
-	threadInterface = new Interface();
+	threadInterface = p_threadInterface;
 }
 
 // A modifier that sets the pointer of the next connection
@@ -44,11 +45,16 @@ void * Connection::threadMainBody (void * arg) { // Main thread body for serving
 			tcpSocket->setPeerDisconnected(true);
 			break;
 		}else{
+			std::cout << "buffer_read: "<< buffer_read << std::endl;
 			char * buffer = (char *)calloc(150,sizeof(char));
+			std::string temp((const char *)buffer_read);
+			std::cout << "Before parsing\n";
+			buffer = threadInterface->parse(temp);
+			std::cout << "After parsing" << buffer << std::endl;
 			int buffer_length = 150;
 			if(buffer_length != 0){
 				tcpSocket->writeToSocket((const char *)buffer, buffer_length);
-				free((char*)buffer);
+				// free((char*)buffer);
 				buffer_length = 0;
 			}
 		}
