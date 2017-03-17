@@ -175,10 +175,38 @@ void Interface::commandLine(){
 					return;
 				}
 
-				// Unformat buffer? Then recieve each line 
+				std::string pathName = statement.substr(5,std::string::npos)
 
-				while(buffer) {
-					std::cout << "This was read from the server: " << buffer << std::endl;
+				// Grabs the path type of the file
+				std::string pathCheck = pathName.substr(pathName.rfind("."));
+				
+				// Errors if incorrect path type
+				if(pathCheck != ".sri") {
+					std::cout << "Invalid file. Please use a .sri file.\n";
+					return false;
+				}				
+
+				std::ofstream outFile(pathName);
+				if(outFile.is_open()){
+					// if buffer recieves null termainated that means DUMP is done
+					while(buffer[0] == '\0') {
+						// Unformat buffer? Then recieve each line
+						std::string bufferString;
+						int i = 0; 
+						while(buffer[i] != '\0') {
+							bufferString += buffer[i]
+							i++;
+						}
+
+						outFile << bufferString << std::endl;
+						std::cout << "This was read from the server: " << buffer << std::endl;
+
+						// Send response here asking for more
+					}
+					// Buffer finished
+					outFile.close();
+				} else {
+					std::cout << "Error opening file" << std::endl;
 				}
 			} else {
 			/*******************************************/
