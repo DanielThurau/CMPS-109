@@ -126,23 +126,79 @@ void Interface::commandLine(){
 		std::getline(std::cin, statement);
 
 		if(statement.length() > 0){
-			const char * p_statement = statement.c_str();
-			mySocket->writeToSocket(p_statement, 50);
-			if (statement == "x") {
-				delete(mySocket);
-				break;
+			
+			/************** Chris code that he added for load **************************/
+
+			if(statement.substr(0,3) == "LOAD"){
+				std::string pathName = statement.substr(5,std::string::npos)
+
+				// Grabs the path type of the file
+				std::string pathCheck = pathName.substr(pathName.rfind("."));
+				
+				// Errors if incorrect path type
+				if(pathCheck != ".sri") {
+					std::cout << "Invalid file. Please use a .sri file.\n";
+					return false;
+				}
+
+				std::ifstream file(pathName);
+				if (file.is_open()){
+					std::string line;
+					while(std::getline(file, line)){
+						// Send each line to be parsed by server
+						const char * p_line = line.c_str();
+						mySocket->writeToSocket(p_line, 50);
+
+						char * temp_buffer;
+						temp_buffer = (char*)calloc(150, sizeof(char));
+
+						if(mySocket->readFromSocket(buffer, 50) == -1){
+							std::cout << "Reading from clientSocket Failed\n";
+							mySocket->setPeerDisconnected(true);
+							return;
+						}
+						std::cout << "This was read from the server: " << buffer << std::endl;					
+					}
+				} else {
+					std::cout << "Error opening file" << std::endl;
+				}
+			} else if(statement.substr(0,3) == "DUMP") {
+				const char * p_statement = statement.c_str();
+				mySocket->writeToSocket(p_statement, 50);
+
+				char * temp_buffer;
+				temp_buffer = (char*)calloc(150, sizeof(char));
+
+				if(mySocket->readFromSocket(buffer, 50) == -1){
+					std::cout << "Reading from clientSocket Failed\n";
+					mySocket->setPeerDisconnected(true);
+					return;
+				}
+
+				// Unformat buffer? Then recieve each line 
+
+				while(buffer) {
+					std::cout << "This was read from the server: " << buffer << std::endl;
+				}
+			} else {
+			/*******************************************/
+				const char * p_statement = statement.c_str();
+				mySocket->writeToSocket(p_statement, 50);
+				if (statement == "x") {
+					delete(mySocket);
+					break;
+				}
+				char * temp_buffer;
+				temp_buffer = (char*)calloc(150, sizeof(char));
+
+				if(mySocket->readFromSocket(buffer, 50) == -1){
+					std::cout << "Reading from clientSocket Failed\n";
+					mySocket->setPeerDisconnected(true);
+					return;
+				}
+
+				std::cout << "This was read from the server: " << buffer << std::endl;
 			}
-
-			char * temp_buffer;
-			temp_buffer = (char*)calloc(150, sizeof(char));
-
-			if(mySocket->readFromSocket(buffer, 50) == -1){
-				std::cout << "Reading from clientSocket Failed\n";
-				mySocket->setPeerDisconnected(true);
-				return;
-			}
-
-			std::cout << "This was read from the server: " << buffer << std::endl;
 		}
 		std::cout << "SRI Session:";
 	}
