@@ -47,7 +47,6 @@ std::vector<std::string> Interface::parseSeg(std::string target) {
  * call executeCommand().
  */
 char * Interface::parse(std::string p_statement){
-	std::cout << "p_statement in parse: "<<p_statement << std::endl;
 	std::vector<std::string> result; 
 	std::istringstream strinput(p_statement);
 	
@@ -129,7 +128,6 @@ char * Interface::parse(std::string p_statement){
 			}
 		}
 		// fact is now an executable fact
-		std::cout << "Formatinng the fact\n";
 		return format(executeCommand(fact));
 	// INFERENCE COMMAND
 	} else if (result[0] == "INFERENCE") {
@@ -203,13 +201,11 @@ std::vector<std::vector<std::string>> Interface::executeCommand(std::vector<std:
 		// create new fact and add it
 		Fact * f1 = new Fact(p_command);
 		KB->addContent(f1);
-		std::cout << "Added the fact to the kb\n";
 		return results;
 	}
 	//creates rule object and adds it to RB
 	else if (p_command[0][0] == "RULE") {
 		// remove indicator
-		std::cout << "Im a ruleeee\n";
 		p_command.erase(p_command.begin());
 
 
@@ -289,13 +285,13 @@ std::vector<std::vector<std::string>> Interface::executeCommand(std::vector<std:
 }
 
 char * Interface::format(std::vector<std::vector<std::string>> result){
-	cout << "This is result:\n";
-	for(int i =0;i < result.size();i++){
-		for(int j =0; j < result[i].size();j++){
-			std::cout << result[i][j] << " ";
-		}
-		std::cout << "\n";
-	}
+	// cout << "This is result:\n";
+	// for(int i =0;i < result.size();i++){
+	// 	for(int j =0; j < result[i].size();j++){
+	// 		std::cout << result[i][j] << " ";
+	// 	}
+	// 	std::cout << "\n";
+	// }
 	if(result.size() > 0){
 		std::string temp;
 		temp += formatSize((int)result.size());

@@ -110,7 +110,6 @@ void Interface::unformat(char * p_arg){
 	int targets = argSize(p_arg,0);
 	int elements = argSize(p_arg,1);
 	//convert char * to string starting after numbers
-	std::cout << "SEg faulting here\n";
 	string arg = convertToStr(p_arg);
 	std::vector<std::vector<std::string>> unformated = parseSeg(arg,targets,elements);
 	print_query(unformated);
@@ -135,9 +134,9 @@ void Interface::commandLine(){
 			}
 
 			char * temp_buffer;
-			temp_buffer = (char*)calloc(150, sizeof(char));
+			temp_buffer = (char*)calloc(1000, sizeof(char));
 
-			if(mySocket->readFromSocket(temp_buffer, 150) == -1){
+			if(mySocket->readFromSocket(temp_buffer, 1000) == -1){
 				std::cout << "Reading from clientSocket Failed\n";
 				mySocket->setPeerDisconnected(true);
 				return;
