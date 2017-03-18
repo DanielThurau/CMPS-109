@@ -166,7 +166,7 @@ void Interface::commandLine(){
 
 				
 
-				std::string pathName = statement.substr(6,std::string::npos);
+				std::string pathName = statement.substr(5,std::string::npos);
 
 				// Grabs the path type of the file
 				std::string pathCheck = pathName.substr(pathName.rfind("."));
@@ -176,11 +176,11 @@ void Interface::commandLine(){
 					std::cout << "Invalid file. Please use a .sri file.\n";
 					return;
 				}				
-
 				std::ofstream outFile(pathName);
+
 				if(outFile.is_open()){
 					// if buffer recieves null termainated that means DUMP is done
-					while(temp_buffer[0] == '\0') {
+					while(true) {
 						char * temp_buffer;
 						temp_buffer = (char*)calloc(1000, sizeof(char));
 
@@ -188,6 +188,9 @@ void Interface::commandLine(){
 							std::cout << "Reading from clientSocket Failed\n";
 							mySocket->setPeerDisconnected(true);
 							return;
+						}
+						if(strcmp((const char *)temp_buffer,"\0") == 0){
+							break;
 						}
 						// Unformat buffer? Then recieve each line
 						std::string bufferString;
@@ -199,7 +202,6 @@ void Interface::commandLine(){
 
 						outFile << bufferString << std::endl;
 						std::cout << "This was read from the server: " << temp_buffer << std::endl;
-
 
 						char * buffer =(char *) calloc(4, sizeof(char));
 						buffer[0] = 'n'; buffer[1] = 'u'; buffer[2] = 'l'; buffer[3] = 'l';

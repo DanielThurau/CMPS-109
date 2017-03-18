@@ -248,14 +248,6 @@ std::vector<std::vector<std::string>> Interface::executeCommand(std::vector<std:
 		}
 
 
-		// std::cout << "Results have not seg faulted\n";
-
-		// std::string temp_buffer = format(results);
-		// buffer_length = temp_buffer.length();
-		// buffer = new char[temp_buffer.size() + 1];
-		// std::copy(temp_buffer.begin(), temp_buffer.end(), buffer);
-		// buffer[temp_buffer.size()] = '\0'; // don't forget the terminating 0
-
 		for(int i = 0; i < results.size();i++){
 			for(int j =0; j < results[i].size();j++){
 				std::cout << results[i][j] << " ";
@@ -285,13 +277,6 @@ std::vector<std::vector<std::string>> Interface::executeCommand(std::vector<std:
 }
 
 char * Interface::format(std::vector<std::vector<std::string>> result){
-	// cout << "This is result:\n";
-	// for(int i =0;i < result.size();i++){
-	// 	for(int j =0; j < result[i].size();j++){
-	// 		std::cout << result[i][j] << " ";
-	// 	}
-	// 	std::cout << "\n";
-	// }
 	if(result.size() > 0){
 		std::string temp;
 		temp += formatSize((int)result.size());
@@ -329,158 +314,6 @@ std::string Interface::formatSize(int size)
 	return temp;
 }
 
-void Interface::listen(){
-
-	// return format(parse(buffer_read));
-	// if(!serverSocket->initializeSocket()){
-	// 	std::cout << "Initailiztion Failed\n";
-	// 	return;
-	// }
-	// TCPSocket * clientSocket = serverSocket->getConnection();
-
-	// char * buffer_read;
-	// buffer_read = (char*)calloc(150, sizeof(char));
-	// while(!clientSocket->isPeerDisconnected()){
-	// 	if(clientSocket->readFromSocket(buffer_read, 50) == -1){
-	// 		std::cout << "Reading from clientSocket Failed\n";
-	// 		clientSocket->setPeerDisconnected(true);
-	// 		return;
-	// 	}
-	// 	if(strcmp((const char *)buffer_read,"x") == 0){
-	// 		clientSocket->setPeerDisconnected(true);
-	// 	}else{
-	// 		std::cout << "This is what we're recieving in listen() : " << buffer_read << std::endl;
-    //		
-    //		/********************** CHRIS MADE CHANGES HERE *****************/
-//		if(buffer_read.substr(0,3) == "DUMP"){
-//			// Retrieves keys from KB
-//			std::vector<std::string> kbKeys = KB->getKeys();
-//
-//			// Iterates over each key
-//			for(auto &key : kbKeys){
-//				// Grabs fact Vector using key
-//				std::vector<Fact*> factVector = KB->getContent(key);
-//
-//				// Iterates through every fact in factVector
-//				for(auto &fact : factVector){
-//					std::string factString = "FACT ";
-//					//Iterates over each vector of the Fact Vector
-//					bool factName = true;
-//
-//					for(auto &factData : fact->getFact()) {
-//						// Iterates over each element in fact
-//						for(auto &factELement : factData) {
-//							if(factName) {
-//								factString += factELement + "(";
-//								factName = false;
-//							} else {
-//								factString += factELement + ",";
-//							}
-//						}
-//						factString.erase(factString.size() - 1);
-//						factString += ")";
-//						break;
-//					}
-//					// SEND TO SOCKET TO WRITE TO FILE
-//					char * temp_buffer = (const char *) calloc(factString.size(), sizeof(char));
-//					temp_buffer = factString.c_str();
-//					clientSocket->writeToSocket(temp_buffer, factString.size());
-//
-//					// Put something here to wait for response?
-//				}
-//			}
-//
-//			// Grabs keys from RB
-//			std::vector<std::string> rbKeys = RB->getKeys();
-//
-//			// Iterates over each key
-//			for(auto &key : rbKeys){
-//				Rule rule = RB->getContent(key);
-//				std::string ruleString = "RULE ";
-//				bool ruleName = true;
-//				bool isOp = false;
-//				// Iterates through each data of rule vector
-//				for(auto &ruleData : rule.getRule()) {
-//					bool targetName = true;
-//
-//					// Bandaid fix for empty vector
-//					if(ruleData[0] == "") {
-//						break;
-//					}
-//
-//					// Iterates through each element of Data
-//					for(auto &ruleElement : ruleData) {
-//						if(targetName) {
-//							ruleString += ruleElement + "(";
-//							targetName = false;
-//							continue;
-//						} else if(isOp) {
-//							ruleString += ruleElement;
-//							continue;
-//						} else {
-//							ruleString += ruleElement + ",";
-//							continue;
-//						}
-//					}
-//
-//					// Formatting
-//					if(ruleName) {
-//						ruleString.erase(ruleString.size() - 1);
-//						ruleString += "):- ";
-//						ruleName = false;
-//						isOp = true;
-//					} else if(isOp) {
-//						ruleString.erase(ruleString.size() - 1);
-//						ruleString += " ";
-//						isOp = false;
-//					} else {
-//						ruleString.erase(ruleString.size() - 1);
-//						ruleString += ") ";
-//					}
-//				}
-//				
-//				// SEND TO SOCKET TO WRITE TO FILE
-//				char * temp_buffer = (const char *) calloc(ruleString.size(), sizeof(char));
-//				temp_buffer = ruleString.c_str();
-//				clientSocket->writeToSocket(temp_buffer, ruleString.size());
-//
-//				// Put something here to wait for response?
-//				
-//			}
-//			
-//			// Put something here so that client knows dump has finished
-//			// Sends null terminated to indicate done
-//			const char * fake_buffer = (const char *)calloc(150, sizeof(char));
-// 			fake_buffer = '\0';
-// 			int fake_buffer_length = 1;
-// 			clientSocket->writeToSocket(fake_buffer, fake_buffer_length);
-//		} else {
-	//		/******************************************************************/
-	//			parse(buffer_read);
-	// 			if(buffer_length != 0){
-	// 				clientSocket->writeToSocket((const char *)buffer, buffer_length);
-	// 				free((char*)buffer);
-	// 				buffer_length = 0;
-	// 			}else{
-	// 				const char * fake_buffer = (const char *)calloc(150, sizeof(char));
-	// 				fake_buffer = " ";
-	// 				int fake_buffer_length = 1;
-	// 				clientSocket->writeToSocket(fake_buffer, fake_buffer_length);
-	//			
-	// 			}
-	//		}
-	// 	}
-	// }
-
-	// delete(clientSocket);
-
-
-
-
-
-
-
-}
 
 Interface::~Interface(){
 	delete(KB);
@@ -489,3 +322,103 @@ Interface::~Interface(){
 	// delete(buffer);
 }
 
+
+
+std::vector<char *> Interface::grab(){
+	std::vector<char*> results;
+
+
+	std::vector<std::string> kbKeys = KB->getKeys();
+
+	
+	for(auto &key : kbKeys){
+		// Grabs fact Vector using key
+		std::vector<Fact*> factVector = KB->getContent(key);
+
+		// Iterates through every fact in factVector
+		for(auto &fact : factVector){
+			std::string factString = "FACT ";
+			//Iterates over each vector of the Fact Vector
+			bool factName = true;
+
+			for(auto &factData : fact->getFact()) {
+				// Iterates over each element in fact
+				for(auto &factELement : factData) {
+					if(factName) {
+						factString += factELement + "(";
+						factName = false;
+					} else {
+						factString += factELement + ",";
+					}
+				}
+				factString.erase(factString.size() - 1);
+				factString += ")";
+
+				char *cstr = new char[factString.length() + 1];
+				strcpy(cstr, factString.c_str());
+				results.push_back(cstr);
+				break;
+			}
+		}
+	}
+
+	// Grabs keys from RB
+	std::vector<std::string> rbKeys = RB->getKeys();
+
+	// Iterates over each key
+	for(auto &key : rbKeys){
+		Rule rule = RB->getContent(key);
+		std::string ruleString = "RULE ";
+		bool ruleName = true;
+		bool isOp = false;
+		// Iterates through each data of rule vector
+		for(auto &ruleData : rule.getRule()) {
+			bool targetName = true;
+
+			// Bandaid fix for empty vector
+			if(ruleData[0] == "") {
+				break;
+			}
+
+			// Iterates through each element of Data
+			for(auto &ruleElement : ruleData) {
+				if(targetName) {
+					ruleString += ruleElement + "(";
+					targetName = false;
+					continue;
+				} else if(isOp) {
+					ruleString += ruleElement;
+					continue;
+				} else {
+					ruleString += ruleElement + ",";
+					continue;
+				}
+			}
+
+			// Formatting
+			if(ruleName) {
+				ruleString.erase(ruleString.size() - 1);
+				ruleString += "):- ";
+				ruleName = false;
+				isOp = true;
+			} else if(isOp) {
+				ruleString.erase(ruleString.size() - 1);
+				ruleString += " ";
+				isOp = false;
+			} else {
+				ruleString.erase(ruleString.size() - 1);
+				ruleString += ") ";
+
+			}
+		}
+
+		char *cstr = new char[ruleString.length() + 1];
+		strcpy(cstr, ruleString.c_str());
+		results.push_back(cstr);
+
+	}
+	char *cstr = (char*)calloc(1,sizeof(char));
+	cstr[0] = '\0';
+	results.push_back(cstr);
+	return results;
+}

@@ -30,11 +30,10 @@ class Interface {
 		// interface constructor 
 		Interface();
 		// looping command line for user
-		void listen();
 		// takes in a formatted statment and excutes it
 		std::vector<std::vector<std::string>> executeCommand(std::vector<std::vector<std::string>> p_command);
 
-
+		std::vector<char *> grab();
 		char * parse(std::string p_statement);
 		~Interface();
 		
