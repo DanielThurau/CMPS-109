@@ -17,15 +17,7 @@
 #include <cstdlib>
 #include <sstream>
 #include <unordered_map>
-// #include <cstring>
-// #include <string>
-// using namespace std;
-
-
-// struct ignorecase { 
-//     bool operator() (const std::string& lhs, const std::string& rhs) const {
-//         return strcasecmp(lhs.c_str(), rhs.c_str()) < 0;
-//     }
-// };
+#include <cstring>
+#include <string>
 
 #endif // COMMON_H_

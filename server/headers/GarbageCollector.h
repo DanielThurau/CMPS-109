@@ -1,3 +1,9 @@
+/* 
+ * Garbage Collector.h
+ * Author: Karim Sobh
+ * UCSC
+ */
+
 #ifndef GARBAGECOLLECTOR_H
 #define GARBAGECOLLECTOR_H
 

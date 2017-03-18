@@ -26,7 +26,7 @@ class Interface {
 		// interface constructor 
 		Interface();
 		// looping command line for user
-		void commandLine();
+		void commandLine(std::string p_arg = "");
 		// parser for user input
 		~Interface();
 		

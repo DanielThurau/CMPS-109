@@ -8,6 +8,11 @@ int main(int argc, char *argv[]){
 		ourSRI = new Interface();
 		
 	}else if(argc == 2){
+		// create a command for load of the file passed and execute
+		ourSRI = new Interface();
+		std::string arg(argv[1]);
+		std::string command = "LOAD " + arg;
+		ourSRI->commandLine(command);
 	}else{
 		std::cout << "Usages: ./SRI [path_to_file]\n";
 		return 1;

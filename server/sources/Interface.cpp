@@ -1,8 +1,5 @@
 #include "../headers/Interface.h"
-#include "../headers/Load.h"
-#include "../headers/Dump.h"
-#include <cstring>
-#include <string>
+
 
 //default constructor just creates new objects
 Interface::Interface(){
@@ -255,22 +252,10 @@ std::vector<std::vector<std::string>> Interface::executeCommand(std::vector<std:
 			std::cout << "\n";
 		}
 		return results;
-	}
-	else if (p_command[0][0] == "LOAD") {
-		// create a load object with this interface and process
-		Load * ld = new Load(p_command[1][0], this); 
-		ld->process();
-		return results;
-	}
-	else if (p_command[0][0] == "DROP") {
+	}else if (p_command[0][0] == "DROP") {
 		// drop from rb and kb 
 		RB->dropContent(p_command[1][0]);
 		KB->dropContent(p_command[1][0]);
-		return results;
-	}else if (p_command[0][0] == "DUMP"){
-		// create dump obj and call process
-		Dump * dump_obj = new Dump(p_command[1][0], this);
-		dump_obj->process();
 		return results;
 	}
 	return results;

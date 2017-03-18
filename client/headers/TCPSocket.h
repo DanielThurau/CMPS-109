@@ -1,4 +1,8 @@
-
+/*
+ * TCPSocket.h
+ * Author: Professor Karim Sobh
+ * UCSC
+ */
 #ifndef TCPSOCKET_H
 #define TCPSOCKET_H
 
