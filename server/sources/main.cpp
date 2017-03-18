@@ -7,20 +7,25 @@
 
 
 int main(int argc, char *argv[]){
-	std::cout << "Please enter my address:";
+	// recieve address and port from user
 	std::string p_address;
-	std::cin >> p_address;
+	while(p_address.empty()){
+		std::cout << "Please enter my address:";
+		getline(std::cin, p_address);
+	}
 	const char * p_address_char = p_address.c_str();
 
-
-	std::cout << "Please enter my port:";
-	int p_port;
-	std::cin >> p_port;
+	std::string p_port;
+	while(p_port.empty()){
+		std::cout << "Please enter the port of the server:";
+		getline(std::cin, p_port);
+	}
+	int port = std::stoi(p_port);
 
 
 	if(argc == 1){
 
-		TCPServerSocket * tcpServerSocket = new TCPServerSocket(p_address_char, p_port, 100);
+		TCPServerSocket * tcpServerSocket = new TCPServerSocket(p_address_char, port, 100);
 		GarbageCollector * garbageCollector = new GarbageCollector();
 
 		tcpServerSocket->initializeSocket();
@@ -37,9 +42,6 @@ int main(int argc, char *argv[]){
 		}
 		delete(garbageCollector);
 		delete(tcpServerSocket);
-	}else if(argc == 2){
-		// Load * ld = new Load(argv[1]);
-		// ourSRI = ld->startSRI();
 	}else{
 		std::cout << "Usages: ./SRI [path_to_file]\n";
 		return 1;

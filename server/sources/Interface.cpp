@@ -5,18 +5,6 @@
 Interface::Interface(){
 	KB = new KnowledgeBase();
 	RB = new RuleBase();
-	// buffer_length = 0;
-
-	// std::cout << "Please enter my address:";
-	// std::string p_address;
-	// std::cin >> p_address;
-	// const char * p_address_char = p_address.c_str();
-
-
-	// std::cout << "Please enter my port:";
-	// int p_port;
-	// std::cin >> p_port;
-	// serverSocket = new TCPServerSocket(p_address_char, (int)p_port, 10);
 }
 
 
@@ -98,8 +86,6 @@ char * Interface::parse(std::string p_statement){
 				}
 			}
 		}
-
-
 		// rule is now a formatted rule command, execute it and return bool upwards
 		return format(executeCommand(rule));
 	// FACT COMMAND
@@ -144,9 +130,9 @@ char * Interface::parse(std::string p_statement){
 				query.push_back(resName);
 			}
 		}
+		// input into buffer the formatted reslts of a query
 		char * temp = (char*)calloc(150,sizeof(char));
 		temp = format(executeCommand(query));
-		std::cout << "Why the fuck is formatting not working: "<< temp << std::endl;
 		return temp;
 	// DROP COMMAND
 	} else if (result[0] == "DROP") {
@@ -187,9 +173,8 @@ char * Interface::parse(std::string p_statement){
 	}
 }
 
-
-//basic implementation using dummy input
-std::vector<std::vector<std::string>> Interface::executeCommand(std::vector<std::vector<std::string>> p_command){
+// takes a 2d string vector and properly handles the execution of it
+std::vector<std::vector<std::string>> Interface:: (std::vector<std::vector<std::string>> p_command){
 	std::vector<std::vector<std::string>> results;
 	//creates fact object and adds it to KB
 	if (p_command[0][0] == "FACT") {
@@ -204,17 +189,6 @@ std::vector<std::vector<std::string>> Interface::executeCommand(std::vector<std:
 	else if (p_command[0][0] == "RULE") {
 		// remove indicator
 		p_command.erase(p_command.begin());
-
-
-
-		for(int i = 0; i < p_command.size(); i++){
-			for(int j = 0; j < p_command[i].size();j++){
-				std::cout << p_command[i][j] << " ";
-			}
-			std::cout << "\n";
-		}
-
-
 		Rule * r1 = new Rule(p_command);
 		RB->addContent(r1);
 		return results;
@@ -243,14 +217,6 @@ std::vector<std::vector<std::string>> Interface::executeCommand(std::vector<std:
 				KB->addContent(f1);
 			}
 		}
-
-
-		for(int i = 0; i < results.size();i++){
-			for(int j =0; j < results[i].size();j++){
-				std::cout << results[i][j] << " ";
-			}
-			std::cout << "\n";
-		}
 		return results;
 	}else if (p_command[0][0] == "DROP") {
 		// drop from rb and kb 
@@ -261,6 +227,7 @@ std::vector<std::vector<std::string>> Interface::executeCommand(std::vector<std:
 	return results;
 }
 
+// format takes the 2d vector set and creates a header for the flat char * it become
 char * Interface::format(std::vector<std::vector<std::string>> result){
 	if(result.size() > 0){
 		std::string temp;
@@ -277,12 +244,10 @@ char * Interface::format(std::vector<std::vector<std::string>> result){
 		char * buffer = new char[temp.size() + 1];
 		std::copy(temp.begin(), temp.end(), buffer);
 		buffer[temp.size()] = '\0'; // don't forget the terminating 0
-		std::cout << "Returing a formatted char *" << buffer << std::endl;
 		return buffer;
 	}else{
 		char * buffer = (char*)calloc(4,sizeof(char));
 		buffer[0] = 'n'; buffer[1] = 'u'; buffer[2] = 'l'; buffer[3] = 'l';
-		// buffer = "null";
 		return buffer;
 	}
 }
@@ -304,15 +269,12 @@ Interface::~Interface(){
 	delete(KB);
 	delete(RB);
 	delete(serverSocket);
-	// delete(buffer);
 }
 
 
-
+// grab returns a set of all rules and facts
 std::vector<char *> Interface::grab(){
 	std::vector<char*> results;
-
-
 	std::vector<std::string> kbKeys = KB->getKeys();
 
 	

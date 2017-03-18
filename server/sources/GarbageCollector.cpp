@@ -1,3 +1,8 @@
+/* 
+ * Garbage Collector.c
+ * Author: Karim Sobh
+ * UCSC
+ */
 #include "../headers/GarbageCollector.h"
 
 GarbageCollector::GarbageCollector(){ 
