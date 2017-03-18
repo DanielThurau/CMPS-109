@@ -1,1 +1,8 @@
 FACT Father(Dan,Bob)
+FACT Mother(May,Mary)
+FACT Father(Bob,Ben)
+RULE Grandfather($X,$Z):- AND Father($X,$Y) Father($Y,$Z)
+INFERENCE Grandfather($O,$P)
+INFERENCE Mother($X,$Y)
+DROP Mother
+DUMP output.sri

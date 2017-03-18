@@ -143,7 +143,7 @@ void Interface::commandLine(){
 					while(std::getline(file, line)){
 						// Send each line to be parsed by server
 						const char * p_line = line.c_str();
-						mySocket->writeToSocket(p_line, 50);
+						mySocket->writeToSocket(p_line, 1000);
 
 						char * temp_buffer;
 						temp_buffer = (char*)calloc(1000, sizeof(char));
@@ -162,7 +162,7 @@ void Interface::commandLine(){
 				}
 			} else if(statement.substr(0,4) == "DUMP") {
 				const char * p_statement = statement.c_str();
-				mySocket->writeToSocket(p_statement, 50);
+				mySocket->writeToSocket(p_statement, 1000);
 
 				
 
@@ -205,7 +205,7 @@ void Interface::commandLine(){
 
 						char * buffer =(char *) calloc(4, sizeof(char));
 						buffer[0] = 'n'; buffer[1] = 'u'; buffer[2] = 'l'; buffer[3] = 'l';
-						mySocket->writeToSocket(buffer, 50);
+						mySocket->writeToSocket(buffer, 1000);
 						// Send response here asking for more
 					}
 					// Buffer finished
@@ -215,7 +215,7 @@ void Interface::commandLine(){
 				}
 			} else {
 				const char * p_statement = statement.c_str();
-				mySocket->writeToSocket(p_statement, 50);
+				mySocket->writeToSocket(p_statement, 1000);
 				if (statement == "x") {
 					delete(mySocket);
 					break;

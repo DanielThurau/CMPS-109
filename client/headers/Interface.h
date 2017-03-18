@@ -5,21 +5,14 @@
 #include "common.h"
 #include "../headers/TCPSocket.h"
 
-
-
-// class Load;
-// class Dump;
-
 using namespace std;
 
 class Interface {
 	private: 
-		// parser helper method
+		// The TCP socket connection for the client
 		TCPSocket * mySocket;
 		
 	public:
-		//temp buffer used to read from socket
-		char * temp_buffer;
 		//gets the integers found at the beginning of char*
 		int argSize(char * p_arg, int split);
 		//converts char * to string

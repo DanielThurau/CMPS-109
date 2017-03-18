@@ -34,9 +34,9 @@ void * Connection::threadMainBody (void * arg) { // Main thread body for serving
 	
 
 	char * buffer_read;
-	buffer_read = (char*)calloc(150, sizeof(char));
+	buffer_read = (char*)calloc(1000, sizeof(char));
 	while(!tcpSocket->isPeerDisconnected()){
-		if(tcpSocket->readFromSocket(buffer_read, 50) == -1){
+		if(tcpSocket->readFromSocket(buffer_read, 1000) == -1){
 			std::cout << "Reading from tcpSocket Failed\n";
 			tcpSocket->setPeerDisconnected(true);
 			break;
@@ -48,7 +48,7 @@ void * Connection::threadMainBody (void * arg) { // Main thread body for serving
 			std::vector<char*> to_return = threadInterface->grab();
 			for(int i = 0; i < to_return.size();i++){
 				tcpSocket->writeToSocket((const char *)to_return[i], 1000);
-				if(tcpSocket->readFromSocket(buffer_read, 50) == -1){
+				if(tcpSocket->readFromSocket(buffer_read, 1000) == -1){
 					std::cout << "Reading from tcpSocket Failed\n";
 					tcpSocket->setPeerDisconnected(true);
 					break;
